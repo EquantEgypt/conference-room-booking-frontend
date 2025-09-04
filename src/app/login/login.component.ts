@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UserCredentials } from '../core/models/user-credentials';
+import { ApiService } from '../core/services/api/api.service';
+import { AuthenticationService } from '../core/services/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +18,11 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
-  // invalidLogin = false; 
   showPassword = false;
+  errorMessage = '';
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private api: ApiService, private auth: AuthenticationService, private route: Router) {
     this.loginForm = this.fb.group({
       username: ['', [
         Validators.required,
@@ -36,8 +40,24 @@ export class LoginComponent {
 
   onLogin(): void {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      console.log(username, password);
+      let user: UserCredentials = this.loginForm.value;
+      console.log(user.username, user.password);
+      this.auth.authenticate(user).subscribe(
+        {
+          next: (response) => {
+            this.route.navigate(['dashboard'])
+            console.log(response);
+          },
+          error: (err) => {
+            if (err.status === 401) {
+              this.errorMessage = 'Invalid Credentials';
+            } else {
+              this.errorMessage = 'Something went wrong. Please try again.';
+            }
+            console.log(this.errorMessage);
+          }
+        }
+      )
     }
     else {
       this.loginForm.markAllAsTouched();

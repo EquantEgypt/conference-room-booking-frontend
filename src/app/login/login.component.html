@@ -1,6 +1,6 @@
 <main class="login-container">
     <h1 class="login-title">Login</h1>
-    <!-- <div class='my-alert my-alert-warning' *ngIf="invalidLogin">Invalid Credentials</div> -->
+    <div class='my-alert my-alert-warning' *ngIf="this.errorMessage!=''">{{this.errorMessage}}</div>
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="form-group">
             <i class="fa fa-user icon"></i>

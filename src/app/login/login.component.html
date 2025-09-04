@@ -1,21 +1,44 @@
 <main class="login-container">
     <h1 class="login-title">Login</h1>
-    <div class='my-alert my-alert-warning' *ngIf="invalidLogin">Invalid Credentials</div>
-    <form class="login-form">
+    <!-- <div class='my-alert my-alert-warning' *ngIf="invalidLogin">Invalid Credentials</div> -->
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="form-group">
             <i class="fa fa-user icon"></i>
-            <input type="text" name="email" class="form-input" placeholder="Username" [(ngModel)]="username" required>
+            <input type="text" name="username" class="form-input" placeholder="Username" formControlName="username"
+                required [ngClass]="{
+            'is-invalid': username?.touched && username?.invalid,
+            'is-valid': username?.touched && username?.valid
+            }">
+        </div>
+
+        <div *ngIf="username?.invalid && username?.touched" class="validation-message">
+            <p *ngIf="username?.errors?.['required']">Username is required</p>
+            <!-- <p *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</p>
+            <p *ngIf="username?.errors?.['maxlength']">Username cannot exceed 30 characters</p> -->
+            <p *ngIf="username?.errors?.['pattern']">Username must start with a letter and contain only letters
+                or numbers
+            </p>
         </div>
 
         <div class="form-group">
             <i class="fa fa-lock icon"></i>
             <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-input" placeholder="Password"
-                [(ngModel)]="password" required>
+                formControlName="password" required [ngClass]="{
+            'is-invalid': password?.touched && password?.invalid,
+            'is-valid': password?.touched && password?.valid
+            }">
             <i class="fa toggle-icon" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
                 (click)="showPassword = !showPassword"></i>
         </div>
 
-        <button type="button" class="btn-submit" (click)=onLogin()>Sign In</button>
-    </form>
+        <div *ngIf="password?.invalid && password?.touched" class="validation-message">
+            <p *ngIf="password?.errors?.['required']">Password is required</p>
+            <p *ngIf="password?.errors?.['minlength']">Password must be at least 3 characters</p>
+            <p *ngIf="password?.errors?.['pattern']">
+                Password cannot contain spaces
+            </p>
+        </div>
 
+        <button type="submit" class="btn-submit">Sign In</button>
+    </form>
 </main>

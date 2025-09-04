@@ -3,7 +3,6 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 60.66px);
-    /* centers form and leaves header space */
     background: #dfdfdf;
     padding: 1rem;
 }
@@ -16,6 +15,7 @@
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
+    animation: form-appear 1s ease-out forwards;
 }
 
 .login-title {
@@ -97,6 +97,21 @@
     background: #fff3cd;
     border-color: #ffeeba;
 }
+.validation-message{
+    color: #ca3e51;
+    margin-bottom: 20px;
+}
+
+.is-invalid {
+  border: 1px solid #aa0b20 !important;
+  background-color: #ffeff1 !important;
+}
+
+.is-valid {
+  border: 1px solid #28a745 !important;
+  background-color: #e6ffed !important;
+}
+
 
 @media (max-width: 480px) {
     .login-title {
@@ -111,5 +126,17 @@
 
     .signup-text {
         font-size: 0.9rem;
+    }
+}
+
+@keyframes form-appear {
+    from {
+        opacity: 0;
+        transform: translateY(3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -4,7 +4,7 @@
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="form-group">
             <i class="fa fa-user icon"></i>
-            <input type="text" name="username" class="form-input" placeholder="Username" formControlName="username"
+            <input type="text" name="username" class="form-input" placeholder="example@orange.com" formControlName="username"
                 required [ngClass]="{
             'is-invalid': username?.touched && username?.invalid,
             'is-valid': username?.touched && username?.valid

@@ -29,7 +29,7 @@ export class LoginComponent {
         Validators.required,
         // Validators.minLength(3),
         // Validators.maxLength(30),
-        Validators.pattern(/^[A-Za-z][A-Za-z0-9]*$/)  // must start with letter, then alphanumeric only
+        Validators.pattern(/^\S+$/)   // must start with letter, then alphanumeric only
       ]],
       password: ['', [
         Validators.required,

@@ -17,9 +17,7 @@
             <p *ngIf="username?.errors?.['required']">Username is required</p>
             <!-- <p *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</p>
             <p *ngIf="username?.errors?.['maxlength']">Username cannot exceed 30 characters</p> -->
-            <p *ngIf="username?.errors?.['pattern']">Username must start with a letter and contain only letters
-                or numbers
-            </p>
+            <p *ngIf="username?.errors?.['pattern']">Username must not contain spaces</p>
         </div>
 
         <div class="form-group">

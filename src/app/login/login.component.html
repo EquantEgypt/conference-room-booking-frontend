@@ -8,7 +8,9 @@
                 required [ngClass]="{
             'is-invalid': username?.touched && username?.invalid,
             'is-valid': username?.touched && username?.valid
-            }">
+            }"
+            (keydown.space)="$event.preventDefault()" 
+            >
         </div>
 
         <div *ngIf="username?.invalid && username?.touched" class="validation-message">
@@ -22,11 +24,13 @@
 
         <div class="form-group">
             <i class="fa fa-lock icon"></i>
-            <input [type]="showPassword ? 'text' : 'password'" name="password" class="form-input" placeholder="Password"
+            <input  [type]="showPassword ? 'text' : 'password'" name="password" class="form-input" placeholder="Password"
                 formControlName="password" required [ngClass]="{
             'is-invalid': password?.touched && password?.invalid,
             'is-valid': password?.touched && password?.valid
-            }">
+            }"
+             (keydown.space)="$event.preventDefault()"
+            >
             <i class="fa toggle-icon" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
                 (click)="showPassword = !showPassword"></i>
         </div>

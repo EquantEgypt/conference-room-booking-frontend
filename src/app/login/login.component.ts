@@ -19,6 +19,7 @@ export class LoginComponent {
   loginForm: FormGroup;
 
   showPassword = false;
+  isLoading = false;
   errorMessage = '';
 
 
@@ -40,12 +41,14 @@ export class LoginComponent {
 
   onLogin(): void {
     if (this.loginForm.valid) {
+      this.isLoading = true;
       let user: UserCredentials = this.loginForm.value;
       console.log(user.username, user.password);
       this.auth.authenticate(user).subscribe(
         {
           next: (response) => {
             this.route.navigate(['dashboard'])
+            this.isLoading = false;
             console.log(response);
           },
           error: (err) => {
@@ -54,6 +57,7 @@ export class LoginComponent {
             } else {
               this.errorMessage = 'Something went wrong. Please try again.';
             }
+            this.isLoading = false;
             console.log(this.errorMessage);
           }
         }

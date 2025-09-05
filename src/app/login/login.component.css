@@ -112,6 +112,21 @@
   background-color: #e6ffed !important;
 }
 
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 6px;
+  animation: spin 1s linear infinite;
+}
 
 @media (max-width: 480px) {
     .login-title {
@@ -139,4 +154,9 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

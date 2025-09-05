@@ -39,6 +39,9 @@
             </p>
         </div>
 
-        <button type="submit" class="btn-submit">Sign In</button>
+        <button type="submit" class="btn-submit" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Sign In</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+        </button>
     </form>
 </main>

@@ -6,6 +6,7 @@ import { UserCredentials } from '../core/models/user-credentials';
 import { ApiService } from '../core/services/api/api.service';
 import { AuthenticationService, TOKEN } from '../core/services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,12 @@ export class LoginComponent {
   errorMessage = '';
 
 
-  constructor(private fb: FormBuilder, private api: ApiService, private auth: AuthenticationService, private route: Router) {
+  constructor(private fb: FormBuilder,
+    private api: ApiService,
+    private auth: AuthenticationService,
+    private route: Router,
+    private alert: SweetAlertService) {
+
     this.loginForm = this.fb.group({
       username: ['', [
         Validators.required,
@@ -50,6 +56,10 @@ export class LoginComponent {
             sessionStorage.setItem(TOKEN, response.body.token);
             this.route.navigate(['dashboard'])
             this.isLoading = false;
+            this.alert.Toast.fire({
+              icon: "success",
+              title: "You logged in successfully."
+            });
             console.log(response);
           },
           error: (err) => {

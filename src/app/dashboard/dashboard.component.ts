@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
-import { MeetingRoom } from '../core/models/meeting-room';
+import { RoomResponse } from '../core/models/meeting-room';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -11,9 +11,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-
-  loadingState: { [key: number]: boolean } = {}; // track per-room loading
-  rooms: MeetingRoom[] = [];
+  rooms: RoomResponse[] = [];
 
   constructor(private api: ApiService) { }
 
@@ -23,8 +21,6 @@ export class DashboardComponent {
         next: (response) => {
           console.log(response.body);
           this.rooms = response.body;
-          // set all rooms to loading = true initially
-          this.rooms.forEach(room => this.loadingState[room.id] = true);
         },
         error: (err) => {
           console.error('Error loading rooms', err);
@@ -33,11 +29,4 @@ export class DashboardComponent {
 
     )
   }
-
-  onImageLoad(roomId: number) {
-    if (this.loadingState[roomId]) {
-      this.loadingState[roomId] = false;
-    }
-  }
-
 }

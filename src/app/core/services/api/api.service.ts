@@ -15,4 +15,8 @@ export class ApiService {
   login(userCredentials: UserCredentials): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, userCredentials, { observe: 'response' });
   }
+
+  getRooms(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/rooms`, { observe: 'response' });
+  }
 }

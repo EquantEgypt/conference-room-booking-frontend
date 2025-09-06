@@ -10,16 +10,14 @@ export const TOKEN = 'token';
   providedIn: 'root'
 })
 
-export class AuthenticationService {
+export class AuthenticationService { // TODO: This service may be removed later if it remains unused or redundant.
 
   constructor(private api: ApiService) { }
 
   authenticate(userCredentials: UserCredentials) {
     return this.api.login(userCredentials).pipe(
       tap((response) => {
-        if (response && response.token) {
-          sessionStorage.setItem(TOKEN, response.token);
-        }
+          // unnecessary logic removed
       }),
       catchError((error) => {
         return throwError(() => error);

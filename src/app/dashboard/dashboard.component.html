@@ -1,1 +1,19 @@
-<p style="text-align: center">dashboard works!</p>
+<div class="dashboard-container">
+    <div class="rooms-grid">
+        @for (room of rooms; track room.id) {
+        <div class="room-card">
+            <div class="room-image">
+                <img [src]="'http://localhost:8080' + room.img" alt="{{ room.name }}">
+                <i *ngIf="room.vip" class="fa-solid fa-crown crown-icon"></i>
+            </div>
+            <div class="room-details">
+                <h2>{{ room.name }}</h2>
+                <div class="room-capacity">
+                    <i class="fa fa-user icon"></i>
+                    <div>{{ room.capacity }}</div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

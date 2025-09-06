@@ -4,7 +4,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserCredentials } from '../core/models/user-credentials';
 import { ApiService } from '../core/services/api/api.service';
-import { AuthenticationService } from '../core/services/authentication/authentication.service';
+import { AuthenticationService, TOKEN } from '../core/services/authentication/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -47,6 +47,7 @@ export class LoginComponent {
       this.auth.authenticate(user).subscribe(
         {
           next: (response) => {
+            sessionStorage.setItem(TOKEN, response.body.token);
             this.route.navigate(['dashboard'])
             this.isLoading = false;
             console.log(response);

@@ -20,7 +20,7 @@
 
 .login-title {
     font-size: 2rem;
-    color: #333;
+    color: #25324D;
     margin-bottom: 2rem;
 }
 
@@ -57,7 +57,7 @@
     top: 50%;
     left: 12px;
     transform: translateY(-50%);
-    color: #000;
+    color: #18283B;
     z-index: 2;
 }
 
@@ -67,19 +67,19 @@
     right: 12px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #000;
+    color: #18283B;
 }
 
 .btn-submit {
     border: none;
     color: #fff;
-    background: #222;
+    background: #25324D;
     font-weight: 500;
     cursor: pointer;
 }
 
 .btn-submit:hover {
-    background: #000;
+    background: #18283B;
     transform: scale(1.05);
 }
 

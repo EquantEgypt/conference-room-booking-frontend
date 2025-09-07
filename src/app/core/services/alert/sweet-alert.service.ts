@@ -10,7 +10,7 @@ export class SweetAlertService {
 
   Toast = Swal.mixin({
     toast: true,
-    position: "top-end",
+    position: "bottom",
     showConfirmButton: false,
     timer: 2000,
     didOpen: (toast) => {

@@ -9,14 +9,11 @@
             'is-invalid': username?.touched && username?.invalid,
             'is-valid': username?.touched && username?.valid
             }"
-            (keydown.space)="$event.preventDefault()" 
             >
         </div>
 
         <div *ngIf="username?.invalid && username?.touched" class="validation-message">
             <p *ngIf="username?.errors?.['required']">Username is required</p>
-            <!-- <p *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</p>
-            <p *ngIf="username?.errors?.['maxlength']">Username cannot exceed 30 characters</p> -->
             <p *ngIf="username?.errors?.['pattern']">Username must not contain spaces</p>
         </div>
 
@@ -27,7 +24,6 @@
             'is-invalid': password?.touched && password?.invalid,
             'is-valid': password?.touched && password?.valid
             }"
-             (keydown.space)="$event.preventDefault()"
             >
             <i class="fa toggle-icon" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
                 (click)="showPassword = !showPassword"></i>
@@ -35,7 +31,7 @@
 
         <div *ngIf="password?.invalid && password?.touched" class="validation-message">
             <p *ngIf="password?.errors?.['required']">Password is required</p>
-            <p *ngIf="password?.errors?.['minlength']">Password must be at least 3 characters</p>
+            <p *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</p>
             <p *ngIf="password?.errors?.['pattern']">
                 Password cannot contain spaces
             </p>

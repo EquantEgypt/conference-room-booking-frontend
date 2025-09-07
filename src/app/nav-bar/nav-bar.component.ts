@@ -16,6 +16,10 @@ export class NavBarComponent {
 
   constructor(private alert:SweetAlertService,private route: Router){}
 
+  onClickHome(){
+    this.route.navigate(['dashboard']);
+  }
+
   logout(){
     sessionStorage.removeItem(TOKEN);
     this.alert.Toast.fire({

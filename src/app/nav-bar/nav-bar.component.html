@@ -1,7 +1,10 @@
 <nav>
   <div class="logo">Room Booking</div>
   <ul>
-    <li><a routerLink="/dashboard" class="home-link"
+    <li><a 
+        (click)="onClickHome()"
+        routerLink="/dashboard"
+        class="home-link"
         onmouseover="this.style.color='#2979FF';"
         onmouseout="this.style.color='#fff';"
         >Home</a></li>
@@ -10,7 +13,6 @@
         routerLink="/login" class="logout-link"
         onmouseover="this.style.color='#FF4D4D';"
         onmouseout="this.style.color='#fff';"
-        
         >Logout</a></li>
   </ul>
 </nav>

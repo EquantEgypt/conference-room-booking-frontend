@@ -1,17 +1,33 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
-import { authGuard } from './auth.guard';
-
-describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+describe('AuthGuard', () => {
+  let guard: AuthGuard;
+  let routerMock = { navigate: jasmine.createSpy('navigate') };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        AuthGuard,
+        { provide: Router, useValue: routerMock }
+      ]
+    });
+    guard = TestBed.inject(AuthGuard);
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(guard).toBeTruthy();
+  });
+
+  it('should allow activation when logged in', () => {
+    sessionStorage.setItem('TOKEN', 'dummy');
+    expect(guard.canActivate()).toBeTrue();
+  });
+
+  it('should redirect to login when not logged in', () => {
+    sessionStorage.removeItem('TOKEN');
+    expect(guard.canActivate()).toBeFalse();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['login']);
   });
 });

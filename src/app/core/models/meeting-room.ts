@@ -1,5 +1,5 @@
-export interface MeetingRoomDTO {
-  room_id: number;
+export interface MeetingRoom {
+  roomId: number;
   name: string;
   building: string;
   floor: number;
@@ -7,9 +7,4 @@ export interface MeetingRoomDTO {
   roomType: string;
   status: string;
   equipmentTypes: string[];
-}
-
-export interface RoomResponse {
-  meetingRoomDTO: MeetingRoomDTO;
-  imgPath: string;
 }

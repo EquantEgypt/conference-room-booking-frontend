@@ -1,0 +1,49 @@
+<div class="filter-container">
+    <div class="filter-form">
+        <div class="header">Select Date & Time & Capacity</div>
+
+        <div class="filter-date">
+            <label for="date">Select Date</label>
+            <input type="date" id="date" name="date">
+        </div>
+
+        <div class="filter-time">
+            <label for="start-time">Start Time</label>
+            <input type="time" id="start-time" name="start-time">
+        </div>
+
+        <div class="filter-time">
+            <label for="end-time">End Time</label>
+            <input type="time" id="end-time" name="end-time">
+        </div>
+
+        <div class="filter-capacity">
+            <label for="capacity">Capacity</label>
+            <select id="capacity" name="capacity"> 
+                <option value="">Select Capacity</option>
+                @for(capacity of capacities; track $index) {
+                <option [value]="capacity">👤 {{ capacity }}</option>
+                }
+            </select>
+        </div>
+
+
+        <div class="filter-equip">
+            <div class="header">choose Equipments</div>
+            <div class="equipments">
+                @for(equipment of equipments; track equipment.id ; let i = $index){
+                <span class="equipment" [class.selected]="equipment.isExist" (click)="toggleEquip(i)">
+                    <span class="equip-name">{{ equipment.name }}</span>
+                    <i *ngIf="equipment.isExist" class="fa-solid fa-circle-check animate-check"></i>
+                </span>
+                }
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="btn-close" (click)="onClose()">Close</button>
+            <button class="btn-close btn-apply" (click)="onApply()">Apply</button>
+        </div>
+
+
+    </div>
+</div>

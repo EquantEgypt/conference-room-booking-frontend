@@ -96,3 +96,43 @@
     transform: translateY(0);
   }
 }
+
+/* filter button */
+
+.btn-center {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.btn-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background: #25324D;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+button i {
+  font-size: 1rem;
+}
+
+/* Hover effect */
+button:hover {
+  background: #18283B;
+  transform: scale(1.05);
+}
+
+/* Active (click) effect */
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

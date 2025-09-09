@@ -1,0 +1,9 @@
+<!-- Backdrop -->
+<div *ngIf="show" class="backdrop" (click)="onClose()"></div>
+
+<!-- Modal -->
+<div *ngIf="show" class="modal">
+    <div class="content">
+        <app-filter></app-filter>
+    </div>
+</div>

@@ -1,17 +1,21 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
-import { RoomResponse } from '../core/models/meeting-room';
+import { MeetingRoom } from '../core/models/meeting-room';
 import { NgIf } from '@angular/common';
+import { ModalComponent } from '../ui/modal/modal.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf,ModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  rooms: RoomResponse[] = [];
+  rooms: MeetingRoom[] = [];
+  isModalOpen = false;
+
+  
 
   constructor(private api: ApiService) { }
 
@@ -28,5 +32,14 @@ export class DashboardComponent {
       },
 
     )
+  }
+  openModal() {
+    this.isModalOpen = true;
+    document.body.classList.add('modal-open');
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    document.body.classList.remove('modal-open');
   }
 }

@@ -33,13 +33,11 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       username: ['', [
         Validators.required,
-        // Validators.minLength(3),
-        // Validators.maxLength(30),
-        Validators.pattern(/^\S+$/)   // must start with letter, then alphanumeric only
+        Validators.pattern(/^\S+$/)
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(3), // temporarily just for testing security in backend
+        Validators.minLength(6),
         Validators.pattern(/^\S+$/) /* \S matches any non-whitespace character , + one or more  */
       ]]
     })

@@ -7,8 +7,7 @@
     font-size: 0.95rem;
     outline: none;
     transition: border 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 0.8rem;
-
+    margin-bottom: 0.6rem;
 }
 
 .filter-date input[type="date"]:focus {
@@ -25,7 +24,7 @@
     font-size: 0.95rem;
     outline: none;
     transition: border 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
 }
 
 .filter-time input[type="time"]:focus {
@@ -33,8 +32,14 @@
     box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
 }
 
+.time-font {
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+}
+
 /* === Capacity Dropdown === */
-.filter-capacity select {
+.drop-down select {
     width: 100%;
     padding: 0.6rem 1rem;
     border: 1px solid #ccc;
@@ -49,25 +54,25 @@
     position: relative;
 }
 
-.filter-capacity select:focus {
+.drop-down select:focus {
     border: 1px solid #25324D;
     box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
 }
 
 /* === Add custom dropdown arrow === */
-.filter-capacity {
+.drop-down {
     position: relative;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.4rem;
 }
 
 /* labels */
 
 label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #25324D;
-  margin: 0 0.4rem 0.4rem;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #25324D;
+    margin: 0 0.4rem 0.4rem;
 }
 
 /*equipment*/
@@ -113,6 +118,53 @@ label {
     animation: bounceSelect 0.25s ease;
 }
 
+/* validation */
+
+.is-invalid {
+    border: 1px solid #aa0b20 !important;
+    background-color: #ffeff1 !important;
+}
+
+.is-valid {
+    border: 1px solid #28a745 !important;
+    background-color: #e6ffed !important;
+}
+
+.validation-message {
+    color: #ca3e51;
+    margin: 0 0 0.8rem 0.4rem;
+}
+
+
+/*  buttons */
+.buttons {
+    text-align: right;
+}
+
+.btn-apply {
+    margin-left: .5rem;
+}
+
+.btn-close {
+    margin-top: 1rem;
+    border: none;
+    color: #fff;
+    background: #25324D;
+    font-weight: 500;
+    cursor: pointer;
+    height: 40px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    transform: 0.2s ease;
+
+}
+
+.btn-close:hover {
+    background: #18283B;
+}
+
 @keyframes bounceSelect {
     0% {
         transform: scale(1);
@@ -156,34 +208,4 @@ label {
         transform: scale(1) rotate(0);
         opacity: 1;
     }
-}
-
-/*  buttons */
-
-.buttons {
-    text-align: right;
-}
-
-.btn-apply {
-    margin-left: .5rem;
-}
-
-.btn-close {
-    margin-top: 1rem;
-    border: none;
-    color: #fff;
-    background: #25324D;
-    font-weight: 500;
-    cursor: pointer;
-    height: 40px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    padding: 0 1.5rem;
-    font-size: 1rem;
-    transform: 0.2s ease;
-    
-}
-
-.btn-close:hover {
-    background: #18283B;
 }

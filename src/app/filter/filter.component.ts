@@ -1,19 +1,66 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Equip } from '../core/models/equip';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ModalComponent } from '../ui/modal/modal.component';
 
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, ReactiveFormsModule, NgClass],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css'
 })
 
+
 export class FilterComponent {
 
-  constructor(private modal:ModalComponent){}
+  filterForm: FormGroup;
+  BEGIN_STARTTIME = 9;
+  FINISH_STARTTIME = 17;
+  BEGIN_ENDTIME = 10;
+  FINISH_ENDTIME = 18;
+
+  todayDefault = new Date();
+  formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
+
+  constructor(private modal: ModalComponent, private fb: FormBuilder) {
+
+    this.filterForm = this.fb.group({
+      date: [this.formattedToday, [
+        Validators.required, this.presentOrFutureDateValidator()
+      ]],
+      startTime: ['', [
+        Validators.required,
+      ]],
+      endTime: ['', [
+        Validators.required,
+      ]],
+      capacity: ['', [
+
+      ]]
+    }, {
+      validators: [this.endTimeAfterStartTimeValidator()]
+    })
+
+  }
+
+  startTimes: number[] = [];
+  endTimes: number[] = [];
+
+  ngOnInit() {
+    // fill start times list
+    for (let i = this.BEGIN_STARTTIME; i <= this.FINISH_STARTTIME; i++) this.startTimes.push(i);
+
+    // fill end times list
+    for (let i = this.BEGIN_ENDTIME; i <= this.FINISH_ENDTIME; i++) this.endTimes.push(i);
+  }
+
+  formatTime(hour: number): string {
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour;
+    return `${displayHour}:00 ${suffix}`;
+  }
 
   equipments: Equip[] = [
     { id: 1, name: "Projector or Large Display Screen / TV", isExist: false },
@@ -34,7 +81,7 @@ export class FilterComponent {
   ];
 
 
-  capacities:number[] = [10,15,25,35];
+  capacities: number[] = [10, 15, 25, 35];
 
   toggleEquip(index: number) {
     this.equipments[index].isExist = !this.equipments[index].isExist;
@@ -46,9 +93,73 @@ export class FilterComponent {
     this.modal.onClose();
   }
 
-  onApply(){
-    // add some logic to apply filters on rooms
-    this.modal.onClose();
+  onApply() {
+    if (this.filterForm.valid) {
+      this.modal.onClose();
+      console.log('valid')
+    }
+    else {
+      this.filterForm.markAllAsTouched();
+      // console.log('not valid')
+      // console.log(this.startTime?.value + ' ' + this.endTime?.value);
+      // console.log(this.startTime?.value > this.endTime?.value);
+      // // console.log(this.endTime?.touched + ' ' +  this.endTime?.invalid + ' ' + (this.startTime?.value > this.endTime?.value))
+    }
+  }
+
+  // custom validator
+  presentOrFutureDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const inputDate = new Date(control.value);
+      inputDate.setHours(0, 0, 0, 0);
+
+      // Reject past dates
+      if (inputDate < today) return { pastDate: true };
+
+      // Reject "too far in future dates" future dates (e.g. more than 1 year ahead)
+      const maxDate = new Date();
+      maxDate.setFullYear(today.getFullYear() + 1);
+      if(inputDate > maxDate) return { tooFarInFuture: true };
+
+      return null;
+    }
+  }
+
+  endTimeAfterStartTimeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+
+      const startStr:number = control.get('startTime')?.value;
+      const endStr:number = control.get('endTime')?.value;
+
+      if(startStr == null || endStr == null)return null;
+
+      const start = Number(startStr);
+      const end = Number(endStr);
+
+      return end <= start ? { endBeforeStart: true } : null;
+    };
+  }
+
+
+  get date(): AbstractControl | null {
+    return this.filterForm.get('date');
+  }
+
+  get startTime(): AbstractControl | null {
+    return this.filterForm.get('startTime');
+  }
+
+  get endTime(): AbstractControl | null {
+    return this.filterForm.get('endTime');
+  }
+
+  get capacity(): AbstractControl | null {
+    return this.filterForm.get('capacity');
   }
 
 }

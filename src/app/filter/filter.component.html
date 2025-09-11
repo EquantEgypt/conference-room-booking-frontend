@@ -1,25 +1,65 @@
 <div class="filter-container">
-    <div class="filter-form">
+    <form [formGroup]="filterForm" (ngSubmit)="onApply()" class="filter-form">
         <div class="header">Select Date & Time & Capacity</div>
 
         <div class="filter-date">
             <label for="date">Select Date</label>
-            <input type="date" id="date" name="date">
+            <input type="date" id="date" name="date" formControlName="date" required [ngClass]="{
+            'is-invalid': date?.touched && date?.invalid,
+            'is-valid': date?.touched && date?.valid
+            }">
         </div>
 
-        <div class="filter-time">
+        <div *ngIf="date?.invalid && date?.touched" class="validation-message">
+            <span *ngIf="date?.errors?.['required']">Date is required.</span>
+            <span *ngIf="date?.errors?.['pastDate']">Date must be today or in the future.</span>
+            <span *ngIf="date?.errors?.['tooFarInFuture']">Date cannot be more than 1 year ahead.</span>
+        </div>
+
+        <div class="drop-down">
             <label for="start-time">Start Time</label>
-            <input type="time" id="start-time" name="start-time">
+            <select id="start-time" name="start-time" formControlName="startTime" required [ngClass]="{
+            'is-invalid': startTime?.touched && startTime?.invalid,
+            'is-valid': startTime?.touched && startTime?.valid
+            }">
+                <option value="">Select Time</option>
+                @for (hour of startTimes; track hour) {
+                <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
+                }
+            </select>
         </div>
 
-        <div class="filter-time">
+        <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
+            <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
+        </div>
+
+        <div class="drop-down">
             <label for="end-time">End Time</label>
-            <input type="time" id="end-time" name="end-time">
+            <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
+             'is-invalid': endTime?.touched && (endTime?.hasError('required') || filterForm.errors?.['endBeforeStart']),
+             'is-valid': endTime?.touched && endTime?.valid && !filterForm.errors?.['endBeforeStart']
+            }">
+                <option value="">Select Time</option>
+                @for (hour of endTimes; track hour) {
+                <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
+                }
+            </select>
         </div>
 
-        <div class="filter-capacity">
+
+        <div *ngIf="endTime?.invalid && endTime?.touched" class="validation-message">
+            <span *ngIf="endTime?.errors?.['required']">End time is required.</span>
+        </div>
+
+        <div *ngIf="!endTime?.errors?.['required'] && filterForm.errors?.['endBeforeStart'] && endTime?.touched"
+            class="validation-message">
+            End time must be after start time
+        </div>
+
+
+        <div class="drop-down">
             <label for="capacity">Capacity</label>
-            <select id="capacity" name="capacity"> 
+            <select id="capacity" name="capacity" formControlName="capacity">
                 <option value="">Select Capacity</option>
                 @for(capacity of capacities; track $index) {
                 <option [value]="capacity">👤 {{ capacity }}</option>
@@ -39,11 +79,11 @@
                 }
             </div>
         </div>
+
+
         <div class="buttons">
             <button class="btn-close" (click)="onClose()">Close</button>
-            <button class="btn-close btn-apply" (click)="onApply()">Apply</button>
+            <button type="submit" class="btn-close btn-apply">Apply</button>
         </div>
-
-
-    </div>
+    </form>
 </div>

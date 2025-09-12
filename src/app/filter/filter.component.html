@@ -1,5 +1,5 @@
 <div class="filter-container">
-    <form [formGroup]="filterForm" (ngSubmit)="onApply()" class="filter-form">
+    <form [formGroup]="filterForm" (ngSubmit)="onApplyFilter()" class="filter-form">
         <div class="header">Select Date & Time & Capacity</div>
 
         <div class="filter-date">
@@ -56,25 +56,34 @@
             End time must be after start time
         </div>
 
-
         <div class="drop-down">
             <label for="capacity">Capacity</label>
-            <select id="capacity" name="capacity" formControlName="capacity">
-                <option value="">Select Capacity</option>
-                @for(capacity of capacities; track $index) {
-                <option [value]="capacity">👤 {{ capacity }}</option>
-                }
-            </select>
+            <input type="number" id="capacity" name="capacity" formControlName="capacity"
+            placeholder="Enter Capacity"  [ngClass]="{
+            'is-invalid': capacity?.touched && capacity?.invalid,
+            'is-valid': capacity?.touched && capacity?.valid
+            }">
+        </div>
+
+
+        <div *ngIf="capacity?.invalid && capacity?.touched" class="validation-message">
+            <span *ngIf="capacity?.errors?.['pattern']">
+                Enter a valid number
+            </span>
+
+            <span *ngIf="!capacity?.errors?.['pattern'] && capacity?.errors?.['range']">
+                Capacity must be between 1 and {{ maxRoomCapacity }}
+            </span>
         </div>
 
 
         <div class="filter-equip">
             <div class="header">choose Equipments</div>
             <div class="equipments">
-                @for(equipment of equipments; track equipment.id ; let i = $index){
-                <span class="equipment" [class.selected]="equipment.isExist" (click)="toggleEquip(i)">
-                    <span class="equip-name">{{ equipment.name }}</span>
-                    <i *ngIf="equipment.isExist" class="fa-solid fa-circle-check animate-check"></i>
+                @for(equipment of equipments; track equipment.equipment_id; let i = $index){
+                <span class="equipment" [class.selected]="equipment.isChecked" (click)="toggleEquip(i)">
+                    <span class="equip-name">{{ equipment.type }}</span>
+                    <i *ngIf="equipment.isChecked" class="fa-solid fa-circle-check animate-check"></i>
                 </span>
                 }
             </div>
@@ -82,7 +91,7 @@
 
 
         <div class="buttons">
-            <button class="btn-close" (click)="onClose()">Close</button>
+            <button class="btn-close" (click)="onCloseFilter()">Close</button>
             <button type="submit" class="btn-close btn-apply">Apply</button>
         </div>
     </form>

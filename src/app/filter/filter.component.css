@@ -38,7 +38,29 @@
     font-size: 1.2rem;
 }
 
-/* === Capacity Dropdown === */
+/* === capacity === */
+
+.drop-down input{
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    background: #fff;
+    outline: none;
+    appearance: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.drop-down input:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+
+
+/* === Dropdown === */
 .drop-down select {
     width: 100%;
     padding: 0.6rem 1rem;
@@ -49,7 +71,6 @@
     outline: none;
     cursor: pointer;
     appearance: none;
-    /* hide default arrow */
     transition: border 0.3s ease, box-shadow 0.3s ease;
     position: relative;
 }

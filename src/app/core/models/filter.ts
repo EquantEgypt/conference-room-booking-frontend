@@ -1,6 +1,9 @@
+import { Equip } from "./equip";
+
 export interface Filter {
-    startTime:Date,
-    endTime:Date,
-    capacity:number,
-    equipmentTypes:string[]
+    date: Date | null,
+    startTime: number | null,
+    endTime: number | null,
+    capacity: number | null,
+    equipmentTypes: Equip[]
 }

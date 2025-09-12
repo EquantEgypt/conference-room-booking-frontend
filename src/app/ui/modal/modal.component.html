@@ -4,6 +4,6 @@
 <!-- Modal -->
 <div *ngIf="show" class="modal">
     <div class="content">
-        <app-filter></app-filter>
+        <app-filter (close)="onClose()" [maxRoomCapacity]="maxRoomCapacity"></app-filter>
     </div>
 </div>

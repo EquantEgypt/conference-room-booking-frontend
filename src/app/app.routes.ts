@@ -1,3 +1,13 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
+import { NoAuthGuard } from './guards/no-auth.guard';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+    { path: 'login', component: LoginComponent, canActivate : [NoAuthGuard] },
+    { path: '', component: LoginComponent, canActivate : [NoAuthGuard] },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]}
+];

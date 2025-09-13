@@ -1,0 +1,232 @@
+/* === Date Picker === */
+.filter-date input[type="date"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 0.6rem;
+}
+
+.filter-date input[type="date"]:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+/* === Time Picker (Start + End) === */
+.filter-time input[type="time"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 0.6rem;
+}
+
+.filter-time input[type="time"]:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+.time-font {
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+}
+
+/* === capacity === */
+
+.drop-down input{
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    background: #fff;
+    outline: none;
+    appearance: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.drop-down input:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+
+
+/* === Dropdown === */
+.drop-down select {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.drop-down select:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+/* === Add custom dropdown arrow === */
+.drop-down {
+    position: relative;
+    margin-bottom: 0.4rem;
+}
+
+/* labels */
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #25324D;
+    margin: 0 0.4rem 0.4rem;
+}
+
+/*equipment*/
+
+
+.header {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #25324D;
+    margin-bottom: 0.8rem;
+    padding: 0.5rem 1rem;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+
+.equipment {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ccc;
+    color: #000;
+    padding: 0.6rem 1rem;
+    margin: 0.3rem;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease,
+        padding 0.3s ease, width 0.3s ease,
+        box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+/* Hover (only when not selected) */
+.equipment:hover:not(.selected) {
+    background: #b5b5b5;
+}
+
+/* Selected */
+.equipment.selected {
+    background: #25324D;
+    color: #fff;
+    position: relative;
+    animation: bounceSelect 0.25s ease;
+}
+
+/* validation */
+
+.is-invalid {
+    border: 1px solid #aa0b20 !important;
+    background-color: #ffeff1 !important;
+}
+
+.is-valid {
+    border: 1px solid #28a745 !important;
+    background-color: #e6ffed !important;
+}
+
+.validation-message {
+    color: #ca3e51;
+    margin: 0 0 0.8rem 0.4rem;
+}
+
+
+/*  buttons */
+.buttons {
+    text-align: right;
+}
+
+.btn-apply {
+    margin-left: .5rem;
+}
+
+.btn-close {
+    margin-top: 1rem;
+    border: none;
+    color: #fff;
+    background: #25324D;
+    font-weight: 500;
+    cursor: pointer;
+    height: 40px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    transform: 0.2s ease;
+
+}
+
+.btn-close:hover {
+    background: #18283B;
+}
+
+@keyframes bounceSelect {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.97);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.equipment i {
+    margin-left: 0.4rem;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.animate-check {
+    animation: popIn 0.3s ease forwards;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.2) rotate(10deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}

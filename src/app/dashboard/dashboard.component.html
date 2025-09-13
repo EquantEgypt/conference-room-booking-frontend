@@ -1,0 +1,82 @@
+<div class="dashboard-container">
+
+    <div class="filter">
+        <div class="filter-details">
+            <!-- Date -->
+            <div class="small-info">
+                <i class="fa-solid fa-calendar-day"></i>
+                <span>{{ filteredData?.date || 'Select Date' }}</span>
+            </div>
+
+            <!-- Start Time -->
+            <div class="small-info">
+                <i class="fa-regular fa-clock"></i>
+                <span *ngIf="filteredData?.startTime">{{ formatTime(filteredData?.startTime) }}</span>
+                <span *ngIf="!filteredData?.startTime"> -- : -- </span>
+            </div>
+
+            <span class="arrow">→</span>
+
+            <!-- End Time -->
+            <div class="small-info">
+                <i class="fa-regular fa-clock"></i>
+                <span *ngIf="filteredData?.endTime">{{ formatTime(filteredData?.endTime) }}</span>
+                <span *ngIf="!filteredData?.endTime"> -- : -- </span>
+            </div>
+
+            <!-- Capacity -->
+            <div class="small-info">
+                <i class="fa fa-user icon"></i>
+                <span>{{ filteredData?.capacity || 'Capacity' }}</span>
+            </div>
+
+
+        </div>
+
+        <!-- Filter button -->
+        <div class="btn-center">
+            <button class="btn-filter" (click)="openModal()">
+                <span><i class="fa-solid fa-filter"></i></span>
+                <span>Filter</span>
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- @Input() show = false; // input property from parent
+    @Output() close = new EventEmitter<void>(); // output event to notify parent -->
+
+    <app-modal [show]="isModalOpen" (close)="closeModal()" [maxRoomCapacity]="maxRoomCapacity">
+
+    </app-modal>
+
+
+    <div *ngIf="isLoading" class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <div *ngIf="!isLoading && rooms.length === 0" class="no-rooms-container">
+        <img src="assets/no-result.svg" alt="No rooms available" class="no-rooms-image">
+        <h2>No Result Found</h2>
+    </div>
+
+    <div *ngIf="!isLoading && rooms.length !== 0" class="rooms-grid">
+        @for (room of rooms; track room.roomId) {
+        <div class="room-card">
+            <div class="room-image">
+                <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="{{ room.name }}">
+
+                <i *ngIf="room.roomType === 'VIP'" class="fa-solid fa-crown crown-icon"></i>
+            </div>
+            <div class="room-details">
+                <h2>{{ room.name }}</h2>
+                <div class="room-capacity">
+                    <i class="fa fa-user icon"></i>
+                    <div>{{ room.capacity }}</div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

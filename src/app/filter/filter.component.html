@@ -79,10 +79,10 @@
 
         <div class="filter-equip">
             <div class="header">choose Equipments</div>
-            <div class="equipments">
+            <div>
                 @for(equipment of equipments; track equipment.equipment_id; let i = $index){
                 <span class="equipment" [class.selected]="equipment.isChecked" (click)="toggleEquip(i)">
-                    <span class="equip-name">{{ equipment.type }}</span>
+                    <span>{{ equipment.type }}</span>
                     <i *ngIf="equipment.isChecked" class="fa-solid fa-circle-check animate-check"></i>
                 </span>
                 }

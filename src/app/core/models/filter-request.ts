@@ -1,4 +1,3 @@
-import { Equip } from "./equip";
 import { Filter } from "./filter";
 
 export interface FilterRequest {

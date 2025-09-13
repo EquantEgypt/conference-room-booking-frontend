@@ -24,6 +24,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: card-appear 1s ease-out forwards;
   animation-fill-mode: backwards;
+  cursor: pointer;
 }
 
 .room-card:hover {

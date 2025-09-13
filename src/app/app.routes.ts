@@ -11,7 +11,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate : [NoAuthGuard] },
     { path: '', component: LoginComponent, canActivate : [NoAuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-     { path: 'create-booking', component: CreateBookingComponent },
+    { path: 'create-booking/:roomId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]}
     
 ];

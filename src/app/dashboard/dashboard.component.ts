@@ -6,6 +6,7 @@ import { ModalComponent } from '../ui/modal/modal.component';
 import { Filter } from '../core/models/filter';
 import { FilterService } from '../core/services/shared/filters/filter.service';
 import { convertToFilterRequest, FilterRequest } from '../core/models/filter-request';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,7 @@ export class DashboardComponent {
 
   filteredData: Filter | null = null;
 
-  constructor(private api: ApiService, private filterService: FilterService) { }
+  constructor(private api: ApiService, private filterService: FilterService,private router:Router) { }
 
   ngOnInit() {
     this.filteredData = this.filterService.filteredData;
@@ -84,11 +85,14 @@ export class DashboardComponent {
     return max;
   }
 
+  onClickOnRoom(roomId:number){
+    this.router.navigate(['create-booking', roomId]);
+  }
+
   formatTime(hour: number | null | undefined): string {
     if (hour == null || hour == undefined) return '';
     const suffix = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour > 12 ? hour - 12 : hour;
     return `${displayHour}:00 ${suffix}`;
   }
-
 }

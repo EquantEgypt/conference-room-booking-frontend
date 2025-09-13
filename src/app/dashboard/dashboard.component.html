@@ -63,7 +63,7 @@
 
     <div *ngIf="!isLoading && rooms.length !== 0" class="rooms-grid">
         @for (room of rooms; track room.roomId) {
-        <div class="room-card">
+        <div class="room-card" (click)="onClickOnRoom(room.roomId)">
             <div class="room-image">
                 <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="{{ room.name }}">
 

@@ -1,9 +1,9 @@
 /* === Date Picker === */
 .filter-date input[type="date"] {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.5rem;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 8px;
     font-size: 0.95rem;
     outline: none;
     transition: border 0.3s ease, box-shadow 0.3s ease;
@@ -16,22 +16,6 @@
 }
 
 /* === Time Picker (Start + End) === */
-.filter-time input[type="time"] {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 0.6rem;
-}
-
-.filter-time input[type="time"]:focus {
-    border: 1px solid #25324D;
-    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
-}
-
 .time-font {
     font-weight: bold;
     font-family: 'Courier New', monospace;
@@ -42,9 +26,9 @@
 
 .drop-down input{
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.4rem;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 8px;
     font-size: 0.95rem;
     background: #fff;
     outline: none;
@@ -63,9 +47,9 @@
 /* === Dropdown === */
 .drop-down select {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.5rem;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 8px;
     font-size: 0.95rem;
     background: #fff;
     outline: none;
@@ -118,7 +102,7 @@ label {
     color: #000;
     padding: 0.6rem 1rem;
     margin: 0.3rem;
-    border-radius: 25px;
+    border-radius: 8px;
     font-size: 0.95rem;
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease,
@@ -174,12 +158,11 @@ label {
     font-weight: 500;
     cursor: pointer;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 8px;
     transition: all 0.3s ease;
     padding: 0 1.5rem;
     font-size: 1rem;
     transform: 0.2s ease;
-
 }
 
 .btn-close:hover {

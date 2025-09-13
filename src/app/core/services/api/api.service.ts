@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserCredentials } from '../../models/user-credentials';
 import { Observable } from 'rxjs';
 import { FilterRequest } from '../../models/filter-request';
+import { ReservationRequest } from '../../models/reservation-request';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,15 @@ export class ApiService {
     });
   }
 
+  getRoom(roomId:number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/rooms/${roomId}`, { observe: 'response' });
+  }
 
   getEquipments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/equipment`, { observe: 'response' });
+  }
+
+  sendReservation(requestBody:ReservationRequest): Observable<any>{
+    return this.http.post(`${this.apiUrl}/reserve`,requestBody, { observe: 'response' });
   }
 }

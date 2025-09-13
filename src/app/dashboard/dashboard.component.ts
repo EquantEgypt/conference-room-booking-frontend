@@ -51,6 +51,7 @@ export class DashboardComponent {
         },
         error: (err) => {
           console.error('Error loading rooms', err);
+          this.isLoading = false;
         }
       },
 

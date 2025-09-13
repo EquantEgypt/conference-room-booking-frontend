@@ -1,0 +1,48 @@
+<div class="booking-container">
+
+  <div class="room-preview">
+    <div class="image-placeholder">
+      <p>Room image & details will appear here</p>
+    </div>
+  </div>
+
+ 
+  <div class="booking-form-wrapper">
+    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()" class="booking-form">
+    
+      <div *ngIf="selectedRoomName" class="room-title">
+        <h2>Booking for: {{ selectedRoomName }}</h2>
+      </div>
+
+      <label>Date:</label>
+      <input type="date" formControlName="date" />
+
+      <label>Start Time:</label>
+<select formControlName="startTime">
+  <option *ngFor="let time of startTimes" [value]="time">{{ time }}</option>
+</select>
+
+        <label>End Time:</label>
+       <select formControlName="endTime">
+       <option *ngFor="let time of endTimes" [value]="time">{{ time }}</option>
+      </select>
+
+
+      <label>Meeting type:</label>
+      <select formControlName="Meeting type">
+        <option value="Internal">Internal</option>
+        <option value="External">External</option>
+      </select>
+
+      <label>Description:</label>
+      <textarea formControlName="description" rows="3"></textarea>
+
+      <label>Recurrence Pattern:</label>
+      <select formControlName="recurrencePattern">
+        <option *ngFor="let option of recurrenceOptions" [value]="option">{{ option }}</option>
+      </select>
+
+      <button type="submit" class="btn">Reserve</button>
+    </form>
+  </div>
+</div>

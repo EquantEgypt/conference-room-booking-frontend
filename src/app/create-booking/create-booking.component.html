@@ -8,7 +8,8 @@
 
  
   <div class="booking-form-wrapper">
-    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()" class="booking-form">
+    <!-- (ngSubmit)="submitBooking()" -->
+    <form [formGroup]="bookingForm"  class="booking-form">
     
       <div *ngIf="selectedRoomName" class="room-title">
         <h2>Booking for: {{ selectedRoomName }}</h2>

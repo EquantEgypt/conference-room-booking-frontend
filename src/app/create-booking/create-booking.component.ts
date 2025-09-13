@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BookingService } from '../core/services/booking.service';
 import { Subject, takeUntil } from 'rxjs';
 
 interface Room {
@@ -26,7 +25,7 @@ export class CreateBookingComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private bookingService: BookingService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.bookingForm = this.fb.group({
@@ -39,7 +38,7 @@ export class CreateBookingComponent implements OnInit, OnDestroy {
       recurrencePattern: ['ONE TIME', Validators.required]
     });
 
-    this.loadRooms();
+    // this.loadRooms();
     this.generateHours();
 
     this.bookingForm.get('room')?.valueChanges
@@ -55,11 +54,11 @@ export class CreateBookingComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadRooms() {
-    this.bookingService.getAvailableRooms().subscribe(res => {
-      this.rooms = res;
-    });
-  }
+  // loadRooms() {
+  //   this.bookingService.getAvailableRooms().subscribe(res => {
+  //     this.rooms = res;
+  //   });
+  // }
 
   generateHours() {
     // Start times: 9 AM → 5 PM
@@ -85,12 +84,12 @@ export class CreateBookingComponent implements OnInit, OnDestroy {
     return `${displayHour}:00 ${suffix}`;
   }
 
-  submitBooking() {
-    if (this.bookingForm.valid) {
-      this.bookingService.createBooking(this.bookingForm.value).subscribe({
-        next: () => alert('Booking created successfully!'),
-        error: (err) => console.error(err)
-      });
-    }
-  }
+  // submitBooking() {
+  //   if (this.bookingForm.valid) {
+  //     this.bookingService.createBooking(this.bookingForm.value).subscribe({
+  //       next: () => alert('Booking created successfully!'),
+  //       error: (err) => console.error(err)
+  //     });
+  //   }
+  // }
 }

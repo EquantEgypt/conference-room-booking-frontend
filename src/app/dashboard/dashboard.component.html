@@ -1,0 +1,19 @@
+<div class="dashboard-container">
+    <div class="rooms-grid">
+        @for (room of rooms; track room.meetingRoomDTO.room_id) {
+        <div class="room-card">
+            <div class="room-image">
+                <img [src]="'http://localhost:8080' + room.imgPath" alt="{{ room.meetingRoomDTO.name }}">
+                <i *ngIf="room.meetingRoomDTO.roomType === 'VIP'" class="fa-solid fa-crown crown-icon"></i>
+            </div>
+            <div class="room-details">
+                <h2>{{ room.meetingRoomDTO.name }}</h2>
+                <div class="room-capacity">
+                    <i class="fa fa-user icon"></i>
+                    <div>{{ room.meetingRoomDTO.capacity }}</div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

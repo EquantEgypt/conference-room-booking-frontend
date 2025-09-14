@@ -1,0 +1,28 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #dfdfdf;
+  color: #222;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.not-found h1 {
+  font-size: 5rem;
+  color: #000;
+  animation: blink 2s infinite;
+}
+
+.not-found p {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+

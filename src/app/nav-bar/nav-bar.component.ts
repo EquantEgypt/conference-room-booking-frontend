@@ -21,6 +21,10 @@ export class NavBarComponent {
     this.route.navigate(['dashboard']);
   }
 
+  onClickMyBooking(){
+    this.route.navigate(['my-booking']);
+  }
+
   logout(){
     sessionStorage.removeItem(TOKEN);
     this.alert.Toast.fire({

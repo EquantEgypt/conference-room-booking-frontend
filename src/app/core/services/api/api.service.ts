@@ -50,6 +50,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/rooms/${roomId}`, { observe: 'response' });
   }
 
+  getReservation(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
+  }
+
   getEquipments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/equipment`, { observe: 'response' });
   }

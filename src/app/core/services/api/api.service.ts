@@ -21,7 +21,7 @@ export class ApiService {
   getRooms(params: FilterRequest | null) {
 
     console.log(params);
-    
+
     let httpParams = new HttpParams();
 
     if (params) {
@@ -46,15 +46,27 @@ export class ApiService {
     });
   }
 
-  getRoom(roomId:number): Observable<any> {
+  getRoom(roomId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/rooms/${roomId}`, { observe: 'response' });
+  }
+
+  getReservation(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
   }
 
   getEquipments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/equipment`, { observe: 'response' });
   }
 
-  sendReservation(requestBody:ReservationRequest): Observable<any>{
-    return this.http.post(`${this.apiUrl}/reserve`,requestBody, { observe: 'response' });
+  sendReservation(requestBody: ReservationRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reserve`, requestBody, { observe: 'response' });
   }
+//   getReservationById(reservationId: number): Observable<any> {
+//     return this.http.get(`${this.apiUrl}/reservations/${reservationId}`, { observe: 'response' });
+//   }
+  getAllBookings(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
+}
+
+
 }

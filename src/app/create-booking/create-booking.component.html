@@ -40,6 +40,19 @@
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
 
 
+        <!-- Recurring Duration -->
+
+        <div class="recurring-duration">
+          <div class="toggle-group">
+            @for(option of options; track $index){
+            <button type="button" class="toggle-btn" [class.active]="selectedOption === option"
+              (click)="selectOption(option)">
+              {{ formatedRecOption(option) }}
+            </button>
+            }
+          </div>
+        </div>
+
         <!-- Desciption -->
 
         <div class="drop-down">
@@ -55,21 +68,6 @@
           <span *ngIf="description?.errors?.['required']">Description is required.</span>
           <span *ngIf="description?.errors?.['maxlength']">Maximum length is 50 characters.</span>
         </div>
-
-
-        <!-- Recurring Duration -->
-
-        <div class="recurring-duration">
-          <div class="toggle-group">
-            @for(option of options; track $index){
-            <button type="button" class="toggle-btn" [class.active]="selectedOption === option"
-              (click)="selectOption(option)">
-              {{ formatedRecOption(option) }}
-            </button>
-            }
-          </div>
-        </div>
-
 
         <!-- start Date input -->
 

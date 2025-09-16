@@ -8,6 +8,7 @@ export interface ReservationRequest {
     startTime: Date | null,
     endTime: Date | null;
     recurrenceOption: RecurrenceOption | null;
+    numberOfRecurrence?: number | null;
     roomId: number | null;
 }
 
@@ -34,6 +35,7 @@ export function convertToReservationRequest(reservation: Reservation | null): Re
         startTime,
         endTime,
         recurrenceOption: reservation?.recurrenceOption ?? null,
+        numberOfRecurrence: reservation?.numberOfRecurrence ?? null,
         roomId: reservation?.roomId ?? null
     };
 }

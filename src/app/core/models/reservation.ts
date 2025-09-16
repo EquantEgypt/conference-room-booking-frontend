@@ -5,6 +5,7 @@ export interface Reservation {
     reservationId: number | null,
     description: string | null,
     RecurrenceOption: RecurrenceOption | RecurrenceOption.ONE_TIME,
+    numberOfRecurrence?: number | null,
     startDate: Date | null,
     startTime: number | null,
     endTime: number | null,

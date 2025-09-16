@@ -11,6 +11,7 @@ export class FilterService {
     startTime: null,
     endTime: null,
     capacity: null,
+    numberOfRecurrence: null,
     equipmentTypes: []
   };
 
@@ -29,6 +30,7 @@ export class FilterService {
       startTime: null,
       endTime: null,
       capacity: null,
+      numberOfRecurrence: null,
       equipmentTypes: []
     };
   }

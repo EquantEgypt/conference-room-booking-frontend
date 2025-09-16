@@ -48,7 +48,6 @@ export class CreateBookingComponent {
   endTimes: number[] = [];
   todayDefault = new Date();
   formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
-
   constructor(private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
@@ -58,6 +57,7 @@ export class CreateBookingComponent {
   ) { }
 
   ngOnInit(): void {
+    const savedFilter = this.filterService.filteredData;
     this.roomId = Number(this.route.snapshot.paramMap.get('roomId'));
 
     this.filteredData = this.filterService.filteredData;
@@ -69,7 +69,8 @@ export class CreateBookingComponent {
     this.loadRoom(this.roomId);
 
     this.bookingForm = this.fb.group({
-      description: [null, [Validators.required, Validators.maxLength(50)]],
+      title: ['', [Validators.required, Validators.maxLength(50)]],
+      description: [null],
       startDate: [
         this.filteredData?.date ?? this.formattedToday,
         [Validators.required, presentOrFutureDateValidator()]
@@ -84,12 +85,11 @@ export class CreateBookingComponent {
       ],
       type: [
         '', [Validators.required]
-      ]
-
+      ],
+      numberOfRecurrence: [savedFilter.numberOfRecurrence ? savedFilter.numberOfRecurrence : 1, [Validators.required, Validators.min(2)]]
     }, {
       validators: [endTimeAfterStartTimeValidator()]
     });
-
   }
 
   loadRoom(roomId: number) {
@@ -162,6 +162,14 @@ export class CreateBookingComponent {
 
   get type(): AbstractControl | null {
     return this.bookingForm.get('type');
+  }
+
+  get numberOfRecurrence(): AbstractControl | null {
+    return this.bookingForm.get('numberOfRecurrence');
+  }
+
+  get title(): AbstractControl | null {
+    return this.bookingForm.get('title');
   }
 
   onReserve() {

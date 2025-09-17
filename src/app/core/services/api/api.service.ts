@@ -25,11 +25,14 @@ export class ApiService {
     let httpParams = new HttpParams();
 
     if (params) {
+      if (params.date) {
+        httpParams = httpParams.set('date', params.date.toString());
+      }
       if (params.startTime) {
-        httpParams = httpParams.set('startTime', params.startTime.toISOString());
+        httpParams = httpParams.set('startTime', params.startTime);
       }
       if (params.endTime) {
-        httpParams = httpParams.set('endTime', params.endTime.toISOString());
+        httpParams = httpParams.set('endTime', params.endTime);
       }
       if (params.capacity !== null) {
         httpParams = httpParams.set('capacity', params.capacity.toString());
@@ -51,6 +54,10 @@ export class ApiService {
   }
 
   getReservation(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
+  }
+
+  getAllReservations(): Observable<any> {
     return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
   }
 

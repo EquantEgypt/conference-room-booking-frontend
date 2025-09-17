@@ -92,7 +92,7 @@
             'is-invalid': startTime?.touched && startTime?.invalid,
             'is-valid': startTime?.touched && startTime?.valid
             }">
-            <option class="time-font" value="">Select Time</option>
+            <option class="time-font" value="" disabled selected>Select Time</option>
             @for (hour of startTimes; track hour) {
             <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
             }
@@ -111,7 +111,7 @@
              'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
              'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
             }">
-            <option class="time-font" value="">Select Time</option>
+            <option class="time-font" value="" disabled selected>Select Time</option>
             @for (hour of endTimes; track hour) {
             <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
             }
@@ -126,6 +126,10 @@
         <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched"
           class="validation-message">
           End time must be after start time
+        </div>
+
+        <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
+          <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
         </div>
 
         <div *ngIf="selectedOption !== options[0]" class="recurring-options">

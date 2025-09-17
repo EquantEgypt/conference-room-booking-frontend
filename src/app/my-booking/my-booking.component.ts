@@ -1,40 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
 import {convertToReservationList, ReservationResponse } from '../core/models/reservation-response';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-my-booking',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './my-booking.component.html',
   styleUrl: './my-booking.component.css'
 })
 
-export class MyBookingComponent {
-  // reservations: ReservationResponse[] = [];
-  // startDates: Date[] | null = null
+export class MyBookingComponent implements OnInit {
+  reservations: ReservationResponse[] = [];
+  isLoading = false;
 
-  // constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
-  // ngOnInit() {
-  //   this.fetchAllReservation();
-  // }
+  ngOnInit(): void {
+    this.fetchReservations();
+  }
 
-  // fetchAllReservation() {
-  //   this.api.getReservation().subscribe({
-  //     next: (response) => {
-  //       console.log(response.body);
+  fetchReservations() {
+    this.isLoading = true;
+    this.api.getAllReservations().subscribe({
+      next: (response) => {
+        console.log('Raw response:', response.body);
+        this.reservations = convertToReservationList(response.body);
+        console.log('Converted reservations:', this.reservations);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching reservations:', err);
+        this.isLoading = false;
+      }
+    });
+  }
 
-  //       this.startDates = this.reservations
-  //         .filter(r => r.startTime !== null) 
-  //         .map(r => new Date(r.startTime!));
+  formatTime(time: string | null): string {
+    if (!time) return '';
+    // Expecting time in 'HH:mm:ss' or 'HH:mm' format
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    return `${displayHour}:${minuteStr} ${suffix}`;
+  }
 
-  //       this.reservations = convertToReservationList(response.body);
-  //       console.log(this.reservations);
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     }
-  //   });
-  // }
+  formatDate(date: Date | string | null): string {
+    if (!date) return '';
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return dateObj.toLocaleDateString();
+  }
+
+  formatRecurrenceOption(option: string | null): string {
+    if (!option) return '';
+    switch (option) {
+      case 'ONE_TIME': return 'One Time';
+      case 'DAILY': return 'Daily';
+      case 'WEEKLY': return 'Weekly';
+      default: return option;
+    }
+  }
+
+  formatReservationType(type: string | null): string {
+    if (!type) return '';
+    switch (type) {
+      case 'INTERNAL': return 'Internal';
+      case 'EXTERNAL': return 'External';
+      default: return type;
+    }
+  }
 }

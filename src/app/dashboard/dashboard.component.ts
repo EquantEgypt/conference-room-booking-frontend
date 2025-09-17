@@ -89,10 +89,14 @@ export class DashboardComponent {
     this.router.navigate(['create-booking', roomId]);
   }
 
-  formatTime(hour: number | null | undefined): string {
-    if (hour == null || hour == undefined) return '';
+  formatTime(time: string | null | undefined): string {
+    if (!time) return '';
+    // Expecting time in 'HH:mm' format
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
     const suffix = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour > 12 ? hour - 12 : hour;
-    return `${displayHour}:00 ${suffix}`;
+    return `${displayHour}:${minuteStr} ${suffix}`;
   }
 }

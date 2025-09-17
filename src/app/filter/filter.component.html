@@ -23,8 +23,8 @@
             'is-valid': startTime?.touched && startTime?.valid
             }">
                 <option value="">Select Time</option>
-                @for (hour of startTimes; track hour) {
-                <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
+                @for (time of startTimes; track time) {
+                <option [value]="time" class="time-font">{{formatTime(time)}}</option>
                 }
             </select>
         </div>
@@ -40,8 +40,8 @@
              'is-valid': endTime?.touched && endTime?.valid && !filterForm.errors?.['endBeforeStart']
             }">
                 <option value="">Select Time</option>
-                @for (hour of endTimes; track hour) {
-                <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
+                @for (time of endTimes; track time) {
+                <option [value]="time" class="time-font">{{formatTime(time)}}</option>
                 }
             </select>
         </div>

@@ -24,16 +24,46 @@ export function presentOrFutureDateValidator(): ValidatorFn {
 
 export function endTimeAfterStartTimeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-
-        const startStr: number = control.get('startTime')?.value;
-        const endStr: number = control.get('endTime')?.value;
-
-        if (startStr == null || endStr == null) return null;
-
-        const start = Number(startStr);
-        const end = Number(endStr);
-
-        return end <= start ? { endBeforeStart: true } : null;
+        const startValue = control.get('startTime')?.value;
+        const endValue = control.get('endTime')?.value;
+        
+        if (!startValue || !endValue) return null;
+        
+        let startMinutes: number;
+        let endMinutes: number;
+        
+        // Handle both number and string formats
+        if (typeof startValue === 'number') {
+            startMinutes = startValue * 60; // Convert hour to minutes
+        } else if (typeof startValue === 'string') {
+            if (startValue.includes(':')) {
+                // Parse 'HH:mm' format
+                const [startHour, startMinute] = startValue.split(':').map(Number);
+                startMinutes = startHour * 60 + startMinute;
+            } else {
+                // Single hour number as string
+                startMinutes = parseInt(startValue) * 60;
+            }
+        } else {
+            return null;
+        }
+        
+        if (typeof endValue === 'number') {
+            endMinutes = endValue * 60; // Convert hour to minutes
+        } else if (typeof endValue === 'string') {
+            if (endValue.includes(':')) {
+                // Parse 'HH:mm' format
+                const [endHour, endMinute] = endValue.split(':').map(Number);
+                endMinutes = endHour * 60 + endMinute;
+            } else {
+                // Single hour number as string
+                endMinutes = parseInt(endValue) * 60;
+            }
+        } else {
+            return null;
+        }
+        
+        return endMinutes <= startMinutes ? { endBeforeStart: true } : null;
     };
 }
 

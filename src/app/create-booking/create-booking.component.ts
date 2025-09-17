@@ -70,7 +70,7 @@ export class CreateBookingComponent {
 
     this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
-      description: [null],
+      description: [''], // Set empty string instead of null
       startDate: [
         this.filteredData?.date ?? this.formattedToday,
         [Validators.required, presentOrFutureDateValidator()]
@@ -86,7 +86,7 @@ export class CreateBookingComponent {
       type: [
         '', [Validators.required]
       ],
-      numberOfRecurrence: [savedFilter.numberOfRecurrence ? savedFilter.numberOfRecurrence : 1, [Validators.required, Validators.min(2)]]
+      numberOfRecurrence: [1] // Remove validation, will be handled conditionally
     }, {
       validators: [endTimeAfterStartTimeValidator()]
     });
@@ -125,6 +125,20 @@ export class CreateBookingComponent {
 
   selectOption(option: string) {
     this.selectedOption = option;
+    
+    // Update validation for numberOfRecurrence based on recurrence option
+    const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
+    if (option === this.options[0]) { // One-time
+      numberOfRecurrenceControl?.clearValidators();
+      numberOfRecurrenceControl?.setValue(1);
+    } else { // Daily or Weekly
+      numberOfRecurrenceControl?.setValidators([Validators.required, Validators.min(2)]);
+      if (numberOfRecurrenceControl?.value === 1) {
+        numberOfRecurrenceControl?.setValue(2);
+      }
+    }
+    numberOfRecurrenceControl?.updateValueAndValidity();
+    
     console.log(this.selectedOption);
     console.log(this.formatedRecOption(this.selectedOption))
   }
@@ -175,13 +189,62 @@ export class CreateBookingComponent {
   onReserve() {
     if (this.bookingForm.valid) {
       this.isLoadingBtn = true;
+      // Ensure time fields are 'HH:mm:ss' strings (backend expects seconds)
+      const formatToHHMMSS = (val: any) => {
+        if (typeof val === 'string' && val.includes(':')) {
+          // If already has format like "HH:mm" or "HH:mm:ss"
+          const parts = val.split(':');
+          if (parts.length === 2) {
+            return val + ':00'; // Convert "HH:mm" to "HH:mm:ss"
+          }
+          return val; // Already "HH:mm:ss"
+        }
+        if (typeof val === 'number') return val.toString().padStart(2, '0') + ':00:00';
+        if (typeof val === 'string' && !isNaN(Number(val))) {
+          // Convert string numbers like "10", "13" to "HH:mm:ss" format
+          return Number(val).toString().padStart(2, '0') + ':00:00';
+        }
+        return null; // Return null instead of empty string for invalid values
+      };
+      // Get values directly from form controls
+      const date = this.bookingForm.get('startDate')?.value || this.formattedToday;
+      const startTimeValue = this.bookingForm.get('startTime')?.value;
+      const endTimeValue = this.bookingForm.get('endTime')?.value;
+      const startTime = formatToHHMMSS(startTimeValue);
+      const endTime = formatToHHMMSS(endTimeValue);
+      const roomId = this.roomId ?? (this.room?.roomId ?? null);
+      
+      console.log('Form values:', {
+        date,
+        startTimeValue,
+        endTimeValue,
+        startTime,
+        endTime,
+        roomId
+      });
+      
+      // Defensive: If any required field is missing, abort and show error
+      if (!date || !roomId || !startTime || !endTime) {
+        this.alert.Toast.fire({
+          icon: "error",
+          title: "Please fill all required fields including date, time, and room."
+        });
+        this.isLoadingBtn = false;
+        return;
+      }
       const booking = {
         ...this.bookingForm.value,
+        date: date, // Use 'date' not 'startDate' to match backend expectation
+        startTime: startTime,
+        endTime: endTime,
         recurrenceOption: this.selectedOption,
-        roomId: this.roomId
-      }
+        roomId: roomId,
+        description: this.bookingForm.value.description || "", // Ensure description is never null
+        // Only include numberOfRecurrence for recurring meetings
+        ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
+      };
       const bookingRequest = convertToReservationRequest(booking);
-      console.log(bookingRequest);
+      console.log('Final booking request:', bookingRequest);
       this.api.sendReservation(bookingRequest).subscribe({
         next: (response) => {
           console.log(response.body);

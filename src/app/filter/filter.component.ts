@@ -28,18 +28,20 @@ export class FilterComponent {
 
   constructor(private fb: FormBuilder,private api: ApiService,private filterService: FilterService) { }
 
-  startTimes: number[] = [];
-  endTimes: number[] = [];
+  startTimes: string[] = [];
+  endTimes: string[] = [];
 
   ngOnInit() {
-    
     const savedFilter = this.filterService.filteredData;
 
-    // fill start times list
-    for (let i = this.BEGIN_STARTTIME; i <= this.FINISH_STARTTIME; i++) this.startTimes.push(i);
-
-    // fill end times list
-    for (let i = this.BEGIN_ENDTIME; i <= this.FINISH_ENDTIME; i++) this.endTimes.push(i);
+    // fill start times list as 'HH:mm'
+    for (let i = this.BEGIN_STARTTIME; i <= this.FINISH_STARTTIME; i++) {
+      this.startTimes.push(i.toString().padStart(2, '0') + ':00');
+    }
+    // fill end times list as 'HH:mm'
+    for (let i = this.BEGIN_ENDTIME; i <= this.FINISH_ENDTIME; i++) {
+      this.endTimes.push(i.toString().padStart(2, '0') + ':00');
+    }
 
     // initialize form group
     this.filterForm = this.fb.group({
@@ -81,10 +83,13 @@ export class FilterComponent {
     console.log(this.equipments[index]);
   }
 
-  formatTime(hour: number): string {
+  formatTime(time: string): string {
+    if (!time) return '';
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
     const suffix = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour > 12 ? hour - 12 : hour;
-    return `${displayHour}:00 ${suffix}`;
+    return `${displayHour}:${minuteStr} ${suffix}`;
   }
 
   @Output() close = new EventEmitter<void>();

@@ -8,38 +8,25 @@ export interface ReservationRequest {
     type: ReservationType | null,
     description: string | null,
     title: string | null,
-    date: Date | null,
-    startTime: Timestamp<number> | null,
-    endTime: Timestamp<number> | null,
+    date: Date | string | null, // LocalDate from backend
+    startTime: string | null,   // LocalTime from backend, e.g. 'HH:mm:ss'
+    endTime: string | null,     // LocalTime from backend, e.g. 'HH:mm:ss'
     recurrenceOption: RecurrenceOption | null;
-   
+    roomId: number | null;
+    numberOfOccurrences?: number | null; // For recurring meetings
 }
 
 export function convertToReservationRequest(reservation: Reservation | null): ReservationRequest {
-    let startTime: Date | null = null;
-    let endTime: Date | null = null;
-
-    if (reservation?.date) {
-
-        if (reservation?.startTime !== null) {
-            startTime = new Date(reservation?.date);
-            startTime?.setHours(reservation?.startTime, 0, 0, 0);
-        }
-
-        if (reservation?.endTime !== null) {
-            endTime = new Date(reservation?.date);
-            endTime?.setHours(reservation?.endTime, 0, 0, 0);
-        }
-
-    }
-
+    // Time formatting is handled in the component, just pass through the values
     return {
         type: reservation?.type ?? null,
         description: reservation?.description ?? null,
         title: reservation?.title ?? null,
         date: reservation?.date ?? null,
-        startTime: reservation?.startTime !== null && startTime !== null ? ({ value: startTime.getTime(), timestamp: startTime.getTime() } as Timestamp<number>) : null,
-        endTime: reservation?.endTime !== null && endTime !== null ? ({ value: endTime.getTime(), timestamp: endTime.getTime() } as Timestamp<number>) : null,
+        startTime: (reservation as any)?.startTime ?? null,
+        endTime: (reservation as any)?.endTime ?? null,
         recurrenceOption: reservation?.recurrenceOption ?? null,
+        roomId: (reservation as any)?.roomId ?? reservation?.meetingRoom?.roomId ?? null,
+        numberOfOccurrences: (reservation as any)?.numberOfRecurrence ?? null,
     };
 }

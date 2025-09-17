@@ -8,15 +8,13 @@ export interface ReservationResponse {
     type: ReservationType | null,
     title: string | null,
     description: string | null,
-    date: Date | null,
-    startTime: Timestamp<number> | null,
-    endTime: Timestamp<number> | null,
+    date: Date | string | null,
+    startTime: string | null, // LocalTime from backend
+    endTime: string | null,   // LocalTime from backend
     recurrenceOption: RecurrenceOption | null,
-    recurrenceEndDate: Date | null,
-    meetingRoom: MeetingRoom | null;
-}
-
-export function converToReservationResponse(raw: any): ReservationResponse {
+    recurrenceEndDate: Date | string | null,
+    roomName: string | null
+}export function converToReservationResponse(raw: any): ReservationResponse {
     if (!raw) {
         return {
             reservationId: null,
@@ -28,7 +26,7 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             endTime: null,
             recurrenceOption: null,
             recurrenceEndDate: null,
-            meetingRoom: null
+            roomName: null
         };
     }
 
@@ -49,18 +47,9 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             ? raw.description
             : null,
 
-        date: raw.date ? new Date(raw.date) : null,
-
-        startTime: raw.startTime
-            ? ({ value: new Date(raw.startTime).getTime(), timestamp: new Date(raw.startTime).getTime() } as Timestamp<number>)
-            : null,
-        endTime: raw.endTime
-            ? ({ value: new Date(raw.endTime).getTime(), timestamp: new Date(raw.endTime).getTime() } as Timestamp<number>)
-            : null,
-
-        // startTime: raw.startTime ? new Date(raw.startTime).getTime() : null,
-
-        // endTime: raw.endTime ? new Date(raw.endTime).getTime() : null,
+        date: raw.date ?? null,
+        startTime: raw.startTime ?? null,
+        endTime: raw.endTime ?? null,
 
         recurrenceOption: Object.values(RecurrenceOption).includes(raw.recurrenceOption)
             ? raw.recurrenceOption
@@ -70,19 +59,7 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             ? new Date(raw.recurrenceEndDate)
             : null,
 
-         
-        meetingRoom: raw.meetingRoom
-            ? {
-                roomId: raw.meetingRoom.roomId ?? null,
-                name: raw.meetingRoom.name ?? null,
-                building: raw.meetingRoom.building ?? "",
-                floor: raw.meetingRoom.floor ?? 0,
-                capacity: raw.meetingRoom.capacity ?? 1,
-                roomType: raw.meetingRoom.roomType ?? "",
-                status: raw.meetingRoom.status ?? "",
-                equipmentTypes: raw.meetingRoom.equipmentTypes ?? []
-            }
-            : null
+        roomName: raw.roomName ?? null
     };
 }
 

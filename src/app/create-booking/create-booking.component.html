@@ -52,22 +52,21 @@
             }
           </div>
         </div>
-
-        <!-- Desciption -->
-
+        <!-- Title -->
         <div class="drop-down">
-          <label for="description">Description</label>
-          <input type="text" id="description" name="description" placeholder="Enter the description of meeting"
-            formControlName="description" required [ngClass]="{
-            'is-invalid': description?.touched && description?.invalid,
-            'is-valid': description?.touched && description?.valid
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter the title of meeting" formControlName="title"
+            required [ngClass]="{
+            'is-invalid': title?.touched && title?.invalid,
+            'is-valid': title?.touched && title?.valid
             }">
         </div>
 
-        <div *ngIf="description?.invalid && description?.touched" class="validation-message">
-          <span *ngIf="description?.errors?.['required']">Description is required.</span>
-          <span *ngIf="description?.errors?.['maxlength']">Maximum length is 50 characters.</span>
+        <div *ngIf="title?.invalid && title?.touched" class="validation-message">
+          <span *ngIf="title?.errors?.['required']">Title is required.</span>
+          <span *ngIf="title?.errors?.['maxLength']">Title cannot exceed 50 characters.</span>
         </div>
+
 
         <!-- start Date input -->
 
@@ -129,6 +128,27 @@
           End time must be after start time
         </div>
 
+        <div *ngIf="selectedOption !== options[0]" class="recurring-options">
+          <div class="drop-down">
+              <label for="numberOfRecurrence">Number of Occurrences</label>
+              <input type="number" id="numberOfRecurrence" name="numberOfRecurrence" formControlName="numberOfRecurrence"
+              placeholder="Enter Number of Occurrences"  [ngClass]="{
+              'is-invalid': numberOfRecurrence?.touched && numberOfRecurrence?.invalid,
+              'is-valid': numberOfRecurrence?.touched && numberOfRecurrence?.valid
+              }">
+          </div>
+  
+          <div *ngIf="numberOfRecurrence?.invalid && numberOfRecurrence?.touched" class="validation-message">
+              <span *ngIf="numberOfRecurrence?.errors?.['pattern']">
+                  Enter a valid number
+              </span>
+  
+              <span *ngIf="!numberOfRecurrence?.errors?.['pattern'] && numberOfRecurrence?.errors?.['min']">
+                  Number of recurrence must be more than 1
+              </span>
+          </div>
+        </div>
+
         <!-- meeting type -->
 
         <div class="drop-down">
@@ -145,6 +165,14 @@
 
         <div *ngIf="type?.invalid && type?.touched" class="validation-message">
           <span *ngIf="type?.errors?.['required']">Meeting type is required.</span>
+        </div>
+
+        <!-- Desciption -->
+
+        <div class="drop-down">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Enter the description of meeting"
+            formControlName="description"></textarea>
         </div>
 
         <!-- button -->

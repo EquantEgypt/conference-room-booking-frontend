@@ -4,6 +4,7 @@ import { UserCredentials } from '../../models/user-credentials';
 import { Observable } from 'rxjs';
 import { FilterRequest } from '../../models/filter-request';
 import { ReservationRequest } from '../../models/reservation-request';
+import { ReservationResponse } from '../../models/reservation-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ApiService {
   getRooms(params: FilterRequest | null) {
 
     console.log(params);
-    
+
     let httpParams = new HttpParams();
 
     if (params) {
@@ -46,7 +47,7 @@ export class ApiService {
     });
   }
 
-  getRoom(roomId:number): Observable<any> {
+  getRoom(roomId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/rooms/${roomId}`, { observe: 'response' });
   }
 
@@ -58,7 +59,20 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/equipment`, { observe: 'response' });
   }
 
-  sendReservation(requestBody:ReservationRequest): Observable<any>{
-    return this.http.post(`${this.apiUrl}/reserve`,requestBody, { observe: 'response' });
+  sendReservation(requestBody: ReservationRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reserve`, requestBody, { observe: 'response' });
   }
+  getAllBookings(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
+}
+
+  getReservationById(reservationId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reservations/${reservationId}`, { observe: 'response' });
+  }
+  
+deleteReservation(reservationId: number) {
+  return this.http.delete(`${this.apiUrl}/reservations/${reservationId}`);
+}
+
+
 }

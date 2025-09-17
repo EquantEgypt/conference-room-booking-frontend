@@ -8,9 +8,21 @@ export class SweetAlertService {
 
   constructor() { }
 
+  Confirm = (title: string, text: string) => {
+    return Swal.fire({
+      title: title,
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Cancel',
+      cancelButtonText: 'No, Keep Reservation',
+      reverseButtons: true
+    });
+  };
+
   Toast = Swal.mixin({
     toast: true,
-    position: "bottom",
+    position: 'bottom',
     showConfirmButton: false,
     timer: 2000,
     didOpen: (toast) => {
@@ -19,3 +31,4 @@ export class SweetAlertService {
     }
   });
 }
+

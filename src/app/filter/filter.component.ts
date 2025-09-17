@@ -91,6 +91,8 @@ export class FilterComponent {
   @Input() maxRoomCapacity!: number;
 
 
+
+
   onCloseFilter() {
     this.close.emit();
     console.log('max capacity is ' + this.maxRoomCapacity);

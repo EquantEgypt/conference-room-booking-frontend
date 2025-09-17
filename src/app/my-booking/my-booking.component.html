@@ -1,11 +1,13 @@
 <div class="container">
+<div *ngIf="loading">Loading bookings…</div>
+<div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
 
-    <table class="booking-table booking-table-bordered booking-table-hover booking-table-striped">
+    <table class="booking-table booking-table-bordered booking-table-hover booking-table-striped" *ngIf="!loading && bookings.length">
 
         <thead>
             <tr>
                 <th>#</th>
-                <th>Description</th>
+                <th>Title</th>
                 <th>Room</th>
                 <th>Date</th>
                 <th>Start Time</th>
@@ -18,29 +20,16 @@
         </thead>
 
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Team Meeting</td>
-                <td>Room A</td>
-                <td>2025-09-16</td>
-                <td>10:00 AM</td>
-                <td>11:00 AM</td>
-                <td>External</td>
-                <td>Weekly</td>
-                <td><button class="edit-btn"><i class="fas fa-edit"></i></button></td>
-                <td><button class="delete-btn"><i class="fa-solid fa-trash"></i></button></td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-                <td>Workshop</td>
-                <td>Room B</td>
-                <td>2025-09-16</td>
-                <td>2:00 PM</td>
-                <td>4:00 PM</td>
-                <td>Internal</td>
-                <td>One time</td>
-                <td><button class="edit-btn"><i class="fas fa-edit"></i></button></td>
+            <tr *ngFor="let booking of bookings; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ booking.description }}</td>
+                <td>{{ booking.room || booking.roomName }}</td>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.startTime }}</td>
+                <td>{{ booking.endTime }}</td>
+                <td>{{ booking.type }}</td>
+                <td>{{ booking.recurrenceOption }}</td>
+                <td><button class="edit-btn" (click)="onModify(booking.id)"><i class="fas fa-edit"></i></button></td>   
                 <td><button class="delete-btn"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
         </tbody>

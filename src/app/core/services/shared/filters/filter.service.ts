@@ -11,7 +11,7 @@ export class FilterService {
     startTime: null,
     endTime: null,
     capacity: null,
-    equipmentTypes: []
+    equipmentTypes: [],
   };
 
   set filteredData(filter: Filter) {

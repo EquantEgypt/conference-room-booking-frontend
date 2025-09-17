@@ -10,6 +10,9 @@
             }">
         </div>
 
+
+        
+
         <div *ngIf="date?.invalid && date?.touched" class="validation-message">
             <span *ngIf="date?.errors?.['required']">Date is required.</span>
             <span *ngIf="date?.errors?.['pastDate']">Date must be today or in the future.</span>

@@ -1,0 +1,22 @@
+<!-- pop-up.component.html -->
+<div class="confirm-card" role="dialog" aria-labelledby="confirm-title" aria-describedby="confirm-msg">
+  <div class="card-top-icon" aria-hidden="true">
+    <mat-icon class="delete-icon">delete_forever</mat-icon>
+  </div>
+
+  <h2 id="confirm-title" class="confirm-title">{{ data.title }}</h2>
+
+  <p id="confirm-msg" class="confirm-message">
+    {{ data.message }}
+  </p>
+
+  <div class="confirm-actions">
+    <button mat-stroked-button class="btn-cancel" (click)="onCancel()" aria-label="Cancel">
+      Cancel
+    </button>
+
+    <button mat-raised-button class="btn-delete" color="warn" (click)="onConfirm()" aria-label="Delete">
+      Delete
+    </button>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+/* pop-up.component.css */
+
+/* Card wrapper */
+.confirm-card {
+  width: 360px;                /* good default width for dialog */
+  max-width: calc(100vw - 48px);
+  padding: 22px 20px 18px;
+  text-align: center;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(21, 21, 23, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Top icon container */
+.card-top-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(244,67,54,0.12), rgba(244,67,54,0.06));
+  margin-top: -8px; /* a bit of overlap effect */
+}
+
+/* Material icon style */
+.delete-icon {
+  font-size: 34px;
+  color: #f44336; /* red */
+  line-height: 1;
+}
+
+/* Title */
+.confirm-title {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937; /* dark grey */
+}
+
+/* Message */
+.confirm-message {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #6b7280; /* medium grey */
+  line-height: 1.4;
+  padding: 0 6px;
+}
+
+/* Buttons container */
+.confirm-actions {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Cancel button (outlined) */
+.btn-cancel {
+  border-radius: 32px;
+  min-width: 120px;
+  height: 40px;
+  border: 1px solid rgba(99, 102, 241, 0.12); /* subtle outline */
+  color: #374151;
+  background: transparent;
+}
+
+/* Delete button (filled) */
+.btn-delete {
+  border-radius: 32px;
+  min-width: 120px;
+  height: 40px;
+  box-shadow: none;
+  color: #ffffff;
+}
+
+/* Responsive smaller screens */
+@media (max-width: 400px) {
+  .confirm-card { width: calc(100vw - 32px); padding: 18px 14px; }
+  .btn-cancel, .btn-delete { min-width: 100px; height: 36px; font-size: 14px; }
+  .delete-icon { font-size: 30px; }
+}

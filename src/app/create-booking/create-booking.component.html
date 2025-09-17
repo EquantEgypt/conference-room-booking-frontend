@@ -1,5 +1,4 @@
 <div class="container">
-
   <div *ngIf="isLoading" class="loader-container">
     <div class="loader"></div>
   </div>
@@ -8,12 +7,11 @@
     <div class="room-preview">
 
       <div class="room-image">
-        <img [src]="'/assets/rooms/room' + roomId  + '.png'" alt="{{ room?.name }}">
+        <img [src]="'/assets/rooms/room' + roomId + '.png'" alt="{{ room?.name }}">
       </div>
 
       <div class="room-details">
         <h2>{{ room?.name }}</h2>
-
         <div class="detail"><strong>Building:</strong> {{ room?.building }}</div>
         <div class="detail"><strong>Floor:</strong> {{ room?.floor }}</div>
         <div class="detail"><strong>Capacity:</strong> {{ room?.capacity }}</div>
@@ -21,134 +19,97 @@
         <div class="detail"><strong>Status:</strong> {{ room?.status }}</div>
       </div>
 
-
       <div class="detail equip">
         <strong>Equipments</strong>
         <div class="equipment">
-          @for (equipment of room?.equipmentTypes; track $index) {
-          <span class="equip-item">{{ equipment }}</span>
-          }
+          <span class="equip-item" *ngFor="let equipment of room?.equipmentTypes">{{ equipment }}</span>
         </div>
       </div>
 
     </div>
 
-
-
     <div class="booking-form-container">
-
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
 
-
         <!-- Recurring Duration -->
-
         <div class="recurring-duration">
           <div class="toggle-group">
-            @for(option of options; track $index){
-            <button type="button" class="toggle-btn" [class.active]="selectedOption === option"
-              (click)="selectOption(option)">
-              {{ formatedRecOption(option) }}
+            <button type="button" class="toggle-btn" *ngFor="let option of options" 
+                    [class.active]="selectedOption === option" 
+                    (click)="selectOption(option)">
+              {{ option === 'ONE_TIME' ? 'One time' : option === 'DAILY' ? 'Daily' : 'Weekly' }}
             </button>
-            }
           </div>
         </div>
 
-        <!-- Desciption -->
-
+        <!-- Description -->
         <div class="drop-down">
           <label for="description">Description</label>
-          <input type="text" id="description" name="description" placeholder="Enter the description of meeting"
-            formControlName="description" required [ngClass]="{
-            'is-invalid': description?.touched && description?.invalid,
-            'is-valid': description?.touched && description?.valid
-            }">
+          <input type="text" id="description" name="description" placeholder="Enter the description of meeting" formControlName="description" required
+                 [ngClass]="{ 'is-invalid': description?.touched && description?.invalid, 'is-valid': description?.touched && description?.valid }">
         </div>
-
         <div *ngIf="description?.invalid && description?.touched" class="validation-message">
           <span *ngIf="description?.errors?.['required']">Description is required.</span>
           <span *ngIf="description?.errors?.['maxlength']">Maximum length is 50 characters.</span>
         </div>
 
-        <!-- start Date input -->
-
+        <!-- Start Date input -->
         <div class="filter-date">
           <label for="startDate">Select Start Date</label>
-          <input type="date" id="startDate" name="startDate" formControlName="startDate" required [ngClass]="{
-            'is-invalid': startDate?.touched && startDate?.invalid,
-            'is-valid': startDate?.touched && startDate?.valid
-            }">
+          <input type="date" id="startDate" name="startDate" formControlName="startDate" required
+                 [ngClass]="{ 'is-invalid': startDate?.touched && startDate?.invalid, 'is-valid': startDate?.touched && startDate?.valid }">
         </div>
-
         <div *ngIf="startDate?.invalid && startDate?.touched" class="validation-message">
           <span *ngIf="startDate?.errors?.['required']">Date is required.</span>
           <span *ngIf="startDate?.errors?.['pastDate']">Date must be today or in the future.</span>
           <span *ngIf="startDate?.errors?.['tooFarInFuture']">Date cannot be more than 1 year ahead.</span>
         </div>
 
-        <!-- start time input -->
-
+        <!-- Start Time input -->
         <div class="drop-down">
           <label for="start-time">Start Time</label>
-          <select id="start-time" name="start-time" formControlName="startTime" required [ngClass]="{
-            'is-invalid': startTime?.touched && startTime?.invalid,
-            'is-valid': startTime?.touched && startTime?.valid
-            }">
+          <select id="start-time" name="start-time" formControlName="startTime" required
+                  [ngClass]="{ 'is-invalid': startTime?.touched && startTime?.invalid, 'is-valid': startTime?.touched && startTime?.valid }">
             <option class="time-font" value="">Select Time</option>
-            @for (hour of startTimes; track hour) {
-            <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
-            }
+            <option *ngFor="let hour of startTimes" [value]="hour" class="time-font">{{formatTime(hour)}}</option>
           </select>
         </div>
-
         <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
           <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
         </div>
 
-        <!-- end time input -->
-
+        <!-- End Time input -->
         <div class="drop-down">
           <label for="end-time">End Time</label>
-          <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
-             'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
-             'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
-            }">
+          <select id="end-time" name="end-time" formControlName="endTime" required
+                  [ngClass]="{ 'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
+                               'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart'] }">
             <option class="time-font" value="">Select Time</option>
-            @for (hour of endTimes; track hour) {
-            <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
-            }
+            <option *ngFor="let hour of endTimes" [value]="hour" class="time-font">{{formatTime(hour)}}</option>
           </select>
         </div>
-
-
         <div *ngIf="endTime?.invalid && endTime?.touched" class="validation-message">
           <span *ngIf="endTime?.errors?.['required']">End time is required.</span>
         </div>
-
-        <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched"
-          class="validation-message">
+        <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched" class="validation-message">
           End time must be after start time
         </div>
 
-        <!-- meeting type -->
-
+        <!-- Meeting type -->
         <div class="drop-down">
           <label for="type">Meeting type</label>
-          <select id="type" name="type" formControlName="type" required [ngClass]="{
-            'is-invalid': type?.touched && type?.invalid,
-            'is-valid': type?.touched && type?.valid
-            }">
+          <select id="type" name="type" formControlName="type" required
+                  [ngClass]="{ 'is-invalid': type?.touched && type?.invalid, 'is-valid': type?.touched && type?.valid }">
             <option value="">Select meeting type</option>
-            <option [value]="resTypes[0]">{{formatedResType(resTypes[0])}}</option>
-            <option *ngIf="room?.roomType === 'VIP'" [value]="resTypes[1]">{{formatedResType(resTypes[1])}}</option>
+            <option [value]="resTypes[0]">{{resTypes[0] === 'INTERNAL' ? 'Internal' : 'External'}}</option>
+            <option *ngIf="room?.roomType === 'VIP'" [value]="resTypes[1]">{{resTypes[1] === 'INTERNAL' ? 'Internal' : 'External'}}</option>
           </select>
         </div>
-
         <div *ngIf="type?.invalid && type?.touched" class="validation-message">
           <span *ngIf="type?.errors?.['required']">Meeting type is required.</span>
         </div>
 
-        <!-- button -->
-
+        <!-- Button -->
         <div class="button">
           <button type="submit" class="btn-reserve" [disabled]="isLoadingBtn">
             <span *ngIf="!isLoadingBtn">Reserve</span>
@@ -157,7 +118,6 @@
         </div>
 
       </form>
-
     </div>
   </div>
 </div>

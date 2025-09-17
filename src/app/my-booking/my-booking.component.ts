@@ -3,21 +3,21 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from '../core/services/api/api.service';
 
- 
+
 
 @Component({
   selector: 'app-my-booking',
   standalone: true,
-  imports: [CommonModule ],
+  imports: [CommonModule],
   templateUrl: './my-booking.component.html',
-  styleUrl: './my-booking.component.css'
+  styleUrls: ['./my-booking.component.css']
 })
 export class MyBookingComponent implements OnInit {
   bookings: any[] = [];
   loading = false;
   errorMsg: string | null = null;
 
-  constructor(private router: Router, private bookingService: ApiService) {}
+  constructor(private router: Router, private bookingService: ApiService) { }
 
   ngOnInit(): void {
     this.loadBookings();
@@ -38,7 +38,8 @@ export class MyBookingComponent implements OnInit {
     });
   }
 
-  onModify(id: number) {
-    this.router.navigate(['/create-booking', id]);
+  modifyBooking(reservationId: number) {
+    
+    this.router.navigate(['/modify-booking', reservationId]);
   }
 }

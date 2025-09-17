@@ -19,9 +19,6 @@ export class ApiService {
   }
 
   getRooms(params: FilterRequest | null) {
-
-    console.log(params);
-
     let httpParams = new HttpParams();
 
     if (params) {
@@ -35,7 +32,6 @@ export class ApiService {
         httpParams = httpParams.set('capacity', params.capacity.toString());
       }
       if (params.equipmentTypes && params.equipmentTypes.length > 0) {
-        // convert equipment types array to comma-separated string
         httpParams = httpParams.set('equipmentTypes', params.equipmentTypes.join(','));
       }
     }
@@ -61,12 +57,17 @@ export class ApiService {
   sendReservation(requestBody: ReservationRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/reserve`, requestBody, { observe: 'response' });
   }
-//   getReservationById(reservationId: number): Observable<any> {
-//     return this.http.get(`${this.apiUrl}/reservations/${reservationId}`, { observe: 'response' });
-//   }
-  getAllBookings(): Observable<any> {
-  return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
-}
 
+  getAllBookings(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
+  }
+
+  getReservationById(reservationId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve/${reservationId}`, { observe: 'response' });
+  }
+
+  updateReservation(reservationId: number, bookingRequest: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reserve/${reservationId}`, bookingRequest, { observe: 'response' });
+  }
 
 }

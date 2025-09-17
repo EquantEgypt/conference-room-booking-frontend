@@ -21,6 +21,7 @@
 
         <tbody>
             <tr *ngFor="let booking of bookings; let i = index">
+                
                 <td>{{ i + 1 }}</td>
                 <td>{{ booking.description }}</td>
                 <td>{{ booking.room || booking.roomName }}</td>
@@ -29,7 +30,7 @@
                 <td>{{ booking.endTime }}</td>
                 <td>{{ booking.type }}</td>
                 <td>{{ booking.recurrenceOption }}</td>
-                <td><button class="edit-btn" (click)="onModify(booking.id)"><i class="fas fa-edit"></i></button></td>   
+                <td><button class="edit-btn" (click)="modifyBooking(booking.reservationId)"><i class="fas fa-edit"></i></button></td>   
                 <td><button class="delete-btn"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
         </tbody>

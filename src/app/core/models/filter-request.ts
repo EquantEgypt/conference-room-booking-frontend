@@ -1,36 +1,36 @@
 import { Filter } from "./filter";
 
 export interface FilterRequest {
-    startTime: Date | null,
-    endTime: Date | null,
+    date: Date | null,
+    startTime: string | null,
+    endTime: string | null,
     capacity: number | null,
     equipmentTypes: string[]
 }
 
 export function convertToFilterRequest(filter: Filter | null): FilterRequest {
-    let startTime: Date | null = null;
-    let endTime: Date | null = null;
 
-    if (filter?.date) {
 
-        if (filter?.startTime !== null) {
-            startTime = new Date(filter?.date);
-            startTime?.setHours(filter?.startTime, 0, 0, 0);
-        }
-
-        if (filter?.endTime !== null) {
-            endTime = new Date(filter?.date);
-            endTime?.setHours(filter?.endTime, 0, 0, 0);
-        }
-    }
-
-    let equipments: string[] = filter?.equipmentTypes.filter(item => item.isChecked)
-    .map(item => item.type ) || [];
+    let equipments: string[] = filter?.equipmentTypes
+        .filter(item => item.isChecked)
+        .map(item => item.type) || [];
 
     return {
-        startTime,
-        endTime,
-        capacity: filter!.capacity,
+        date: filter?.date || null,
+        startTime: filter?.startTime !== null ? convertFromNumberToTime(filter?.startTime) : null,
+        endTime: filter?.endTime !== null ? convertFromNumberToTime(filter?.endTime) : null,
+        capacity: filter?.capacity ?? null,
         equipmentTypes: equipments
     };
+}
+export function convertFromNumberToTime(hour: number | null | undefined): string | null {
+    if (hour != null) {
+        if (hour > 9) {
+            return `${hour.toString()}:00:00`
+        }
+        else {
+            return `0${hour.toString()}:00:00`
+        }
+    }
+    return null;
 }

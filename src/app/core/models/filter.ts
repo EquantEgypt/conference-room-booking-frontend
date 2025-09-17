@@ -5,6 +5,5 @@ export interface Filter {
     startTime: number | null,
     endTime: number | null,
     capacity: number | null,
-    numberOfRecurrence: number | null,
     equipmentTypes: Equip[]
 }

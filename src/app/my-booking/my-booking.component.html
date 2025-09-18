@@ -10,7 +10,6 @@
             <tr>
                 <th>#</th>
                 <th>Title</th>
-                <th>Description</th>
                 <th>Room</th>
                 <th>Date</th>
                 <th>Start Time</th>
@@ -25,8 +24,7 @@
         <tbody>
             <tr *ngFor="let reservation of reservations; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ reservation.title || 'N/A' }}</td>
-                <td>{{ reservation.description || 'N/A' }}</td>
+                <td>{{ reservation.title || '---' }}</td>
                 <td>{{ reservation.roomName || 'N/A' }}</td>
                 <td>{{ formatDate(reservation.date) }}</td>
                 <td>{{ formatTime(reservation.startTime) }}</td>
@@ -34,9 +32,9 @@
                 <td>{{ formatReservationType(reservation.type) }}</td>
                 <td>{{ formatRecurrenceOption(reservation.recurrenceOption) }}</td>
                 <td><button class="edit-btn"><i class="fas fa-edit"></i></button></td>
-                <td><button class="delete-btn"><i class="fa-solid fa-trash"></i></button></td>
+                <td><button class="delete-btn" (click)="onDelete(reservation)"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
-            
+
             <tr *ngIf="reservations.length === 0">
                 <td colspan="11" class="no-data">No reservations found</td>
             </tr>

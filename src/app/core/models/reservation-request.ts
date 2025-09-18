@@ -8,12 +8,12 @@ export interface ReservationRequest {
     type: ReservationType | null,
     description: string | null,
     title: string | null,
-    date: Date | string | null, // LocalDate from backend
-    startTime: string | null,   // LocalTime from backend, e.g. 'HH:mm:ss'
-    endTime: string | null,     // LocalTime from backend, e.g. 'HH:mm:ss'
+    date: Date | string | null, 
+    startTime: string | null,   
+    endTime: string | null,     
     recurrenceOption: RecurrenceOption | null;
     roomId: number | null;
-    numberOfOccurrences?: number | null; // For recurring meetings
+    numberOfOccurrences?: number | null; 
 }
 
 export function convertToReservationRequest(reservation: Reservation | null): ReservationRequest {

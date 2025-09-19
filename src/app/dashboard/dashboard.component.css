@@ -38,6 +38,22 @@
   min-height: 65%;
 }
 
+.vip-badge {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  background:  gold;
+  color: black;
+  text-shadow: 1px 1px 2px #ecb21f;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* 
 .crown-icon {
   position: absolute;
   top: 15px;
@@ -46,7 +62,7 @@
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   color: gold;
   text-shadow: 1px 1px 2px #b8860b;
-}
+} */
 
 .room-image img {
   width: 100%;
@@ -124,6 +140,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
+
 /* == filter details == */
 .filter-details {
   display: flex;
@@ -177,6 +194,30 @@
   cursor: pointer;
 
   transition: all 0.3s ease;
+}
+
+.btn-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  color: #25324D;
+  border: 2px solid #25324D;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: all 0.3s ease;
+}
+.btn-clear i {
+  font-size: 1rem;
+}
+.btn-clear:hover {
+  background: #25324D;
+  color: #fff;
+  border-color: #25324D;
 }
 
 .btn-filter i {
@@ -283,5 +324,86 @@
     width: 100%;
     justify-content: center;
   }
+
+  .btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background: #e5e7eb; /* Light gray for secondary action */
+  color: #25324D;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.btn-cancel i {
+  font-size: 1rem;
+}
+
+/* Hover & Active effects */
+.btn-cancel:hover {
+  background: #d1d5db; /* Slightly darker gray on hover */
+  transform: scale(1.05);
+}
+
+.btn-cancel:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(27, 27, 27, 0.2);
+}
+
+.btn-clear  {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background: #25324D;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.btn-clear i {
+  font-size: 1rem;
+}
+
+/* Hover & Active effects */
+.btn-clear :hover {
+  background: #18283B;
+  transform: scale(1.05);
+}
+
+.btn-clear :active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(27, 27, 27, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

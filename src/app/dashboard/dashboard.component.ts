@@ -99,4 +99,9 @@ export class DashboardComponent {
     const displayHour = hour > 12 ? hour - 12 : hour;
     return `${displayHour}:${minuteStr} ${suffix}`;
   }
+    clearFilter() {
+      this.filterService.filteredData = {} as Filter;
+      this.filteredData = this.filterService.filteredData;
+      this.fetchRooms();
+    }
 }

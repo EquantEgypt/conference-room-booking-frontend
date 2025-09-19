@@ -37,7 +37,7 @@ export class LoginComponent {
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(4),
         Validators.pattern(/^\S+$/) /* \S matches any non-whitespace character , + one or more  */
       ]]
     })

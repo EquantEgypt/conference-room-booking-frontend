@@ -92,6 +92,7 @@ import { convertToReservationList, ReservationResponse } from '../core/models/re
 import { MatDialog } from '@angular/material/dialog';
 import { CancelBookingComponent } from '../summary/cancel-booking/cancel-booking.component';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-my-booking',
@@ -104,7 +105,7 @@ export class MyBookingComponent implements OnInit {
   reservations: ReservationResponse[] = [];
   isLoading = false;
 
-  constructor(private api: ApiService, private dialog: MatDialog) {} 
+  constructor(private api: ApiService, private dialog: MatDialog, private router: Router) {} 
 
   ngOnInit(): void {
     this.fetchReservations();
@@ -125,16 +126,17 @@ export class MyBookingComponent implements OnInit {
   }
 
   onDelete(reservation: ReservationResponse) {
-    // Prevent multiple dialogs by disabling button or checking if already open
+    
     const dialogRef = this.dialog.open(CancelBookingComponent, {
       width: '500px',
       data: reservation
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'proceed') {
-        this.fetchReservations(); // Refresh list after cancellation
+        this.fetchReservations(); 
       }
     });
+     this.router.navigate(['/cancel-booking', reservation.reservationId]);
   }
 
   formatTime(time: string | null): string {

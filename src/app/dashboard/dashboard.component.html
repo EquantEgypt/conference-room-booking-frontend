@@ -1,7 +1,7 @@
 <div class="dashboard-container">
 
     <div class="filter">
-        <div class="filter-details">
+        <div class="filter-details" *ngIf="filteredData?.date || filteredData?.startTime || filteredData?.endTime || filteredData?.capacity" >
             <!-- Date -->
             <div class="small-info">
                 <i class="fa-solid fa-calendar-day"></i>
@@ -29,15 +29,19 @@
                 <i class="fa fa-user icon"></i>
                 <span>{{ filteredData?.capacity || 'Capacity' }}</span>
             </div>
+            
 
-
+            
         </div>
-
         <!-- Filter button -->
         <div class="btn-center">
             <button class="btn-filter" (click)="openModal()">
                 <span><i class="fa-solid fa-filter"></i></span>
                 <span>Filter</span>
+            </button>
+            <button class="btn-clear" (click)="clearFilter()">
+                <span><i class="fa-solid fa-xmark"></i></span>
+                <span>Clear</span>
             </button>
         </div>
     </div>
@@ -67,7 +71,8 @@
             <div class="room-image">
                 <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="{{ room.name }}">
 
-                <i *ngIf="room.roomType === 'VIP'" class="fa-solid fa-crown crown-icon"></i>
+                <span *ngIf="room.roomType === 'VIP'" class="vip-badge">VIP</span>
+
             </div>
             <div class="room-details">
                 <h2>{{ room.name }}</h2>

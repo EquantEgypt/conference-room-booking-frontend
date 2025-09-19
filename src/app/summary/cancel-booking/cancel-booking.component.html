@@ -1,5 +1,5 @@
 <div class="container" *ngIf="!isLoading; else loading">
-    <h2>Cancel Booking</h2>
+    <h2>Cancellation Booking Summary</h2>
     <div class="reservation-details" *ngIf="reservation">
         <p><strong>Title:</strong> {{ reservation.title }}</p>
         <p><strong>Room:</strong> {{ reservation.roomName }}</p>
@@ -10,11 +10,11 @@
         <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
         <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
         <p><strong>Recurring End Date:</strong> {{ reservation.recurrenceEndDate | date:'mediumDate' }}</p>
-    </div>
 
-    <button mat-raised-button color="warn" class="btn-cancel" (click)="onCancelReservation()">
-        Cancel Reservation
-    </button>
+        <button mat-raised-button color="warn" class="btn-cancel" (click)="onCancelReservation()">
+            Cancel Reservation
+        </button>
+    </div>
 </div>
 
 <ng-template #loading>

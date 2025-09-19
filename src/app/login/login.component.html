@@ -13,8 +13,8 @@
         </div>
 
         <div *ngIf="username?.invalid && username?.touched" class="validation-message">
-            <p *ngIf="username?.errors?.['required']">Username is required</p>
-            <p *ngIf="username?.errors?.['pattern']">Username must not contain spaces</p>
+            <p *ngIf="username?.errors?.['required']">Buisness email is required</p>
+            <p *ngIf="username?.errors?.['pattern']">Buisness email must not contain spaces</p>
         </div>
 
         <div class="form-group">
@@ -31,7 +31,7 @@
 
         <div *ngIf="password?.invalid && password?.touched" class="validation-message">
             <p *ngIf="password?.errors?.['required']">Password is required</p>
-            <p *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</p>
+            <p *ngIf="password?.errors?.['minlength']">Password must be at least 4 characters</p>
             <p *ngIf="password?.errors?.['pattern']">
                 Password cannot contain spaces
             </p>

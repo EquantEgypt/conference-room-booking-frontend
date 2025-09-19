@@ -6,11 +6,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../../ui/pop-up/pop-up.component';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SweetAlertService } from '../../core/services/alert/sweet-alert.service';
+
 
 @Component({
   selector: 'app-cancel-booking',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule ],
   templateUrl: './cancel-booking.component.html',
   styleUrls: ['./cancel-booking.component.css']
 })
@@ -23,15 +25,14 @@ export class CancelBookingComponent implements OnInit {
     private route: ActivatedRoute,
     private api: ApiService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alert: SweetAlertService
   ) { }
-
   ngOnInit(): void {
     this.reservationId = Number(this.route.snapshot.paramMap.get('reservationId'));
     this.fetchReservationDetails();
   }
 
-  /** Fetch reservation details on page load */
   fetchReservationDetails() {
     this.isLoading = true;
     this.api.getReservationById(this.reservationId).subscribe({
@@ -46,14 +47,14 @@ export class CancelBookingComponent implements OnInit {
     });
   }
 
-  /** Open confirmation popup when user clicks Cancel */
+
   onCancelReservation() {
     const dialogRef = this.dialog.open(PopUpComponent, {
       width: '400px',
       data: {
         title: 'Confirm Deletion',
         message: 'Are you sure you want to cancel this reservation?',
-        autoFocus: true, 
+        autoFocus: true,
         restoreFocus: true
       }
     });
@@ -65,19 +66,24 @@ export class CancelBookingComponent implements OnInit {
     });
   }
 
-  /** Delete reservation if user confirms */
   deleteReservation() {
-    this.isLoading = true;
-    this.api.deleteReservation(this.reservationId).subscribe({
-      next: () => {
-        alert('Cancellation confirmed');
-        this.router.navigate(['/my-booking']);
-      },
-      error: (err) => {
-        console.error('Error deleting reservation:', err);
-        alert('Failed to cancel reservation');
-        this.isLoading = false;
-      }
-    });
+  this.isLoading = true;
+  this.api.deleteReservation(this.reservationId).subscribe({
+    next: () => {
+      this.alert.Toast.fire({
+        icon: "success",
+        title: "Reservation cancelled successfully."
+      });
+      this.router.navigate(['/my-booking']);
+    },
+    error: (err) => {
+      console.error('Error deleting reservation:', err);
+      this.alert.Toast.fire({
+        icon: "error",
+        title: "Failed to cancel reservation."
+      });
+      this.isLoading = false;
+    }
+  });
   }
 }

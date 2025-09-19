@@ -134,22 +134,22 @@
 
         <div *ngIf="selectedOption !== options[0]" class="recurring-options">
           <div class="drop-down">
-              <label for="numberOfRecurrence">Number of Occurrences</label>
-              <input type="number" id="numberOfRecurrence" name="numberOfRecurrence" formControlName="numberOfRecurrence"
-              placeholder="Enter Number of Occurrences"  [ngClass]="{
+            <label for="numberOfRecurrence">Number of Occurrences</label>
+            <input type="number" id="numberOfRecurrence" name="numberOfRecurrence" formControlName="numberOfRecurrence"
+              placeholder="Enter Number of Occurrences" [ngClass]="{
               'is-invalid': numberOfRecurrence?.touched && numberOfRecurrence?.invalid,
               'is-valid': numberOfRecurrence?.touched && numberOfRecurrence?.valid
               }">
           </div>
-  
+
           <div *ngIf="numberOfRecurrence?.invalid && numberOfRecurrence?.touched" class="validation-message">
-              <span *ngIf="numberOfRecurrence?.errors?.['pattern']">
-                  Enter a valid number
-              </span>
-  
-              <span *ngIf="!numberOfRecurrence?.errors?.['pattern'] && numberOfRecurrence?.errors?.['min']">
-                  Number of recurrence must be more than 1
-              </span>
+            <span *ngIf="numberOfRecurrence?.errors?.['pattern']">
+              Enter a valid number
+            </span>
+
+            <span *ngIf="!numberOfRecurrence?.errors?.['pattern'] && numberOfRecurrence?.errors?.['min']">
+              Number of recurrence must be more than 1
+            </span>
           </div>
         </div>
 
@@ -182,10 +182,13 @@
         <!-- button -->
 
         <div class="button">
+          <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
+
           <button type="submit" class="btn-reserve" [disabled]="isLoadingBtn">
             <span *ngIf="!isLoadingBtn">Reserve</span>
             <span *ngIf="isLoadingBtn" class="spinner"></span>
           </button>
+
         </div>
 
       </form>

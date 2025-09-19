@@ -28,6 +28,9 @@ interface Room {
   styleUrls: ['./create-booking.component.css']
 })
 export class CreateBookingComponent {
+  navigateToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
   isLoading = false;
   isLoadingBtn = false;
   BEGIN_STARTTIME = 9;

@@ -14,6 +14,7 @@ import { endTimeAfterStartTimeValidator, presentOrFutureDateValidator } from '..
 import { convertToReservationRequest } from '../core/models/reservation-request';
 import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ReservationResponse } from '../core/models/reservation-response';
 
 interface Room {
   id: number;
@@ -39,6 +40,8 @@ export class CreateBookingComponent {
   FINISH_ENDTIME = 18;
   bookingForm!: FormGroup;
   reservation: Reservation | null = null;
+  reservationResponse: ReservationResponse | null = null;
+  reservationId: number | null = null;
   rooms: Room[] = [];
   room: MeetingRoom | null = null;
   options: string[] = options;
@@ -51,6 +54,8 @@ export class CreateBookingComponent {
   endTimes: number[] = [];
   todayDefault = new Date();
   formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
+  modeTypeMsg = '';
+  isUpdate: boolean = false;
   constructor(private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
@@ -59,17 +64,37 @@ export class CreateBookingComponent {
     private alert: SweetAlertService
   ) { }
 
+  // Normalize time coming from various sources ("HH:mm:ss", "HH:mm", 13, "13") to an hour number
+  private extractHour(value: string | number | null | undefined): number | '' {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'number') return value;
+    if (typeof value === 'string') {
+      if (value.includes(':')) {
+        const hour = Number(value.split(':')[0]);
+        return isNaN(hour) ? '' : hour;
+      }
+      const numeric = Number(value);
+      return isNaN(numeric) ? '' : numeric;
+    }
+    return '';
+  }
+
   ngOnInit(): void {
     const savedFilter = this.filterService.filteredData;
     this.roomId = Number(this.route.snapshot.paramMap.get('roomId'));
+    this.reservationId = Number(this.route.snapshot.paramMap.get('reservationId'));
 
     this.filteredData = this.filterService.filteredData;
     console.log(this.filteredData);
 
     this.generateHours();
 
+    
     // fetch room details
-    this.loadRoom(this.roomId);
+    if(this.roomId && !this.reservationId){
+      this.loadRoom(this.roomId);
+      this.modeTypeMsg = 'Reserve';
+    }
 
     this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
@@ -79,11 +104,11 @@ export class CreateBookingComponent {
         [Validators.required, presentOrFutureDateValidator()]
       ],
       startTime: [
-        this.filteredData?.startTime ?? '',
+        this.extractHour(this.filteredData?.startTime as any) ?? '',
         [Validators.required]
       ],
       endTime: [
-        this.filteredData?.endTime ?? '',
+        this.extractHour(this.filteredData?.endTime as any) ?? '',
         [Validators.required]
       ],
       type: [
@@ -93,6 +118,12 @@ export class CreateBookingComponent {
     }, {
       validators: [endTimeAfterStartTimeValidator()]
     });
+
+    if(this.reservationId) {
+      this.loadReservation(this.reservationId);
+      this.modeTypeMsg = 'Update';
+      this.isUpdate = true;
+    }
   }
 
   loadRoom(roomId: number) {
@@ -190,6 +221,9 @@ export class CreateBookingComponent {
   }
 
   onReserve() {
+    // Declare bookingRequest outside so it's accessible in both blocks
+    let bookingRequest: any = null;
+
     if (this.bookingForm.valid) {
       this.isLoadingBtn = true;
       // Ensure time fields are 'HH:mm:ss' strings (backend expects seconds)
@@ -246,8 +280,38 @@ export class CreateBookingComponent {
         // Only include numberOfRecurrence for recurring meetings
         ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
       };
-      const bookingRequest = convertToReservationRequest(booking);
+      bookingRequest = convertToReservationRequest(booking);
       console.log('Final booking request:', bookingRequest);
+      if(this.isUpdate && this.reservationId)
+      {
+        this.api.updateReservation(this.reservationId,bookingRequest).subscribe({
+          next: (response) => {
+            console.log(response.body);
+            this.alert.Toast.fire({
+              icon: "success",
+              title: "Reservation Updated successfully."
+            });
+            this.isLoadingBtn = false;
+            this.router.navigate(['dashboard']);
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error("Full error:", err);
+
+            const backendMsg = typeof err.error === 'string' ? err.error : err.error?.message;
+
+            this.alert.Toast.fire({
+              icon: "error",
+              title: backendMsg || "Failed to Update reservation."
+            });
+            this.isLoadingBtn = false;
+          }
+        });
+      }
+    } else {
+      this.bookingForm.markAllAsTouched();
+    }
+    // If not update, send reservation
+    if (!this.isUpdate && bookingRequest) {
       this.api.sendReservation(bookingRequest).subscribe({
         next: (response) => {
           console.log(response.body);
@@ -269,11 +333,40 @@ export class CreateBookingComponent {
           });
           this.isLoadingBtn = false;
         }
-      })
+      });
+    }
+  }
 
-    }
-    else {
-      this.bookingForm.markAllAsTouched();
-    }
+  loadReservation(reservationId: number) {
+    this.isLoading = true;
+    this.api.getReservationById(reservationId).subscribe({
+      next: (response) => {
+        this.reservationResponse = response.body; 
+        if (this.reservationResponse) {
+          this.bookingForm.patchValue({
+            title: this.reservationResponse.title,
+            description: this.reservationResponse.description || '',
+            startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
+            startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
+            endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
+            type: this.reservationResponse.type || '',
+            numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
+          });
+          this.roomId = this.reservationResponse.roomId || null;
+          this.loadRoom(this.roomId!);
+          this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
+          this.selectOption(this.selectedOption);
+        }
+        this.isLoading = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error("Error loading reservation:", err);
+        this.alert.Toast.fire({
+          icon: "error",
+          title: "Failed to load reservation."
+        });
+        this.isLoading = false;
+      }
+    });
   }
 }

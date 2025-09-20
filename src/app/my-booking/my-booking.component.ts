@@ -126,17 +126,11 @@ export class MyBookingComponent implements OnInit {
   }
 
   onDelete(reservation: ReservationResponse) {
-    
-    const dialogRef = this.dialog.open(CancelBookingComponent, {
-      width: '500px',
-      data: reservation
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'proceed') {
-        this.fetchReservations(); 
-      }
-    });
      this.router.navigate(['/cancel-booking', reservation.reservationId]);
+  }
+
+  onEdit(reservation: ReservationResponse) {
+    this.router.navigate(['/modify-booking', reservation.reservationId]);
   }
 
   formatTime(time: string | null): string {

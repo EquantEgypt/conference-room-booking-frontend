@@ -6,15 +6,23 @@ nav {
     background: #18283B;
 }
 
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .logo {
     font-weight: bold;
     font-size: 22px;
-    cursor: default;
+    cursor: pointer;
     color:#2979FF;
 }
 
 ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 ul li {
@@ -31,4 +39,10 @@ ul li a {
     font-weight: 500;
     font-weight: bold;
 
+}
+
+.welcome-message {
+    color: #E6F0FF;
+    font-size: 15px;
+    opacity: 0.9;
 }

@@ -15,6 +15,7 @@ export const routes: Routes = [
     { path: '', component: LoginComponent, canActivate : [NoAuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'create-booking/:roomId', component: CreateBookingComponent,canActivate: [AuthGuard] },
+    { path: 'modify-booking/:reservationId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: 'my-booking', component: MyBookingComponent,canActivate: [AuthGuard] },
     { path: 'cancel-booking/:reservationId', component: CancelBookingComponent ,canActivate: [AuthGuard]},
     { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]},

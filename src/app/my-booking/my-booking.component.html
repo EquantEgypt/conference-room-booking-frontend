@@ -31,7 +31,7 @@
                 <td>{{ formatTime(reservation.endTime) }}</td>
                 <td>{{ formatReservationType(reservation.type) }}</td>
                 <td>{{ formatRecurrenceOption(reservation.recurrenceOption) }}</td>
-                <td><button class="edit-btn"><i class="fas fa-edit"></i></button></td>
+                <td><button class="edit-btn" (click)="onEdit(reservation)"><i class="fas fa-edit"></i></button></td>
                 <td><button class="delete-btn" (click)="onDelete(reservation)"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
 

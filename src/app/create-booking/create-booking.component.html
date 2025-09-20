@@ -185,7 +185,7 @@
           <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
 
           <button type="submit" class="btn-reserve" [disabled]="isLoadingBtn">
-            <span *ngIf="!isLoadingBtn">Reserve</span>
+            <span *ngIf="!isLoadingBtn">{{modeTypeMsg}}</span>
             <span *ngIf="isLoadingBtn" class="spinner"></span>
           </button>
 

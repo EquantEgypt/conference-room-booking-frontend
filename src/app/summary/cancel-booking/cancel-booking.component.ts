@@ -37,7 +37,7 @@ export class CancelBookingComponent implements OnInit {
     this.isLoading = true;
     this.api.getReservationById(this.reservationId).subscribe({
       next: (response) => {
-        this.reservation = response;
+        this.reservation = response.body;
         this.isLoading = false;
       },
       error: (err) => {

@@ -66,12 +66,19 @@ export class ApiService {
   }
   
   getReservationById(reservationId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/reserve/${reservationId}`);
+    return this.http.get(`${this.apiUrl}/reserve/${reservationId}`, { observe: 'response' });
   }
 
   deleteReservation(reservationId: number) {
     return this.http.delete(`${this.apiUrl}/reserve/${reservationId}`);
   }
 
+  updateReservation(reservationId: number, requestBody: ReservationRequest): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reserve/${reservationId}`, requestBody, { observe: 'response' });  
+  }
+
+  getUserInfo(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/username`, { observe: 'response' });
+  }
 
 }

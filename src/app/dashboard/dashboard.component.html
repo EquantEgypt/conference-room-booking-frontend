@@ -39,7 +39,7 @@
                 <span><i class="fa-solid fa-filter"></i></span>
                 <span>Filter</span>
             </button>
-            <button class="btn-clear" (click)="clearFilter()">
+            <button class="btn-clear" (click)="clearFilter()" *ngIf="filteredData?.date || filteredData?.startTime || filteredData?.endTime || filteredData?.capacity">
                 <span><i class="fa-solid fa-xmark"></i></span>
                 <span>Clear</span>
             </button>
@@ -51,7 +51,7 @@
     <!-- @Input() show = false; // input property from parent
     @Output() close = new EventEmitter<void>(); // output event to notify parent -->
 
-    <app-modal [show]="isModalOpen" (close)="closeModal()" [maxRoomCapacity]="maxRoomCapacity">
+    <app-modal [show]="isModalOpen" (action)="closeModal($event)" [maxRoomCapacity]="maxRoomCapacity">
 
     </app-modal>
 

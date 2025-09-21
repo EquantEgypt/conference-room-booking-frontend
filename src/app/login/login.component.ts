@@ -47,7 +47,6 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       let user: UserCredentials = this.loginForm.value;
-      console.log(user.username, user.password);
       this.auth.authenticate(user).subscribe(
         {
           next: (response) => {

@@ -92,12 +92,12 @@ export class FilterComponent {
     return `${displayHour}:${minuteStr} ${suffix}`;
   }
 
-  @Output() close = new EventEmitter<void>();
+  @Output() action = new EventEmitter<string>();
   @Input() maxRoomCapacity!: number;
 
 
   onCloseFilter() {
-    this.close.emit();
+    this.action.emit('close');
     console.log('max capacity is ' + this.maxRoomCapacity);
   }
 
@@ -109,7 +109,7 @@ export class FilterComponent {
       }
       this.filterService.filteredData = filter;
       console.log(filter);
-      this.close.emit();
+      this.action.emit('apply');
       console.log('valid');
     }
     else {

@@ -25,7 +25,7 @@ export class DashboardComponent {
 
   filteredData: Filter | null = null;
 
-  constructor(private api: ApiService, private filterService: FilterService,private router:Router) { }
+  constructor(private api: ApiService, private filterService: FilterService, private router: Router) { }
 
   ngOnInit() {
     this.filteredData = this.filterService.filteredData;
@@ -46,7 +46,9 @@ export class DashboardComponent {
         next: (response) => {
           console.log(response.body);
           this.rooms = (response.body as MeetingRoom[]) || [];
-          this.maxRoomCapacity = this.getMaxRoomCapacity();
+          if (this.maxRoomCapacity === 1) { // max room capacity calculated only if it is not calculated yet
+            this.maxRoomCapacity = this.getMaxRoomCapacity();
+          }
           this.isLoading = false;
           console.log('max capacity from dashboard ' + this.maxRoomCapacity);
         },
@@ -64,15 +66,15 @@ export class DashboardComponent {
     document.body.classList.add('modal-open');
   }
 
-  closeModal() {
-    this.filteredData = this.filterService.filteredData;
-
-    if (this.filteredData.date) {
-      console.log('Filter date:', this.filteredData.date);
-    } else {
-      console.log('No filter applied yet');
+  closeModal(event: string) {
+    if (event === 'apply') {
+      console.log('apply button is clicked');
+      this.filteredData = this.filterService.filteredData;
+      this.fetchRooms();
     }
-    this.fetchRooms();
+    else {
+      console.log('close button is clicked');
+    }
     this.isModalOpen = false;
     document.body.classList.remove('modal-open');
   }
@@ -85,7 +87,7 @@ export class DashboardComponent {
     return max;
   }
 
-  onClickOnRoom(roomId:number){
+  onClickOnRoom(roomId: number) {
     this.router.navigate(['create-booking', roomId]);
   }
 
@@ -99,9 +101,9 @@ export class DashboardComponent {
     const displayHour = hour > 12 ? hour - 12 : hour;
     return `${displayHour}:${minuteStr} ${suffix}`;
   }
-    clearFilter() {
-      this.filterService.filteredData = {} as Filter;
-      this.filteredData = this.filterService.filteredData;
-      this.fetchRooms();
-    }
+  clearFilter() {
+    this.filterService.resetFilter();
+    this.filteredData = this.filterService.filteredData;
+    this.fetchRooms();
+  }
 }

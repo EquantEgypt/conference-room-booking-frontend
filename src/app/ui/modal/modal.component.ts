@@ -6,20 +6,21 @@ import { Filter } from '../../core/models/filter';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [NgIf,FilterComponent],
+  imports: [NgIf, FilterComponent],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
   @Input() show = false;
-  @Output() close = new EventEmitter<void>();
+  @Output() action = new EventEmitter<string>();
   @Input() maxRoomCapacity!: number;
 
-  ngOnInit(){
-    console.log('maxRoomCapacity from model' + this.maxRoomCapacity )  
+  ngOnInit() {
+    console.log('maxRoomCapacity from model' + this.maxRoomCapacity)
   }
 
-  onClose(){
-    this.close.emit();
+  onClose(event: string) {
+    console.log(event);
+    this.action.emit(event);
   }
 }

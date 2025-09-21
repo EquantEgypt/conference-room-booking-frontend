@@ -65,7 +65,7 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/reserve`, requestBody, { observe: 'response' });
   }
 
-  getCalenderViewDate(date: Date): Observable<any> {
+  getcalendarViewDate(date: Date): Observable<any> {
     date = new Date(date);
     const formattedDate = date.toISOString().split('T')[0];
     return this.http.get(`${this.apiUrl}/reserve/date/${formattedDate}`, { observe: 'response' });

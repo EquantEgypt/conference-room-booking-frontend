@@ -13,7 +13,7 @@
 
     </form>
 
-    <div class="calender-view-container">
+    <div class="calendar-view-container">
 
         <div class="nav-btns">
             <button type="button" (click)="OnClickLeftRooms()" class="date-nav-btn" [disabled]="leftPointer === 0">
@@ -21,7 +21,7 @@
             </button>
 
             <button type="button" (click)="OnClickRightRooms()" class="date-nav-btn"
-                [disabled]="calenderViewData !== null && rightPointer >= calenderViewData.length">
+                [disabled]="calendarViewData !== null && rightPointer >= calendarViewData.length">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>

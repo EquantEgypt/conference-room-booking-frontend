@@ -72,7 +72,7 @@
 
 
 /* === Calendar container === */
-.calender-view-container {
+.calendar-view-container {
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);

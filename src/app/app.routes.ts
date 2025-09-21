@@ -6,7 +6,7 @@ import { NoAuthGuard } from './guards/no-auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CreateBookingComponent } from './create-booking/create-booking.component';
 import { MyBookingComponent } from './my-booking/my-booking.component';
-import { CalenderViewComponent } from './calender-view/calender-view.component';
+import { calendarViewComponent } from './calendar-view/calendar-view.component';
 import { CancelBookingComponent } from './summary/cancel-booking/cancel-booking.component';
 
 
@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'create-booking/:roomId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: 'modify-booking/:reservationId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: 'my-booking', component: MyBookingComponent,canActivate: [AuthGuard] },
-    { path: 'calender-view', component: CalenderViewComponent,canActivate: [AuthGuard] },
+    { path: 'calendar-view', component: calendarViewComponent,canActivate: [AuthGuard] },
     { path: 'cancel-booking/:reservationId', component: CancelBookingComponent ,canActivate: [AuthGuard]},
     { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]},
 ];

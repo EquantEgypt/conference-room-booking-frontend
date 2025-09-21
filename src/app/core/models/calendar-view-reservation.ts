@@ -1,7 +1,7 @@
 import { RecurrenceOption } from "../enum/recurrence-option";
 import { ReservationType } from "../enum/reservation-type";
 
-export interface CalenderViewReservation {
+export interface calendarViewReservation {
     reservationId:number,
     type: ReservationType,
     title: string,

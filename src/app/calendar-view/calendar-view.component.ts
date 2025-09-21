@@ -3,17 +3,17 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { dateValidator } from '../core/services/shared/validators/custom-validators';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { ApiService } from '../core/services/api/api.service';
-import { CalenderViewResponse } from '../core/models/calender-view-response';
+import { calendarViewResponse } from '../core/models/calendar-view-response';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-calender-view',
+  selector: 'app-calendar-view',
   standalone: true,
   imports: [NgClass, ReactiveFormsModule, NgFor, NgStyle,NgIf],
-  templateUrl: './calender-view.component.html',
-  styleUrl: './calender-view.component.css'
+  templateUrl: './calendar-view.component.html',
+  styleUrl: './calendar-view.component.css'
 })
-export class CalenderViewComponent {
+export class calendarViewComponent {
 
   todayDefault = new Date();
   formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
@@ -25,8 +25,8 @@ export class CalenderViewComponent {
   ROOMS_PAGE_SIZE: number = 5;
   leftPointer = 0;
   rightPointer = this.ROOMS_PAGE_SIZE;
-  calenderViewData: CalenderViewResponse[] | null = null;
-  roomsInPage: CalenderViewResponse[] | null = null;
+  calendarViewData: calendarViewResponse[] | null = null;
+  roomsInPage: calendarViewResponse[] | null = null;
   isLoading = false;
 
 
@@ -48,7 +48,7 @@ export class CalenderViewComponent {
       ]],
     });
 
-    this.fetchCalenderViewData();
+    this.fetchcalendarViewData();
 
   }
 
@@ -56,13 +56,13 @@ export class CalenderViewComponent {
     return Number(time.split(":")[0]); // "09:30:00" -> 9
   }
 
-  fetchCalenderViewData() {
+  fetchcalendarViewData() {
     this.isLoading = true;
-    this.api.getCalenderViewDate(this.dateForm.get('date')?.value).subscribe({
+    this.api.getcalendarViewDate(this.dateForm.get('date')?.value).subscribe({
       next: (response) => {
         console.log(response.body);
 
-        this.calenderViewData = response.body.map((room: any) => ({
+        this.calendarViewData = response.body.map((room: any) => ({
           ...room,
           reservations: room.reservations.map((reservation: any) => ({
             ...reservation,
@@ -72,9 +72,9 @@ export class CalenderViewComponent {
           }))
         }));
 
-        this.roomsInPage = this.calenderViewData!.slice(
+        this.roomsInPage = this.calendarViewData!.slice(
           this.leftPointer,
-          Math.min(this.rightPointer, this.calenderViewData!.length)
+          Math.min(this.rightPointer, this.calendarViewData!.length)
         );
 
         this.isLoading = false;
@@ -93,12 +93,12 @@ export class CalenderViewComponent {
 
   onClickPrev() {
     this.yesterdayOrTommorrow(-1)
-    this.fetchCalenderViewData();
+    this.fetchcalendarViewData();
   }
 
   onClickNext() {
     this.yesterdayOrTommorrow(1);
-    this.fetchCalenderViewData();
+    this.fetchcalendarViewData();
   }
 
   yesterdayOrTommorrow(num: number): string | null {
@@ -123,10 +123,10 @@ export class CalenderViewComponent {
   }
 
   OnClickRightRooms() {
-    if (this.rightPointer < this.calenderViewData!.length) {
+    if (this.rightPointer < this.calendarViewData!.length) {
       this.leftPointer = this.rightPointer;
-      this.rightPointer = Math.min(this.rightPointer + this.ROOMS_PAGE_SIZE, this.calenderViewData!.length);
-      this.roomsInPage = this.calenderViewData!.slice(this.leftPointer, this.rightPointer);
+      this.rightPointer = Math.min(this.rightPointer + this.ROOMS_PAGE_SIZE, this.calendarViewData!.length);
+      this.roomsInPage = this.calendarViewData!.slice(this.leftPointer, this.rightPointer);
     }
   }
 
@@ -134,7 +134,7 @@ export class CalenderViewComponent {
     if (this.leftPointer > 0) {
       this.rightPointer = this.leftPointer;
       this.leftPointer = Math.max(this.leftPointer - this.ROOMS_PAGE_SIZE, 0);
-      this.roomsInPage = this.calenderViewData!.slice(this.leftPointer, this.rightPointer);
+      this.roomsInPage = this.calendarViewData!.slice(this.leftPointer, this.rightPointer);
     }
   }
 
@@ -152,6 +152,6 @@ export class CalenderViewComponent {
   }
 
   onDateSelected() {
-    this.fetchCalenderViewData();
+    this.fetchcalendarViewData();
   }
 }

@@ -37,8 +37,8 @@ export class NavBarComponent implements OnInit {
     this.route.navigate(['my-booking']);
   }
 
-  onClickCalenderView(){
-    this.route.navigate(['calender-view']);
+  onClickcalendarView(){
+    this.route.navigate(['calendar-view']);
   }
 
   logout(){

@@ -43,7 +43,12 @@ h2 {
   min-width: 150px;
   font-weight: 600;
 }
-
+.confirm-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 6px;
+}
 /* Cancel Button */
 .btn-cancel {
   display: block;
@@ -53,15 +58,33 @@ h2 {
   font-weight: 500;
   border: none;
   border-radius: 8px;
-  background: #3f4ba4;
-  color: #ffffff;
+  background: #3F4BA4!important;
+  color: #fff !important;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(230, 57, 70, 0.3);
   transition: background 0.3s ease, transform 0.2s ease;
 }
-
 .btn-cancel:hover {
-  background: #d62828;
+  background: #D81212 !important;
+  transform: translateY(-2px);
+}
+/* Back Button */
+.btn-back{
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: #3F4BA4;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(115, 57, 230, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-back:hover {
+  background: #4C22BD;
   transform: translateY(-2px);
 }
 

@@ -10,16 +10,20 @@
         <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
         <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
         <p><strong>Recurring End Date:</strong> {{ reservation.recurrenceEndDate | date:'mediumDate' }}</p>
-
-        <button mat-raised-button color="warn" class="btn-cancel" (click)="onCancelReservation()">
-            Cancel Reservation
-        </button>
+        <div class="confirm-actions">
+            <button mat-raised-button color="primary" class="btn-back" (click)="onBack()">
+                Go Back
+            </button>
+            <button mat-raised-button color="warn" class="btn-cancel" (click)="onCancelReservation()">
+                Cancel Reservation
+            </button>
+        </div>
     </div>
 </div>
 
+
 <ng-template #loading>
     <div class="loading-container">
-        <mat-spinner></mat-spinner>
         <p>Loading reservation details...</p>
     </div>
 </ng-template>

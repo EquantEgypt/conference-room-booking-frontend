@@ -46,6 +46,10 @@ export class CancelBookingComponent implements OnInit {
       }
     });
   }
+  
+  onBack() {
+    this.router.navigate(['/my-booking']);
+  }
 
 
   onCancelReservation() {

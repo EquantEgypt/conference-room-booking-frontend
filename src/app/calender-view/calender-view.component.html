@@ -1,0 +1,91 @@
+<div class="container">
+    <form [formGroup]="dateForm" (ngSubmit)="onApplyDate()" class="date-form">
+
+        <button type="button" (click)="onClickPrev()" class="date-nav-btn" [disabled]="isLoading">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <input type="date" id="date" name="date" formControlName="date" required class="date-input"
+            (change)="onDateSelected()">
+
+        <button type="button" (click)="onClickNext()" class="date-nav-btn" [disabled]="isLoading">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+    </form>
+
+    <div class="calender-view-container">
+
+        <div class="nav-btns">
+            <button type="button" (click)="OnClickLeftRooms()" class="date-nav-btn" [disabled]="leftPointer === 0">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            <button type="button" (click)="OnClickRightRooms()" class="date-nav-btn"
+                [disabled]="calenderViewData !== null && rightPointer >= calenderViewData.length">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- timeline grid -->
+
+
+        <div class="calendar">
+
+            <div class="timeline">
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+
+                @for(t of timeLabels; track t){
+                <div class="time-marker">{{formatTime(t)}}</div>
+                }
+            </div>
+
+            <div *ngIf="isLoading" class="loader-container">
+                <div class="loader"></div>
+            </div>
+
+            <div class="days" *ngIf="!isLoading">
+
+                @for(room of roomsInPage; track room.roomId){
+
+                <div class="day">
+
+                    <div class="room-card" (click)="onClickOnRoom(room.roomId)">
+                        <div class="room-image">
+                            <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="room.roomName">
+
+                        </div>
+                        <div class="room-details">
+                            <h2>{{room.roomName}}</h2>
+                            <div class="room-capacity">
+                                <i class="fa fa-user icon"></i>
+                                <div>{{room.roomCapacity}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="events">
+                        @for (res of room.reservations; track res.reservationId) {
+                        <div class="event securities" [class.available]="res.myReservation"
+                            [class.unavailable]="!res.myReservation"
+                            [ngClass]="['start-' + res.startTime, 'end-' + res.endTime]">
+                            <p class="title">{{ res.title }}</p>
+                            <p class="time">{{ formatTime( res.startTime) }} - {{ formatTime(res.endTime) }}</p>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+</div>

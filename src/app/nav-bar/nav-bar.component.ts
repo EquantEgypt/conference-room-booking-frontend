@@ -37,6 +37,10 @@ export class NavBarComponent implements OnInit {
     this.route.navigate(['my-booking']);
   }
 
+  onClickCalenderView(){
+    this.route.navigate(['calender-view']);
+  }
+
   logout(){
     sessionStorage.removeItem(TOKEN);
     this.alert.Toast.fire({

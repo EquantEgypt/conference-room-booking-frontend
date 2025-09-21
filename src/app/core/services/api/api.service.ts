@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserCredentials } from '../../models/user-credentials';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { FilterRequest } from '../../models/filter-request';
 import { ReservationRequest } from '../../models/reservation-request';
 
@@ -64,7 +64,14 @@ export class ApiService {
   sendReservation(requestBody: ReservationRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/reserve`, requestBody, { observe: 'response' });
   }
-  
+
+  getCalenderViewDate(date: Date): Observable<any> {
+    date = new Date(date);
+    const formattedDate = date.toISOString().split('T')[0];
+    return this.http.get(`${this.apiUrl}/reserve/date/${formattedDate}`, { observe: 'response' });
+  }
+
+
   getReservationById(reservationId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/reserve/${reservationId}`, { observe: 'response' });
   }
@@ -74,7 +81,7 @@ export class ApiService {
   }
 
   updateReservation(reservationId: number, requestBody: ReservationRequest): Observable<any> {
-    return this.http.put(`${this.apiUrl}/reserve/${reservationId}`, requestBody, { observe: 'response' });  
+    return this.http.put(`${this.apiUrl}/reserve/${reservationId}`, requestBody, { observe: 'response' });
   }
 
   getUserInfo(): Observable<any> {
@@ -82,3 +89,4 @@ export class ApiService {
   }
 
 }
+

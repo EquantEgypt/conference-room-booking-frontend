@@ -22,6 +22,27 @@ export function presentOrFutureDateValidator(): ValidatorFn {
     }
 }
 
+
+export function dateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!control.value) return null;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const inputDate = new Date(control.value);
+        inputDate.setHours(0, 0, 0, 0);
+
+        // Reject "too far in future dates" future dates (e.g. more than 1 year ahead)
+        const maxDate = new Date();
+        maxDate.setFullYear(today.getFullYear() + 1);
+        if (inputDate > maxDate) return { tooFarInFuture: true };
+
+        return null;
+    }
+}
+
+
 export function endTimeAfterStartTimeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const startValue = control.get('startTime')?.value;

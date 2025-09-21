@@ -1,0 +1,439 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    min-height: calc(100vh - 56px);
+}
+
+/* === Date Form Container === */
+.date-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+/* === Navigation Buttons (< >) === */
+.nav-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.date-nav-btn {
+    background: #f9fafb;
+    /* light background, same as inputs */
+    color: #25324D;
+    /* dark text for readability */
+    border: 1px solid #ddd;
+    /* subtle border like other form controls */
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.date-nav-btn:hover {
+    background: #e9ecef;
+    /* light gray hover, matches theme */
+}
+
+.date-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+
+/* === Date Input === */
+.date-input {
+    padding: 0.5rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    outline: none;
+    min-width: 150px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+    color: #25324D;
+}
+
+.date-input:focus {
+    border: 1px solid #25324D;
+    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+}
+
+
+/* === Calendar container === */
+.calender-view-container {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    padding: 16px;
+    overflow: hidden;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: calendar-appear 1s ease-out forwards;
+    animation-fill-mode: backwards;
+}
+
+@keyframes calendar-appear {
+    from {
+        opacity: 0;
+        transform: translateY(3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* == grid == */
+
+.calendar {
+    display: grid;
+    gap: 10px;
+    column-gap: 10px;
+    grid-template-columns: auto 1fr;
+    margin: 2rem;
+    min-width: 1200px;
+}
+
+.timeline {
+    display: grid;
+    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+}
+
+/* .time-marker {
+    border-bottom: 2px solid #000;
+}
+
+.time-marker:last-child {
+    border-bottom: none;
+} */
+
+.events {
+    display: grid;
+    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+    border-radius: 5px;
+    background: var(--calBgColor);
+    position: relative;
+    border-collapse: collapse;
+}
+
+.days {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 250px;
+    /* fixed width for each room column */
+    overflow-x: auto;
+    /* allow horizontal scroll if many rooms */
+    gap: 5px;
+    /* space between columns */
+}
+
+
+
+
+/* ---- START times ---- */
+.start-9 {
+    grid-row-start: 1;
+}
+
+/* 9:00 AM */
+.start-10 {
+    grid-row-start: 2;
+}
+
+/* 10:00 AM */
+.start-11 {
+    grid-row-start: 3;
+}
+
+/* 11:00 AM */
+.start-12 {
+    grid-row-start: 4;
+}
+
+/* 12:00 PM */
+.start-13 {
+    grid-row-start: 5;
+}
+
+/* 1:00 PM */
+.start-14 {
+    grid-row-start: 6;
+}
+
+/* 2:00 PM */
+.start-15 {
+    grid-row-start: 7;
+}
+
+/* 3:00 PM */
+.start-16 {
+    grid-row-start: 8;
+}
+
+/* 4:00 PM */
+.start-17 {
+    grid-row-start: 9;
+}
+
+/* 5:00 PM */
+.start-18 {
+    grid-row-start: 10;
+}
+
+/* 6:00 PM */
+
+/* ---- END times ---- */
+.end-9 {
+    grid-row-end: 1;
+}
+
+.end-10 {
+    grid-row-end: 2;
+}
+
+.end-11 {
+    grid-row-end: 3;
+}
+
+.end-12 {
+    grid-row-end: 4;
+}
+
+.end-13 {
+    grid-row-end: 5;
+}
+
+.end-14 {
+    grid-row-end: 6;
+}
+
+.end-15 {
+    grid-row-end: 7;
+}
+
+.end-16 {
+    grid-row-end: 8;
+}
+
+.end-17 {
+    grid-row-end: 9;
+}
+
+.end-18 {
+    grid-row-end: 10;
+}
+
+
+
+.title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.event {
+    margin: 4px;
+    border-radius: 6px;
+    padding: 6px;
+    font-size: 13px;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+}
+
+.event.available {
+    background: #e6f9ed;
+    border: 1px solid #a8e6b0;
+}
+
+.event.unavailable {
+    background: repeating-linear-gradient(45deg,
+            #f9f9f9,
+            #f9f9f9 8px,
+            #ececec 8px,
+            #ececec 16px);
+    color: #888;
+    border: 1px solid #ddd;
+}
+
+.space,
+.date {
+    height: 60px
+}
+
+
+
+.corp-fi {
+    background: var(--eventColor1);
+}
+
+.ent-law {
+    background: var(--eventColor2);
+}
+
+.writing {
+    background: var(--eventColor3);
+}
+
+.securities {
+    background: var(--eventColor4);
+}
+
+.date {
+    display: flex;
+    gap: 1em;
+}
+
+.date-num {
+    font-size: 3rem;
+    font-weight: 600;
+    display: inline;
+}
+
+.date-day {
+    display: inline;
+    font-size: 3rem;
+    font-weight: 100;
+}
+
+
+.room-card {
+    grid-column: span 1;
+    grid-row: span 2;
+    width: 252px;
+    height: 175px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: card-appear 1s ease-out forwards;
+    animation-fill-mode: backwards;
+
+    cursor: pointer;
+}
+
+.room-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.room-image {
+    position: relative;
+    width: 100%;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.room-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.room-details h2 {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+}
+
+.room-capacity {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.room-capacity i {
+    font-size: 1rem;
+}
+
+.room-capacity div {
+    font-size: 1rem;
+}
+
+.room-capacity {
+    display: flex;
+    align-items: center;
+}
+
+.room-capacity i {
+    color: #25324D;
+    font-size: 1rem;
+}
+
+
+/* == loader == */
+
+/* Loader Container - relative, responsive */
+.loader-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;
+    padding: 2rem;
+    box-sizing: border-box;
+    z-index: 9999;
+}
+
+/* Loader */
+.loader {
+    width: 8vw;
+    max-width: 60px;
+    min-width: 30px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #25324D;
+    --_m:
+        conic-gradient(#0000 10%, #000),
+        linear-gradient(#000 0 0) content-box;
+    -webkit-mask: var(--_m);
+    mask: var(--_m);
+    -webkit-mask-composite: source-out;
+    mask-composite: subtract;
+    animation: l3 1s infinite linear;
+    padding: 8px;
+}
+
+
+
+/* Rotation Animation */
+@keyframes l3 {
+    to {
+        transform: rotate(1turn);
+    }
+}

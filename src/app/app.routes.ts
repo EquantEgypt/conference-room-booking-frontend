@@ -8,6 +8,7 @@ import { CreateBookingComponent } from './create-booking/create-booking.componen
 import { MyBookingComponent } from './my-booking/my-booking.component';
 import { calendarViewComponent } from './calendar-view/calendar-view.component';
 import { CancelBookingComponent } from './summary/cancel-booking/cancel-booking.component';
+import { CreateBookingSummaryComponent } from './summary/create-booking-summary/create-booking-summary.component';
 
 
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'my-booking', component: MyBookingComponent,canActivate: [AuthGuard] },
     { path: 'calendar-view', component: calendarViewComponent,canActivate: [AuthGuard] },
     { path: 'cancel-booking/:reservationId', component: CancelBookingComponent ,canActivate: [AuthGuard]},
+    { path: 'summary/create-booking', component: CreateBookingSummaryComponent, canActivate: [AuthGuard] },
     { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]},
 ];
 

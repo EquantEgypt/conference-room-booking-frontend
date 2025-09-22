@@ -19,7 +19,13 @@ import { CommonModule } from '@angular/common';
 export class PopUpComponent {
   constructor(
     public dialogRef: MatDialogRef<PopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; message: string }
+    @Inject(MAT_DIALOG_DATA) public data: 
+    { 
+      title: string; 
+      message: string; 
+      confirmMessage: string;
+      cancelMessage: string; 
+    }
   ) {}
 
   onConfirm(): void {

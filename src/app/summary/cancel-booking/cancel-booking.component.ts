@@ -58,6 +58,8 @@ export class CancelBookingComponent implements OnInit {
       data: {
         title: 'Confirm Deletion',
         message: 'Are you sure you want to cancel this reservation?',
+        confirmMessage:'Yes,Cancel Reservation',
+        cancelMessage:'No, keep it',
         autoFocus: true,
         restoreFocus: true
       }

@@ -9,19 +9,21 @@ import { MyBookingComponent } from './my-booking/my-booking.component';
 import { calendarViewComponent } from './calendar-view/calendar-view.component';
 import { CancelBookingComponent } from './summary/cancel-booking/cancel-booking.component';
 import { CreateBookingSummaryComponent } from './summary/create-booking-summary/create-booking-summary.component';
+import { ModifyBookingSummaryComponent } from './summary/modify-booking-summary/modify-booking-summary.component';
 
 
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate : [NoAuthGuard] },
     { path: '', component: LoginComponent, canActivate : [NoAuthGuard] },
+    { path: 'summary/create-booking', component: CreateBookingSummaryComponent, canActivate: [AuthGuard] },
+    { path: 'summary/modify-booking/:reservationId', component: ModifyBookingSummaryComponent, canActivate: [AuthGuard]},
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'create-booking/:roomId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: 'modify-booking/:reservationId', component: CreateBookingComponent,canActivate: [AuthGuard] },
     { path: 'my-booking', component: MyBookingComponent,canActivate: [AuthGuard] },
     { path: 'calendar-view', component: calendarViewComponent,canActivate: [AuthGuard] },
     { path: 'cancel-booking/:reservationId', component: CancelBookingComponent ,canActivate: [AuthGuard]},
-    { path: 'summary/create-booking', component: CreateBookingSummaryComponent, canActivate: [AuthGuard] },
     { path: '**', component: PageNotFoundComponent,canActivate: [AuthGuard]},
 ];
 

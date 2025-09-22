@@ -50,7 +50,7 @@ export class LoginComponent {
       this.auth.authenticate(user).subscribe(
         {
           next: (response) => {
-            sessionStorage.setItem(TOKEN, response.body.token);
+            localStorage.setItem(TOKEN, response.body.token);
             this.route.navigate(['dashboard'])
             this.isLoading = false;
             this.alert.Toast.fire({

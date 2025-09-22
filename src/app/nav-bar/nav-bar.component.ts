@@ -42,7 +42,7 @@ export class NavBarComponent implements OnInit {
   }
 
   logout(){
-    sessionStorage.removeItem(TOKEN);
+    localStorage.removeItem(TOKEN);
     this.alert.Toast.fire({
             icon: "success",
             title: "You logged out"

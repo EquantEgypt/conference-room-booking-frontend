@@ -2,8 +2,8 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { TOKEN } from '../core/services/authentication/authentication.service';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
-  
-  const token = sessionStorage.getItem(TOKEN);
+
+  const token = localStorage.getItem(TOKEN);
   if (token) {
     console.log('from interceptor', token);
     req = req.clone({

@@ -56,6 +56,7 @@ export class CreateBookingComponent {
   formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
   modeTypeMsg = '';
   isUpdate: boolean = false;
+  dateComingFromCalenderView: string | null = null;
   constructor(private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
@@ -80,6 +81,13 @@ export class CreateBookingComponent {
   }
 
   ngOnInit(): void {
+    const state = history.state as { date?: string | Date };
+
+    this.dateComingFromCalenderView = state?.date
+      ? this.formatDateForInput(new Date(state.date))
+      : null;
+    console.log(this.dateComingFromCalenderView);
+
     const savedFilter = this.filterService.filteredData;
     this.roomId = Number(this.route.snapshot.paramMap.get('roomId'));
     this.reservationId = Number(this.route.snapshot.paramMap.get('reservationId'));
@@ -89,9 +97,9 @@ export class CreateBookingComponent {
 
     this.generateHours();
 
-    
+
     // fetch room details
-    if(this.roomId && !this.reservationId){
+    if (this.roomId && !this.reservationId) {
       this.loadRoom(this.roomId);
       this.modeTypeMsg = 'Reserve';
     }
@@ -100,7 +108,9 @@ export class CreateBookingComponent {
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: [''], // Set empty string instead of null
       startDate: [
-        this.filteredData?.date ?? this.formattedToday,
+        this.dateComingFromCalenderView
+        ?? this.filteredData?.date
+        ?? this.formattedToday,
         [Validators.required, presentOrFutureDateValidator()]
       ],
       startTime: [
@@ -119,7 +129,7 @@ export class CreateBookingComponent {
       validators: [endTimeAfterStartTimeValidator()]
     });
 
-    if(this.reservationId) {
+    if (this.reservationId) {
       this.loadReservation(this.reservationId);
       this.modeTypeMsg = 'Update';
       this.isUpdate = true;
@@ -143,6 +153,10 @@ export class CreateBookingComponent {
     )
   }
 
+  formatDateForInput(date: Date): string {
+    return date.toISOString().split('T')[0]; // "2025-09-23"
+  }
+
   generateHours() {
     // Start times: 9 AM → 5 PM
     for (let i = this.BEGIN_STARTTIME; i <= this.FINISH_STARTTIME; i++) this.startTimes.push(i);
@@ -159,7 +173,7 @@ export class CreateBookingComponent {
 
   selectOption(option: string) {
     this.selectedOption = option;
-    
+
     // Update validation for numberOfRecurrence based on recurrence option
     const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
     if (option === this.options[0]) { // One-time
@@ -172,7 +186,7 @@ export class CreateBookingComponent {
       }
     }
     numberOfRecurrenceControl?.updateValueAndValidity();
-    
+
     console.log(this.selectedOption);
     console.log(this.formatedRecOption(this.selectedOption))
   }
@@ -250,7 +264,7 @@ export class CreateBookingComponent {
       const startTime = formatToHHMMSS(startTimeValue);
       const endTime = formatToHHMMSS(endTimeValue);
       const roomId = this.roomId ?? (this.room?.roomId ?? null);
-      
+
       console.log('Form values:', {
         date,
         startTimeValue,
@@ -259,7 +273,7 @@ export class CreateBookingComponent {
         endTime,
         roomId
       });
-      
+
       // Defensive: If any required field is missing, abort and show error
       if (!date || !roomId || !startTime || !endTime) {
         this.alert.Toast.fire({
@@ -282,9 +296,8 @@ export class CreateBookingComponent {
       };
       bookingRequest = convertToReservationRequest(booking);
       console.log('Final booking request:', bookingRequest);
-      if(this.isUpdate && this.reservationId)
-      {
-        this.api.updateReservation(this.reservationId,bookingRequest).subscribe({
+      if (this.isUpdate && this.reservationId) {
+        this.api.updateReservation(this.reservationId, bookingRequest).subscribe({
           next: (response) => {
             console.log(response.body);
             this.alert.Toast.fire({
@@ -341,7 +354,7 @@ export class CreateBookingComponent {
     this.isLoading = true;
     this.api.getReservationById(reservationId).subscribe({
       next: (response) => {
-        this.reservationResponse = response.body; 
+        this.reservationResponse = response.body;
         if (this.reservationResponse) {
           this.bookingForm.patchValue({
             title: this.reservationResponse.title,

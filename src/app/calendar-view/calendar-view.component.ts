@@ -148,7 +148,9 @@ export class calendarViewComponent {
   }
 
   onClickOnRoom(roomId: number) {
-    this.router.navigate(['create-booking', roomId]);
+    console.log(this.dateForm.get('date')?.value);
+    this.router.navigate(['create-booking', roomId],
+      {state: { date :  this.dateForm.get('date')?.value}});
   }
 
   onDateSelected() {

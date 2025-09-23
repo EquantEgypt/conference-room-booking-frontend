@@ -88,5 +88,9 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/username`, { observe: 'response' });
   }
 
+  getUpcomingReservations(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve/up-coming`, { observe: 'response' });
+  }
+
 }
 

@@ -4,6 +4,120 @@
   min-height: calc(100vh - 56px);
 }
 
+/* Header styling - simplified compact header section */
+.header {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.upcoming-reservation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.notification {
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #25324D;
+}
+
+.notification span {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.upcoming-reservation-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #25324D;
+}
+
+.upcoming-reservation {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+.reservation-details {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.detail-item span {
+  font-weight: 500;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-item i {
+  color: #25324D;
+  font-size: 0.9rem;
+}
+
+.room-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #25324D;
+  text-align: center;
+}
+
+.header .room-image {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+/* Responsive header */
+@media (max-width: 768px) {
+  .upcoming-reservation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .right-content {
+    justify-content: space-between;
+    margin-top: 0.75rem;
+  }
+  
+  .reservation-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 .rooms-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -53,16 +167,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* 
-.crown-icon {
-  position: absolute;
-  top: 15px;
-  left: 10px;
-  font-size: 30px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  color: gold;
-  text-shadow: 1px 1px 2px #b8860b;
-} */
 
 .room-image img {
   width: 100%;

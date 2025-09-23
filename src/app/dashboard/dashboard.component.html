@@ -1,5 +1,33 @@
 <div class="dashboard-container">
 
+    <div class="header">
+        <div *ngIf="notificationMessage" class="notification">
+            <span>{{ notificationMessage }}</span>
+        </div>
+        <div *ngIf="reservation && isUpcomingReservationFound" class="upcoming-reservation-container">
+            <div>
+                <h2 class="upcoming-reservation-title">Your Upcoming Reservation:</h2>
+            </div>
+            <div class="upcoming-reservation">
+                <div class="reservation-details">
+                    <div class="detail-item">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        <span>{{ reservation.date }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>{{ formatTime(reservation.startTime) }} - {{ formatTime(reservation.endTime) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Meeting Title: {{ reservation.title || 'No Title' }}</span>
+                    </div>
+                    <div class="detail-item" *ngIf="upcomingReservationRoom">
+                        <span>Meeting Room: {{ upcomingReservationRoom.name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="filter">
         <div class="filter-details" *ngIf="filteredData?.date || filteredData?.startTime || filteredData?.endTime || filteredData?.capacity" >
             <!-- Date -->
@@ -70,9 +98,7 @@
         <div class="room-card" (click)="onClickOnRoom(room.roomId)">
             <div class="room-image">
                 <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="{{ room.name }}">
-
                 <span *ngIf="room.roomType === 'VIP'" class="vip-badge">VIP</span>
-
             </div>
             <div class="room-details">
                 <h2>{{ room.name }}</h2>

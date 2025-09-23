@@ -230,8 +230,9 @@ label {
 /* === Add custom dropdown arrow === */
 .drop-down {
   position: relative;
-  margin-bottom: 0.4rem;
+  margin-top:15px;
 }
+
 
 .time-font {
   font-weight: bold;
@@ -239,7 +240,111 @@ label {
   font-size: 1.2rem;
 }
 
+
+
+.recurrence-options {
+  margin-top: 10px;
+  padding: 10px;
+  margin-left: auto;
+  justify-content: center;
+  margin-right: 10px;
+  background: #f9f9f9;
+}
+
+.option-Labels {
+  font-size: 1.1rem;
+  font-weight: 500;
+  justify-content: space-evenly;
+  justify-items: center;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: center;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.option-Labels label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer
+}
+
+.daily-input{
+  margin-right: 8px;
+  margin-left: auto;
+  transform: scale(1.2);
+}
+.weekly-input{
+  margin-right: auto;
+  margin-left: 8px;
+  transform: scale(1.2);
+}
+
+
+.btn-style {
+  text-align: center ;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content:space-evenly;
+}
+
 /* === Recurring Duration === */
+
+.btn-recurrance {
+  order: -1; /* moves button before other siblings */
+  width: 35.5%;
+  margin-top: 0; /* reset margin top for alignment */
+  margin-right: 9px;
+  padding: 10px 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: #eee;
+  color: #25324D;
+  cursor: pointer;
+  height: 40px;
+  box-shadow: 0 3px 10px rgba(37, 50, 77, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.btn-recurrance:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+
+.btn-norecurrance{
+  order: -1;
+  width: 35%;
+  margin-top: 0;
+  margin-right: auto;
+  padding: 10px 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background:#eee ;
+  color: #25324D;
+  cursor: pointer;
+  height: 40px;
+  box-shadow: 0 3px 10px rgba(37, 50, 77, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+  flex-shrink: 0;
+  margin-left: 9px;
+}
+
+.btn-norecurrance:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+
+
+
 .recurring-duration {
   text-align: center;
   width: 100%;
@@ -304,12 +409,12 @@ textarea:focus {
   margin-top: 1.5rem;
   display: flex;
   justify-content:space-evenly;
-  
+
 }
 
 /* Cancel Button */
 .btn-cancel {
-   width: 30%;
+  width: 30%;
   margin-top: 1rem;
   margin-right: 1rem;
   margin-left: 1rem;
@@ -338,7 +443,7 @@ textarea:focus {
 }
 
 
-/* 
+/*
 .btn-cancel {
   width: 30%;
   margin-top: 1rem;
@@ -406,24 +511,24 @@ textarea:focus {
 /* Loader Container - relative, responsive */
 .loader-container {
   display: flex;
-  align-items: center;     
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  min-height: 200px;       
-  padding: 2rem;           
-  box-sizing: border-box;  
+  min-height: 200px;
+  padding: 2rem;
+  box-sizing: border-box;
   z-index: 9999;
 }
 
 /* Loader */
 .loader {
-  width: 8vw;             
-  max-width: 60px;        
-  min-width: 30px;        
-  aspect-ratio: 1;        
+  width: 8vw;
+  max-width: 60px;
+  min-width: 30px;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #25324D;
-  --_m: 
+  --_m:
     conic-gradient(#0000 10%, #000),
     linear-gradient(#000 0 0) content-box;
   -webkit-mask: var(--_m);

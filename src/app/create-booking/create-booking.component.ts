@@ -57,6 +57,12 @@ export class CreateBookingComponent {
   modeTypeMsg = '';
   isUpdate: boolean = false;
   dateComingFromCalenderView: string | null = null;
+recurrenceSelected: string = this.options[0];  // default to 'One time' option
+showRecurrenceOptions: boolean = false;
+showNoRecurrenceOption: boolean = false;
+
+
+
   constructor(private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
@@ -172,27 +178,27 @@ export class CreateBookingComponent {
   }
 
   selectOption(option: string) {
-    this.selectedOption = option;
+  this.recurrenceSelected = option;
+  this.selectedOption = option;  // keep for backwards compatibility if used elsewhere
+  this.showRecurrenceOptions = true;
+  this.showNoRecurrenceOption = option == this.options[0];
 
-    // Update validation for numberOfRecurrence based on recurrence option
-    const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
-    if (option === this.options[0]) { // One-time
-      numberOfRecurrenceControl?.clearValidators();
-      numberOfRecurrenceControl?.setValue(1);
-    } else { // Daily or Weekly
-      numberOfRecurrenceControl?.setValidators([Validators.required, Validators.min(2)]);
-      if (numberOfRecurrenceControl?.value === 1) {
-        numberOfRecurrenceControl?.setValue(2);
-      }
+  // Update validation for numberOfRecurrence based on recurrence option
+  const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
+  if (option === this.options[0]) { // One-time
+    numberOfRecurrenceControl?.clearValidators();
+    numberOfRecurrenceControl?.setValue(1);
+  } else { // Daily or Weekly
+    numberOfRecurrenceControl?.setValidators([Validators.required, Validators.min(2)]);
+    if (numberOfRecurrenceControl?.value === 1) {
+      numberOfRecurrenceControl?.setValue(2);
     }
-    numberOfRecurrenceControl?.updateValueAndValidity();
-
-    console.log(this.selectedOption);
-    console.log(this.formatedRecOption(this.selectedOption))
   }
+  numberOfRecurrenceControl?.updateValueAndValidity();
+}
 
   formatedRecOption(option: string): string {
-    if (option === RecurrenceOption.ONE_TIME) return 'One time';
+    if (option ===RecurrenceOption.ONE_TIME) return 'One time';
     else if (option === RecurrenceOption.DAILY) return 'Daily';
     else return 'Weekly'
   }

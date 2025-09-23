@@ -38,20 +38,45 @@
     <div class="booking-form-container">
 
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
-
-
-        <!-- Recurring Duration -->
-
-        <div class="recurring-duration">
-          <div class="toggle-group">
-            @for(option of options; track $index){
-            <button type="button" class="toggle-btn" [class.active]="selectedOption === option"
-              (click)="selectOption(option)">
-              {{ formatedRecOption(option) }}
+        <div class="btn-style">
+            <button type="button" class="btn-norecurrance"  [class.active]="selectedOption === options[0]"
+              (click)="selectOption(options[0]) ; showNoRecurrenceOption = !showNoRecurrenceOption; showRecurrenceOptions = false">
+              No Recurring
             </button>
-            }
+            <button type="button" class="btn-recurrance" (click)="showRecurrenceOptions = !showRecurrenceOptions">
+              Recurring
+            </button>
           </div>
-        </div>
+
+<div *ngIf="showRecurrenceOptions" class="recurrence-options">
+  <div class="option-Labels">
+    <label>
+      <input class="daily-input"
+        type="radio"
+        name="recurrence"
+        value="Daily"
+        (change)="selectOption('Daily')"
+        [checked]="recurrenceSelected === 'Daily'"
+      />
+      Daily
+    </label>
+
+    <label>
+      <input class="weekly-input"
+        type="radio"
+        name="recurrence"
+        value="Weekly"
+        (change)="selectOption('Weekly')"
+        [checked]="recurrenceSelected === 'Weekly'"
+      />
+      Weekly
+    </label>
+  </div>
+</div>
+
+
+
+
         <!-- Title -->
         <div class="drop-down">
           <label for="title">Title</label>
@@ -108,8 +133,8 @@
         <div class="drop-down">
           <label for="end-time">End Time</label>
           <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
-             'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
-             'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
+            'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
+            'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
             }">
             <option class="time-font" value="" disabled selected>Select Time</option>
             @for (hour of endTimes; track hour) {
@@ -172,15 +197,12 @@
         </div>
 
         <!-- Desciption -->
-
         <div class="drop-down">
-          <label for="description">Description</label>
-          <textarea id="description" name="description" placeholder="Enter the description of meeting"
+          <label for="description">Reason</label>
+          <textarea id="description" name="description" placeholder="Enter the reason of the meeting"
             formControlName="description"></textarea>
         </div>
-
         <!-- button -->
-
         <div class="button">
           <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
 

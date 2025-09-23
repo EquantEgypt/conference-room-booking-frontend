@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
 import { MeetingRoom } from '../core/models/meeting-room';
-import { NgClass, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { Filter } from '../core/models/filter';
 import { FilterService } from '../core/services/shared/filters/filter.service';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, ModalComponent, NgClass],
+  imports: [NgIf, ModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

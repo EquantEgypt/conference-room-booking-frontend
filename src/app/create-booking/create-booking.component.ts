@@ -296,90 +296,47 @@ export class CreateBookingComponent {
       };
       bookingRequest = convertToReservationRequest(booking);
       console.log('Final booking request:', bookingRequest);
-      if (this.isUpdate && this.reservationId) {
-        this.api.updateReservation(this.reservationId, bookingRequest).subscribe({
-          next: (response) => {
-            console.log(response.body);
-            this.alert.Toast.fire({
-              icon: "success",
-              title: "Reservation Updated successfully."
-            });
-            this.isLoadingBtn = false;
-            this.router.navigate(['dashboard']);
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error("Full error:", err);
 
-            const backendMsg = typeof err.error === 'string' ? err.error : err.error?.message;
+      if (!this.isUpdate)
+        this.router.navigate(['summary/create-booking'], { state: { bookingRequest } });
+      else
+        this.router.navigate(['summary/modify-booking', this.reservationId], { state: { bookingRequest } });
 
-            console.log("Backend message:", backendMsg);
 
-            this.alert.Toast.fire({
-              icon: "error",
-              title: backendMsg || "Failed to Update reservation."
-            });
-            this.isLoadingBtn = false;
-          }
-        });
-      }
-    } else {
-      this.bookingForm.markAllAsTouched();
+      // If not update, send reservation
     }
-    // If not update, send reservation
-    if (!this.isUpdate && bookingRequest) {
-      this.api.sendReservation(bookingRequest).subscribe({
+    }
+
+    loadReservation(reservationId: number) {
+      this.isLoading = true;
+      this.api.getReservationById(reservationId).subscribe({
         next: (response) => {
-          console.log(response.body);
-          this.alert.Toast.fire({
-            icon: "success",
-            title: "Reservation Created successfully."
-          });
-          this.isLoadingBtn = false;
-          this.router.navigate(['dashboard']);
+          this.reservationResponse = response.body;
+          if (this.reservationResponse) {
+            this.bookingForm.patchValue({
+              title: this.reservationResponse.title,
+              description: this.reservationResponse.description || '',
+              startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
+              startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
+              endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
+              type: this.reservationResponse.type || '',
+              numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
+            });
+            this.roomId = this.reservationResponse.roomId || null;
+            this.loadRoom(this.roomId!);
+            this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
+            this.selectOption(this.selectedOption);
+          }
+          this.isLoading = false;
         },
         error: (err: HttpErrorResponse) => {
-          console.error("Full error:", err);
-
+          console.error("Error loading reservation:", err);
           this.alert.Toast.fire({
             icon: "error",
-            title: "This room is already booked for the selected time range."
+            title: "Failed to load reservation."
           });
-          this.isLoadingBtn = false;
+          this.isLoading = false;
         }
       });
     }
   }
-
-  loadReservation(reservationId: number) {
-    this.isLoading = true;
-    this.api.getReservationById(reservationId).subscribe({
-      next: (response) => {
-        this.reservationResponse = response.body;
-        if (this.reservationResponse) {
-          this.bookingForm.patchValue({
-            title: this.reservationResponse.title,
-            description: this.reservationResponse.description || '',
-            startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
-            startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
-            endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
-            type: this.reservationResponse.type || '',
-            numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
-          });
-          this.roomId = this.reservationResponse.roomId || null;
-          this.loadRoom(this.roomId!);
-          this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
-          this.selectOption(this.selectedOption);
-        }
-        this.isLoading = false;
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error("Error loading reservation:", err);
-        this.alert.Toast.fire({
-          icon: "error",
-          title: "Failed to load reservation."
-        });
-        this.isLoading = false;
-      }
-    });
-  }
-}

@@ -10,11 +10,11 @@
 
   <div class="confirm-actions">
     <button mat-raised-button color (click)="onCancel()">
-  No,Keep It
+  {{data.cancelMessage}}
 </button>
 
 <button mat-raised-button color="warn" (click)="onConfirm()">
-  Yes,Cancel Reservation
+  {{ data.confirmMessage }}
 </button>
   </div>
 </div>

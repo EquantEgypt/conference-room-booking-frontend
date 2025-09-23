@@ -312,6 +312,8 @@ export class CreateBookingComponent {
 
             const backendMsg = typeof err.error === 'string' ? err.error : err.error?.message;
 
+            console.log("Backend message:", backendMsg);
+
             this.alert.Toast.fire({
               icon: "error",
               title: backendMsg || "Failed to Update reservation."
@@ -338,11 +340,9 @@ export class CreateBookingComponent {
         error: (err: HttpErrorResponse) => {
           console.error("Full error:", err);
 
-          const backendMsg = typeof err.error === 'string' ? err.error : err.error?.message;
-
           this.alert.Toast.fire({
             icon: "error",
-            title: backendMsg || "Failed to create reservation."
+            title: "This room is already booked for the selected time range."
           });
           this.isLoadingBtn = false;
         }

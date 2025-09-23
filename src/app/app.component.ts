@@ -13,7 +13,7 @@ import { NgIf } from '@angular/common';
 })
 export class AppComponent {
   get isLoggedIn(): boolean {
-    return sessionStorage.getItem(TOKEN) !== null;
+    return localStorage.getItem(TOKEN) !== null;
   }
   title = 'conference-room-booking';
 }

@@ -1,3 +1,4 @@
+import { QuillModule } from 'ngx-quill';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ReservationResponse } from '../core/models/reservation-response';
 
+
 interface Room {
   id: number;
   name: string;
@@ -24,7 +26,7 @@ interface Room {
 @Component({
   selector: 'app-create-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,QuillModule],
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.css']
 })
@@ -57,9 +59,20 @@ export class CreateBookingComponent {
   modeTypeMsg = '';
   isUpdate: boolean = false;
   dateComingFromCalenderView: string | null = null;
-recurrenceSelected: string = this.options[0];  // default to 'One time' option
-showRecurrenceOptions: boolean = false;
-showNoRecurrenceOption: boolean = false;
+  recurrenceSelected: string = this.options[0];  // default to 'One time' option
+  showRecurrenceOptions: boolean = false;
+  showNoRecurrenceOption: boolean = false;
+
+quillModules = {
+  toolbar: [
+    ['bold', 'italic', 'underline'],
+    [{ 'header': 1 }, { 'header': 2 }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link'],
+    ['clean']
+  ]
+};
 
 
 
@@ -112,7 +125,7 @@ showNoRecurrenceOption: boolean = false;
 
     this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
-      description: [''], // Set empty string instead of null
+      reason: [''], // Set empty string instead of null
       startDate: [
         this.dateComingFromCalenderView
         ?? this.filteredData?.date
@@ -208,8 +221,8 @@ showNoRecurrenceOption: boolean = false;
     else return 'External';
   }
 
-  get description(): AbstractControl | null {
-    return this.bookingForm.get('description');
+  get reason(): AbstractControl | null {
+    return this.bookingForm.get('reason');
   }
 
   get startDate(): AbstractControl | null {
@@ -296,7 +309,7 @@ showNoRecurrenceOption: boolean = false;
         endTime: endTime,
         recurrenceOption: this.selectedOption,
         roomId: roomId,
-        description: this.bookingForm.value.description || "", // Ensure description is never null
+        reason: this.bookingForm.value.reason || "", // Ensure reason is never null
         // Only include numberOfRecurrence for recurring meetings
         ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
       };
@@ -324,7 +337,7 @@ showNoRecurrenceOption: boolean = false;
         if (this.reservationResponse) {
           this.bookingForm.patchValue({
             title: this.reservationResponse.title,
-            description: this.reservationResponse.description || '',
+            reason: this.reservationResponse.reason || '',
             startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
             startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
             endTime: this.extractHour(this.reservationResponse.endTime ?? ''),

@@ -74,24 +74,14 @@
   </div>
 </div>
 
-
-
-
-        <!-- Title -->
-        <div class="drop-down">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" placeholder="Enter the title of meeting" formControlName="title"
-            required [ngClass]="{
-            'is-invalid': title?.touched && title?.invalid,
-            'is-valid': title?.touched && title?.valid
-            }">
-        </div>
-
-        <div *ngIf="title?.invalid && title?.touched" class="validation-message">
-          <span *ngIf="title?.errors?.['required']">Title is required.</span>
-          <span *ngIf="title?.errors?.['maxLength']">Title cannot exceed 50 characters.</span>
-        </div>
-
+<!-- Quill editor version -->
+<div class="drop-down">
+  <label for="reason">Reason (optional)</label>
+  <quill-editor
+    formControlName="reason"
+    placeholder="Write the reason for the booking...">
+  </quill-editor>
+</div>
 
         <!-- start Date input -->
 
@@ -196,11 +186,13 @@
           <span *ngIf="type?.errors?.['required']">Meeting type is required.</span>
         </div>
 
-        <!-- Desciption -->
-        <div class="drop-down">
-          <label for="description">Reason</label>
-          <textarea id="description" name="description" placeholder="Enter the reason of the meeting"
-            formControlName="description"></textarea>
+        <!-- Reason -->
+        <label for="reason">Reason</label>
+        <quill-editor formControlName="reason" [modules]="quillModules" placeholder="Describe your meeting's purpose..."
+          style="height: 200px;">
+        </quill-editor>
+        <div *ngIf="reason?.invalid && reason?.touched" class="text-danger">
+          Reason is required.
         </div>
         <!-- button -->
         <div class="button">

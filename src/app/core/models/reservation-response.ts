@@ -7,10 +7,10 @@ export interface ReservationResponse {
     reservationId: number | null,
     type: ReservationType | null,
     title: string | null,
-    description: string | null,
+    reason: string | null,
     date: Date | string | null,
-    startTime: string | null, 
-    endTime: string | null, 
+    startTime: string | null,
+    endTime: string | null,
     recurrenceOption: RecurrenceOption | null,
     recurrenceEndDate: Date | string | null,
     roomName: string | null,
@@ -24,7 +24,7 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             reservationId: null,
             type: null,
             title: null,
-            description: null,
+            reason: null,
             date:null,
             startTime: null,
             endTime: null,
@@ -49,8 +49,8 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             ? raw.title
             : null,
 
-        description: typeof raw.description === "string"
-            ? raw.description
+        reason: typeof raw.reason === "string"
+            ? raw.reason
             : null,
 
         date: raw.date ?? null,

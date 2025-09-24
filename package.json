@@ -22,6 +22,7 @@
     "@angular/router": "^18.2.0",
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@sweetalert2/ngx-sweetalert2": "^14.0.0",
+    "ngx-quill": "^26.0.10",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.23.0",
@@ -29,8 +30,8 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.10",
-    "@angular/cli": "^18.2.10",
+    "@angular-devkit/build-angular": "^20.3.2",
+    "@angular/cli": "^20.3.2",
     "@angular/compiler-cli": "^18.2.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.2.0",

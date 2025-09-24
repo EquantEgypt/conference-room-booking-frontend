@@ -6,21 +6,21 @@ import { Reservation } from "./reservation";
 
 export interface ReservationRequest {
     type: ReservationType | null,
-    description: string | null,
+    reason: string | null,
     title: string | null,
-    date: Date | string | null, 
-    startTime: string | null,   
-    endTime: string | null,     
+    date: Date | string | null,
+    startTime: string | null,
+    endTime: string | null,
     recurrenceOption: RecurrenceOption | null;
     roomId: number | null;
-    numberOfOccurrences?: number | null; 
+    numberOfOccurrences?: number | null;
 }
 
 export function convertToReservationRequest(reservation: Reservation | null): ReservationRequest {
     // Time formatting is handled in the component, just pass through the values
     return {
         type: reservation?.type ?? null,
-        description: reservation?.description ?? null,
+        reason: reservation?.reason ?? null,
         title: reservation?.title ?? null,
         date: reservation?.date ?? null,
         startTime: (reservation as any)?.startTime ?? null,

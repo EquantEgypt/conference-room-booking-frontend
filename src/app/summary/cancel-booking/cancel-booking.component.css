@@ -23,9 +23,21 @@ h2 {
   color: #333;
 }
 
+
+/* Room Image */
+.room-image{
+  display: block;
+  margin: 0 auto 15px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /* Reservation Details Section */
 .reservation-details {
   margin-top: 10px;
+  
 }
 
 .reservation-details p {

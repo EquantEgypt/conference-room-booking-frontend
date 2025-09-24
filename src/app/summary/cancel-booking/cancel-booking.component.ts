@@ -46,7 +46,7 @@ export class CancelBookingComponent implements OnInit {
       }
     });
   }
-  
+
   onBack() {
     this.router.navigate(['/my-booking']);
   }
@@ -91,5 +91,13 @@ export class CancelBookingComponent implements OnInit {
       this.isLoading = false;
     }
   });
+  }
+  formatTime(time: string): string {
+    if (!time) return '';
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour;
+    return `${displayHour}:${minuteStr} ${suffix}`;
   }
 }

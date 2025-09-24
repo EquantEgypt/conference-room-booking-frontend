@@ -1,3 +1,4 @@
+import { QuillModule } from 'ngx-quill';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ReservationResponse } from '../core/models/reservation-response';
 
+
 interface Room {
   id: number;
   name: string;
@@ -24,7 +26,7 @@ interface Room {
 @Component({
   selector: 'app-create-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, QuillModule],
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.css']
 })
@@ -57,6 +59,23 @@ export class CreateBookingComponent {
   modeTypeMsg = '';
   isUpdate: boolean = false;
   dateComingFromCalenderView: string | null = null;
+  recurrenceSelected: string = this.options[0];  // default to 'One time' option
+  showRecurrenceOptions: boolean = false;
+  showNoRecurrenceOption: boolean = false;
+
+quillModules = {
+  toolbar: [
+    ['bold', 'italic', 'underline'],
+    [{ 'header': 1 }, { 'header': 2 }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link'],
+    ['clean']
+  ]
+};
+
+
+
   constructor(private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
@@ -172,27 +191,27 @@ export class CreateBookingComponent {
   }
 
   selectOption(option: string) {
-    this.selectedOption = option;
+  this.recurrenceSelected = option;
+  this.selectedOption = option;  // keep for backwards compatibility if used elsewhere
+  this.showRecurrenceOptions = true;
+  this.showNoRecurrenceOption = option == this.options[0];
 
-    // Update validation for numberOfRecurrence based on recurrence option
-    const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
-    if (option === this.options[0]) { // One-time
-      numberOfRecurrenceControl?.clearValidators();
-      numberOfRecurrenceControl?.setValue(1);
-    } else { // Daily or Weekly
-      numberOfRecurrenceControl?.setValidators([Validators.required, Validators.min(2)]);
-      if (numberOfRecurrenceControl?.value === 1) {
-        numberOfRecurrenceControl?.setValue(2);
-      }
+  // Update validation for numberOfRecurrence based on recurrence option
+  const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
+  if (option === this.options[0]) { // One-time
+    numberOfRecurrenceControl?.clearValidators();
+    numberOfRecurrenceControl?.setValue(1);
+  } else { // Daily or Weekly
+    numberOfRecurrenceControl?.setValidators([Validators.required, Validators.min(2)]);
+    if (numberOfRecurrenceControl?.value === 1) {
+      numberOfRecurrenceControl?.setValue(2);
     }
-    numberOfRecurrenceControl?.updateValueAndValidity();
-
-    console.log(this.selectedOption);
-    console.log(this.formatedRecOption(this.selectedOption))
   }
+  numberOfRecurrenceControl?.updateValueAndValidity();
+}
 
   formatedRecOption(option: string): string {
-    if (option === RecurrenceOption.ONE_TIME) return 'One time';
+    if (option ===RecurrenceOption.ONE_TIME) return 'One time';
     else if (option === RecurrenceOption.DAILY) return 'Daily';
     else return 'Weekly'
   }
@@ -290,7 +309,7 @@ export class CreateBookingComponent {
         endTime: endTime,
         recurrenceOption: this.selectedOption,
         roomId: roomId,
-        description: this.bookingForm.value.description || "", // Ensure description is never null
+        description: this.bookingForm.value.description || "",
         // Only include numberOfRecurrence for recurring meetings
         ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
       };
@@ -305,38 +324,41 @@ export class CreateBookingComponent {
 
       // If not update, send reservation
     }
-    }
-
-    loadReservation(reservationId: number) {
-      this.isLoading = true;
-      this.api.getReservationById(reservationId).subscribe({
-        next: (response) => {
-          this.reservationResponse = response.body;
-          if (this.reservationResponse) {
-            this.bookingForm.patchValue({
-              title: this.reservationResponse.title,
-              description: this.reservationResponse.description || '',
-              startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
-              startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
-              endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
-              type: this.reservationResponse.type || '',
-              numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
-            });
-            this.roomId = this.reservationResponse.roomId || null;
-            this.loadRoom(this.roomId!);
-            this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
-            this.selectOption(this.selectedOption);
-          }
-          this.isLoading = false;
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error("Error loading reservation:", err);
-          this.alert.Toast.fire({
-            icon: "error",
-            title: "Failed to load reservation."
-          });
-          this.isLoading = false;
-        }
-      });
+    else {
+      this.bookingForm.markAllAsTouched();
     }
   }
+
+  loadReservation(reservationId: number) {
+    this.isLoading = true;
+    this.api.getReservationById(reservationId).subscribe({
+      next: (response) => {
+        this.reservationResponse = response.body;
+        if (this.reservationResponse) {
+          this.bookingForm.patchValue({
+            title: this.reservationResponse.title,
+            description: this.reservationResponse.description || '',
+            startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
+            startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
+            endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
+            type: this.reservationResponse.type || '',
+            numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
+          });
+          this.roomId = this.reservationResponse.roomId || null;
+          this.loadRoom(this.roomId!);
+          this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
+          this.selectOption(this.selectedOption);
+        }
+        this.isLoading = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error("Error loading reservation:", err);
+        this.alert.Toast.fire({
+          icon: "error",
+          title: "Failed to load reservation."
+        });
+        this.isLoading = false;
+      }
+    });
+  }
+}

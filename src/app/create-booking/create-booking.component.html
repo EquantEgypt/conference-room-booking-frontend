@@ -38,21 +38,43 @@
     <div class="booking-form-container">
 
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
-
-
-        <!-- Recurring Duration -->
-
-        <div class="recurring-duration">
-          <div class="toggle-group">
-            @for(option of options; track $index){
-            <button type="button" class="toggle-btn" [class.active]="selectedOption === option"
-              (click)="selectOption(option)">
-              {{ formatedRecOption(option) }}
+        <div class="btn-style">
+            <button type="button" class="btn-norecurrance"  [class.active]="selectedOption === options[0]"
+              (click)="selectOption(options[0]) ; showNoRecurrenceOption = !showNoRecurrenceOption; showRecurrenceOptions = false">
+              No Recurring
             </button>
-            }
+            <button type="button" class="btn-recurrance" (click)="showRecurrenceOptions = !showRecurrenceOptions">
+              Recurring
+            </button>
           </div>
-        </div>
-        <!-- Title -->
+
+<div *ngIf="showRecurrenceOptions" class="recurrence-options">
+  <div class="option-Labels">
+    <label>
+      <input class="daily-input"
+        type="radio"
+        name="recurrence"
+        value="Daily"
+        (change)="selectOption('Daily')"
+        [checked]="recurrenceSelected === 'Daily'"
+      />
+      Daily
+    </label>
+
+    <label>
+      <input class="weekly-input"
+        type="radio"
+        name="recurrence"
+        value="Weekly"
+        (change)="selectOption('Weekly')"
+        [checked]="recurrenceSelected === 'Weekly'"
+      />
+      Weekly
+    </label>
+  </div>
+</div>
+
+    <!-- Title -->
         <div class="drop-down">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" placeholder="Enter the title of meeting" formControlName="title"
@@ -69,7 +91,6 @@
 
 
         <!-- start Date input -->
-
         <div class="filter-date">
           <label for="startDate">Select Start Date</label>
           <input type="date" id="startDate" name="startDate" formControlName="startDate" required [ngClass]="{
@@ -108,8 +129,8 @@
         <div class="drop-down">
           <label for="end-time">End Time</label>
           <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
-             'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
-             'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
+            'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
+            'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
             }">
             <option class="time-font" value="" disabled selected>Select Time</option>
             @for (hour of endTimes; track hour) {
@@ -126,10 +147,6 @@
         <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched"
           class="validation-message">
           End time must be after start time
-        </div>
-
-        <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
-          <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
         </div>
 
         <div *ngIf="selectedOption !== options[0]" class="recurring-options">
@@ -171,16 +188,17 @@
           <span *ngIf="type?.errors?.['required']">Meeting type is required.</span>
         </div>
 
-        <!-- Desciption -->
-
-        <div class="drop-down">
-          <label for="description">Description</label>
-          <textarea id="description" name="description" placeholder="Enter the description of meeting"
-            formControlName="description"></textarea>
+        <!-- Reason -->
+        <div class="reason">
+          <label for="description">Reason</label>
+          <quill-editor  formControlName="description" [modules]="quillModules" placeholder="Describe your meeting's purpose..."
+            style="height: 200px; width:100%; ">
+          </quill-editor>
+          <div *ngIf="description?.invalid && description?.touched" class="text-danger">
+            Reason is required.
+          </div>
         </div>
-
         <!-- button -->
-
         <div class="button">
           <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
 

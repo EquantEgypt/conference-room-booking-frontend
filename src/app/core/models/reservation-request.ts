@@ -8,12 +8,12 @@ export interface ReservationRequest {
     type: ReservationType | null,
     description: string | null,
     title: string | null,
-    date: Date | string | null, 
-    startTime: string | null,   
-    endTime: string | null,     
+    date: Date | string | null,
+    startTime: string | null,
+    endTime: string | null,
     recurrenceOption: RecurrenceOption | null;
     roomId: number | null;
-    numberOfOccurrences?: number | null; 
+    numberOfOccurrences?: number | null;
 }
 
 export function convertToReservationRequest(reservation: Reservation | null): ReservationRequest {

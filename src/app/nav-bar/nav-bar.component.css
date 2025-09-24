@@ -1,23 +1,39 @@
 nav {
     display: flex;
     justify-content: space-between;
-    padding: 15px 5%;
+    padding: 16px 5%;
     align-items: center;
-    background: #18283B;
+    background: #000000;
+    border-bottom: 1px solid #333333;
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 .nav-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 24px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logo-image {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
 }
 
 .logo {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 22px;
-    cursor: pointer;
-    transition: all .3s ease;
-    color:#2979FF;
+    line-height: 1.27;
+    color: #FF7900;
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 ul {
@@ -32,18 +48,54 @@ ul li {
 
 ul li a {
     cursor: pointer;
-    color: #FFF;
+    color: #FFFFFF;
     text-decoration: none;
-    padding: 8px 20px;
-    border-radius: 7px;
-    transition: all .3s ease;
-    font-weight: 500;
-    font-weight: bold;
-
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 .welcome-message {
-    color: #E6F0FF;
-    font-size: 15px;
-    opacity: 0.9;
+    color: #CCCCCC;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Enhanced hover states for Orange Design System */
+ul li a:hover {
+    background: #FF7900;
+    color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 121, 0, 0.3);
+}
+
+.logout-link:hover {
+    background: #FF4D4D !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.3) !important;
+}
+
+.logo-container:hover {
+    transform: translateY(-1px);
+}
+
+.logo-container:hover .logo {
+    color: #FFB366;
+}
+
+/* Active states */
+ul li a:active {
+    transform: translateY(0);
+}
+
+/* Focus states for accessibility */
+ul li a:focus {
+    outline: 2px solid #FF7900;
+    outline-offset: 2px;
 }

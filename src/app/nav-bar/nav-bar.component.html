@@ -1,17 +1,14 @@
 <nav>
   <div class="nav-left">
-    <div class="logo" (click)="onClickHome()" (mouseover)="logoColor='#2979FF'" (mouseout)="logoColor='#FFF'" [style.color]="logoColor">Room Booking</div>
+    <div class="logo-container" (click)="onClickHome()">
+      <img src="assets/orange-logo.svg" alt="Orange Logo" class="logo-image">
+      <div class="logo">Room Booking</div>
+    </div>
     <div class="welcome-message">Welcome, {{ username }}</div>
   </div>
   <ul>
-    <li><a (click)="onClickMyBooking()" class="home-link" onmouseover="this.style.color='#2979FF';"
-        onmouseout="this.style.color='#fff';">My Booking</a></li>
-
-    <li><a (click)="onClickcalendarView()" class="home-link" onmouseover="this.style.color='#2979FF';"
-        onmouseout="this.style.color='#fff';">Calendar View</a></li>
-
-
-    <li><a (click)="logout()" class="logout-link" onmouseover="this.style.color='#FF4D4D';"
-        onmouseout="this.style.color='#fff';">Logout</a></li>
+    <li><a (click)="onClickMyBooking()" class="home-link">My Booking</a></li>
+    <li><a (click)="onClickcalendarView()" class="home-link">Calendar View</a></li>
+    <li><a (click)="logout()" class="logout-link">Logout</a></li>
   </ul>
 </nav>

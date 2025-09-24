@@ -83,7 +83,7 @@
 //       default: return type;
 //     }
 //   }
-  
+
 // }
 
 import { Component, OnInit } from '@angular/core';
@@ -92,30 +92,53 @@ import { convertToReservationList, ReservationResponse } from '../core/models/re
 import { MatDialog } from '@angular/material/dialog';
 import { CancelBookingComponent } from '../summary/cancel-booking/cancel-booking.component';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-booking',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './my-booking.component.html',
   styleUrls: ['./my-booking.component.css']
 })
 export class MyBookingComponent implements OnInit {
   reservations: ReservationResponse[] = [];
   isLoading = false;
+  filteredReservations: ReservationResponse[] = [];
+  currentDateFilter: string = 'ALL';
+  typeFilter: string = 'ALL';
+ selectedRecurrence: string = 'ALL';
 
-  constructor(private api: ApiService, private dialog: MatDialog, private router: Router) {} 
+  constructor(private api: ApiService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchReservations();
   }
-
   fetchReservations() {
     this.isLoading = true;
     this.api.getAllReservations().subscribe({
       next: (response) => {
-        this.reservations = convertToReservationList(response.body);
+        const allReservations = convertToReservationList(response.body);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const upcoming = allReservations.filter(r => {
+          if (!r.date) return false;
+          const reservationDate = new Date(r.date as string | Date);
+          reservationDate.setHours(0, 0, 0, 0);
+          return reservationDate >= today;
+        });
+
+        upcoming.sort((a, b) => {
+          const aDate = a.date ? new Date(a.date as string | Date) : new Date(0);
+          const bDate = b.date ? new Date(b.date as string | Date) : new Date(0);
+          return aDate.getTime() - bDate.getTime();
+        });
+
+        this.reservations = upcoming;
+        this.filteredReservations = upcoming;
         this.isLoading = false;
       },
       error: (err) => {
@@ -124,9 +147,46 @@ export class MyBookingComponent implements OnInit {
       }
     });
   }
+  applyFilters(dateFilter: string, typeFilter: string, recurrenceFilter?: string) {
+  this.currentDateFilter = dateFilter;
+  this.typeFilter = typeFilter;
+  if (recurrenceFilter) this.selectedRecurrence = recurrenceFilter;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let result = this.reservations.filter(r => {
+    if (!r.date) return false;
+    const d = new Date(r.date as string | Date);
+    d.setHours(0, 0, 0, 0);
+
+    if (dateFilter === 'TODAY' && d.getTime() !== today.getTime()) return false;
+    if (dateFilter === 'NEXT_DAY') {
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + 1);
+      if (d.getTime() !== nextDay.getTime()) return false;
+    }
+    if (dateFilter === 'THIS_WEEK') {
+      const weekEnd = new Date(today);
+      weekEnd.setDate(today.getDate() + 7);
+      if (d < today || d > weekEnd) return false;
+    }
+
+   
+    if (typeFilter !== 'ALL' && r.type !== typeFilter) return false;
+
+    
+    if (this.selectedRecurrence && this.selectedRecurrence !== 'ALL' &&
+        r.recurrenceOption?.toUpperCase() !== this.selectedRecurrence.toUpperCase()) return false;
+
+    return true;
+  });
+
+  this.filteredReservations = result;
+}
 
   onDelete(reservation: ReservationResponse) {
-     this.router.navigate(['/cancel-booking', reservation.reservationId]);
+    this.router.navigate(['/cancel-booking', reservation.reservationId]);
   }
 
   onEdit(reservation: ReservationResponse) {

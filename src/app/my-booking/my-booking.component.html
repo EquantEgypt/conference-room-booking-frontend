@@ -1,45 +1,51 @@
-<div class="container">
+<div class="booking-page">
 
-    <div *ngIf="isLoading" class="loader-container">
-        <div class="loader"></div>
+  <div class="filter-bar">
+    <div class="filter-left">
+      <button mat-button [class.active]="currentDateFilter==='TODAY'" (click)="applyFilters('TODAY', typeFilter, selectedRecurrence)">Today</button>
+      <button mat-button [class.active]="currentDateFilter==='NEXT_DAY'" (click)="applyFilters('NEXT_DAY', typeFilter, selectedRecurrence)">Next Day</button>
+      <button mat-button [class.active]="currentDateFilter==='THIS_WEEK'" (click)="applyFilters('THIS_WEEK', typeFilter, selectedRecurrence)">This Week</button>
+      <button mat-button [class.active]="currentDateFilter==='ALL'" (click)="applyFilters('ALL', typeFilter, selectedRecurrence)">All</button>
     </div>
 
-    <table *ngIf="!isLoading" class="booking-table booking-table-bordered booking-table-hover booking-table-striped">
+    <div class="filter-right">
 
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Room</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Type</th>
-                <th>Recurring option</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
+      <select [(ngModel)]="typeFilter" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
+        <option value="ALL">All Types</option>
+        <option value="INTERNAL">Internal</option>
+        <option value="EXTERNAL">External</option>
+      </select>
 
-        <tbody>
-            <tr *ngFor="let reservation of reservations; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ reservation.title || '---' }}</td>
-                <td>{{ reservation.roomName || 'N/A' }}</td>
-                <td>{{ formatDate(reservation.date) }}</td>
-                <td>{{ formatTime(reservation.startTime) }}</td>
-                <td>{{ formatTime(reservation.endTime) }}</td>
-                <td>{{ formatReservationType(reservation.type) }}</td>
-                <td>{{ formatRecurrenceOption(reservation.recurrenceOption) }}</td>
-                <td><button class="edit-btn" (click)="onEdit(reservation)"><i class="fas fa-edit"></i></button></td>
-                <td><button class="delete-btn" (click)="onDelete(reservation)"><i class="fa-solid fa-trash"></i></button></td>
-            </tr>
 
-            <tr *ngIf="reservations.length === 0">
-                <td colspan="11" class="no-data">No reservations found</td>
-            </tr>
-        </tbody>
+      <select [(ngModel)]="selectedRecurrence" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
+        <option value="ALL">All Recurrence</option>
+        <option value="ONE_TIME">One Time</option>
+        <option value="DAILY">Daily</option>
+        <option value="WEEKLY">Weekly</option>
+      </select>
+    </div>
+  </div>
 
-    </table>
+  <div *ngIf="isLoading" class="loader"></div>
 
+  <div *ngIf="!isLoading && filteredReservations.length > 0" class="booking-list">
+    <div *ngFor="let reservation of filteredReservations" class="booking-card">
+      <div class="card-left">
+        <h3>{{ reservation.title || 'Untitled Booking' }}</h3>
+        <p class="room">Room Name: {{ reservation.roomName || 'N/A' }}</p>
+        <p class="date">Date: {{ formatDate(reservation.date) }}</p>
+        <p class="time">From {{ formatTime(reservation.startTime) }} To {{ formatTime(reservation.endTime) }}</p>
+        <p class="type">Meeting Type: {{ formatReservationType(reservation.type) }}</p>
+        <p class="recurrence">Recurring: {{ formatRecurrenceOption(reservation.recurrenceOption) }}</p>
+      </div>
+      <div class="card-actions">
+        <button class="edit" (click)="onEdit(reservation)">Reschedule</button>
+        <button class="delete" (click)="onDelete(reservation)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && filteredReservations.length === 0" class="no-data">
+    No upcoming reservations found
+  </div>
 </div>

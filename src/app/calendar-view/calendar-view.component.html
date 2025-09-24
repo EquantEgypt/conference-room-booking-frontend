@@ -71,7 +71,9 @@
                         <div class="event securities" [class.available]="res.myReservation"
                             [class.unavailable]="!res.myReservation"
                             [ngClass]="['start-' + res.startTime, 'end-' + res.endTime]">
-                            <p class="title">{{ res.title }}</p>
+                            <p class="room-name">{{room.roomName }}</p>
+                            <p class="title">{{res.myReservation? res.title :"BUSY"}}</p>
+                            <p class="type">{{res.type}}</p>
                             <p class="time">{{ formatTime( res.startTime) }} - {{ formatTime(res.endTime) }}</p>
                         </div>
                         }

@@ -5,43 +5,51 @@
   </div>
 
   <div class="booking-container" *ngIf="!isLoading">
+
+
+
+    <!-- Current Room Preview -->
     <div class="room-preview">
 
       <div class="room-image">
         <img [src]="'/assets/rooms/room' + roomId  + '.png'" alt="{{ room?.name }}">
       </div>
 
-      <div class="room-details">
-        <h2>{{ room?.name }}</h2>
+      <!-- Room Selector (Dropdown as Room Name) -->
+      <div class="room-name-dropdown">
+        
+        <select id="room" [(ngModel)]="roomId" (ngModelChange)="onRoomChange($event)">
+          <option *ngFor="let r of roomsList" [value]="r.roomId">
+            {{ r.name }}
+          </option>
+        </select>
+      </div>
 
+      <div class="room-details">
         <div class="detail"><strong>Building:</strong> {{ room?.building }}</div>
         <div class="detail"><strong>Floor:</strong> {{ room?.floor }}</div>
         <div class="detail"><strong>Capacity:</strong> {{ room?.capacity }}</div>
         <div class="detail"><strong>Room type:</strong> {{ room?.roomType }}</div>
         <div class="detail"><strong>Status:</strong> {{ room?.status }}</div>
-      </div>
 
-
-      <div class="detail equip">
-        <strong>Equipments</strong>
-        <div class="equipment">
-          @for (equipment of room?.equipmentTypes; track $index) {
-          <span class="equip-item">{{ equipment }}</span>
-          }
+        <div class="detail equip">
+          <strong>Equipments:</strong>
+          <div class="equipment">
+            <span *ngFor="let equipment of room?.equipmentTypes" class="equip-item">
+              {{ equipment }}
+            </span>
+          </div>
         </div>
       </div>
-
     </div>
 
 
-
+    <!-- Booking Form -->
     <div class="booking-form-container">
 
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
 
-
         <!-- Recurring Duration -->
-
         <div class="recurring-duration">
           <div class="toggle-group">
             @for(option of options; track $index){
@@ -52,6 +60,7 @@
             }
           </div>
         </div>
+
         <!-- Title -->
         <div class="drop-down">
           <label for="title">Title</label>
@@ -67,9 +76,7 @@
           <span *ngIf="title?.errors?.['maxLength']">Title cannot exceed 50 characters.</span>
         </div>
 
-
         <!-- start Date input -->
-
         <div class="filter-date">
           <label for="startDate">Select Start Date</label>
           <input type="date" id="startDate" name="startDate" formControlName="startDate" required [ngClass]="{
@@ -85,7 +92,6 @@
         </div>
 
         <!-- start time input -->
-
         <div class="drop-down">
           <label for="start-time">Start Time</label>
           <select id="start-time" name="start-time" formControlName="startTime" required [ngClass]="{
@@ -104,7 +110,6 @@
         </div>
 
         <!-- end time input -->
-
         <div class="drop-down">
           <label for="end-time">End Time</label>
           <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
@@ -117,7 +122,6 @@
             }
           </select>
         </div>
-
 
         <div *ngIf="endTime?.invalid && endTime?.touched" class="validation-message">
           <span *ngIf="endTime?.errors?.['required']">End time is required.</span>
@@ -154,7 +158,6 @@
         </div>
 
         <!-- meeting type -->
-
         <div class="drop-down">
           <label for="type">Meeting type</label>
           <select id="type" name="type" formControlName="type" required [ngClass]="{
@@ -172,7 +175,6 @@
         </div>
 
         <!-- Desciption -->
-
         <div class="drop-down">
           <label for="description">Description</label>
           <textarea id="description" name="description" placeholder="Enter the description of meeting"
@@ -180,7 +182,6 @@
         </div>
 
         <!-- button -->
-
         <div class="button">
           <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
 
@@ -188,11 +189,9 @@
             <span *ngIf="!isLoadingBtn">{{modeTypeMsg}}</span>
             <span *ngIf="isLoadingBtn" class="spinner"></span>
           </button>
-
         </div>
 
       </form>
-
     </div>
   </div>
 </div>

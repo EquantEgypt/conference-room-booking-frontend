@@ -48,7 +48,7 @@ export class CancelBookingComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/my-booking']);
+    this.router.navigate(['/create-booking']);
   }
 
 

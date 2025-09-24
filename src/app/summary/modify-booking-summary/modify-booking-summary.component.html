@@ -1,6 +1,7 @@
 <div class="container" *ngIf="!isLoading; else loading">
     <h2>Booking Summary</h2>
     <div class="reservation-details" *ngIf="reservation">
+        <p><strong>Room:</strong> {{ reservation.roomName }}</p>
         <p><strong>Title:</strong> {{ reservation.title }}</p>
         <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
         <p><strong>Description:</strong> {{ reservation.description }}</p>
@@ -9,6 +10,7 @@
         <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
         <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
         <p><strong>Number of occurrences:</strong> {{ reservation.numberOfOccurrences}}</p>
+    
         <div class="confirm-actions">
             <button mat-raised-button color="primary" class="btn-back" (click)="onBack()">
                 Go Back

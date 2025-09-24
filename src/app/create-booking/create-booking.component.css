@@ -48,6 +48,10 @@
 
 .room-preview {
   flex: 1;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .room-image {
@@ -69,6 +73,29 @@
   margin: 0 auto;
 }
 
+.room-name-dropdown select {
+  margin: 40px auto 6px auto;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  background: #f9fafb;
+  color:  #25324D;
+  box-sizing: border-box;
+  min-width: 100px;
+  
+}
+
+.room-name-dropdown select:focus {
+  outline: none;
+  border-color: #25324D;
+  
+}
+
+
+
 .room-details {
   padding: 16px 0px;
 }
@@ -82,7 +109,6 @@
   padding: 0.6rem 1rem;
   border-radius: 8px;
   background: #f9fafb;
-
   border: 1px solid #ddd;
 }
 
@@ -105,9 +131,10 @@
   color: #25324D;
 }
 
-.equip strong{
+.equip strong {
   display: block;
 }
+
 .equipment {
   font-size: 1rem;
   margin: 0 auto;
@@ -284,7 +311,8 @@ textarea {
   max-width: 100%;
   resize: none;
   box-sizing: border-box;
-  border: 1px solid #ccc; /* Match dropdown border color */
+  border: 1px solid #ccc;
+  /* Match dropdown border color */
   border-radius: 8px;
   padding: 8px;
   font-size: 1rem;
@@ -293,23 +321,24 @@ textarea {
 }
 
 textarea:focus {
-  border: 1px solid #25324D; /* Match dropdown focus color */
+  border: 1px solid #25324D;
+  /* Match dropdown focus color */
   box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
   outline: none;
 }
 
 /* == buttons == */
 .button {
-  text-align: center ;
+  text-align: center;
   margin-top: 1.5rem;
   display: flex;
-  justify-content:space-evenly;
-  
+  justify-content: space-evenly;
+
 }
 
 /* Cancel Button */
 .btn-cancel {
-   width: 30%;
+  width: 30%;
   margin-top: 1rem;
   margin-right: 1rem;
   margin-left: 1rem;
@@ -319,7 +348,7 @@ textarea:focus {
   font-weight: 500;
   border: none;
   border-radius: 8px;
-  background:#25324D;
+  background: #25324D;
   color: #ffffff;
   cursor: pointer;
   height: 50px;
@@ -396,9 +425,15 @@ textarea:focus {
   margin-right: 6px;
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* == loader == */
@@ -406,30 +441,30 @@ textarea:focus {
 /* Loader Container - relative, responsive */
 .loader-container {
   display: flex;
-  align-items: center;     
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  min-height: 200px;       
-  padding: 2rem;           
-  box-sizing: border-box;  
+  min-height: 200px;
+  padding: 2rem;
+  box-sizing: border-box;
   z-index: 9999;
 }
 
 /* Loader */
 .loader {
-  width: 8vw;             
-  max-width: 60px;        
-  min-width: 30px;        
-  aspect-ratio: 1;        
+  width: 8vw;
+  max-width: 60px;
+  min-width: 30px;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #25324D;
-  --_m: 
+  --_m:
     conic-gradient(#0000 10%, #000),
     linear-gradient(#000 0 0) content-box;
   -webkit-mask: var(--_m);
-          mask: var(--_m);
+  mask: var(--_m);
   -webkit-mask-composite: source-out;
-          mask-composite: subtract;
+  mask-composite: subtract;
   animation: l3 1s infinite linear;
   padding: 8px;
 }
@@ -438,7 +473,9 @@ textarea:focus {
 
 /* Rotation Animation */
 @keyframes l3 {
-  to { transform: rotate(1turn); }
+  to {
+    transform: rotate(1turn);
+  }
 }
 
 @media (max-width: 768px) {

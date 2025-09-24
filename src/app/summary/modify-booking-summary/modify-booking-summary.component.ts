@@ -56,7 +56,7 @@ export class ModifyBookingSummaryComponent {
               title: "Reservation Updated successfully."
             });
             this.isLoading = false;
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['my-booking']);
           },
           error: (err: HttpErrorResponse) => {
             console.error("Full error:", err);

@@ -17,7 +17,7 @@
     <p><strong>Start Time:</strong>{{ reservation.startTime ? formatTime(reservation.startTime) : '' }}</p>
     <p><strong>End Time:</strong>{{ reservation.endTime ? formatTime(reservation.endTime) : '' }}</p>
     <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
-    <p><strong>Reason:</strong> {{ reservation.reason }}</p>
+    <p><strong>Reason:</strong> {{ reservation.description }}</p>
     <div class="confirm-actions">
       <button
         mat-raised-button

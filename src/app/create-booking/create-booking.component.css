@@ -153,6 +153,10 @@ label {
   margin: 0 0.4rem 0.4rem 0px;
 }
 
+.filter-date {
+  margin-top: 15px;
+}
+
 /* === Date Picker === */
 .filter-date input[type="date"] {
   width: 100%;
@@ -162,7 +166,6 @@ label {
   font-size: 1rem;
   outline: none;
   transition: border 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 0.6rem;
 }
 
 .filter-date input[type="date"]:focus {
@@ -558,4 +561,9 @@ textarea:focus {
   .room-preview {
     flex: 1;
   }
+}
+
+.reason {
+  margin-top: 15px;
+  width: 100%;
 }

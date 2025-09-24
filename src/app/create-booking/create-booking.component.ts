@@ -26,7 +26,7 @@ interface Room {
 @Component({
   selector: 'app-create-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,QuillModule],
+  imports: [ReactiveFormsModule, CommonModule, QuillModule],
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.css']
 })
@@ -125,7 +125,7 @@ quillModules = {
 
     this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
-      reason: [''], // Set empty string instead of null
+      description: [''], // Set empty string instead of null
       startDate: [
         this.dateComingFromCalenderView
         ?? this.filteredData?.date
@@ -221,8 +221,8 @@ quillModules = {
     else return 'External';
   }
 
-  get reason(): AbstractControl | null {
-    return this.bookingForm.get('reason');
+  get description(): AbstractControl | null {
+    return this.bookingForm.get('description');
   }
 
   get startDate(): AbstractControl | null {
@@ -309,7 +309,7 @@ quillModules = {
         endTime: endTime,
         recurrenceOption: this.selectedOption,
         roomId: roomId,
-        reason: this.bookingForm.value.reason || "", // Ensure reason is never null
+        description: this.bookingForm.value.description || "",
         // Only include numberOfRecurrence for recurring meetings
         ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
       };
@@ -337,7 +337,7 @@ quillModules = {
         if (this.reservationResponse) {
           this.bookingForm.patchValue({
             title: this.reservationResponse.title,
-            reason: this.reservationResponse.reason || '',
+            description: this.reservationResponse.description || '',
             startDate: this.reservationResponse.date ? new Date(this.reservationResponse.date).toISOString().split('T')[0] : this.formattedToday,
             startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
             endTime: this.extractHour(this.reservationResponse.endTime ?? ''),

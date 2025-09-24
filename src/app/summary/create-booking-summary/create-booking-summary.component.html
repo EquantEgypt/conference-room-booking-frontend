@@ -3,12 +3,15 @@
     <div class="reservation-details" *ngIf="reservation">
         <p><strong>Title:</strong> {{ reservation.title }}</p>
         <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
-        <p><strong>Reason:</strong> {{ reservation.reason }}</p>
         <p><strong>Date:</strong> {{ reservation.date | date:'mediumDate' }}</p>
         <p><strong>Start Time:</strong> {{ reservation.startTime }}</p>
         <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
         <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
         <p><strong>Number of occurrences:</strong> {{ reservation.numberOfOccurrences}}</p>
+        <div class="reason-row">
+            <div class="reason-title">Reason:</div>
+            <div class="reason-description" [innerHTML]="reservation.description"></div>
+        </div>
         <div class="confirm-actions">
             <button mat-raised-button color="primary" class="btn-back" (click)="onBack()">
                 Go Back

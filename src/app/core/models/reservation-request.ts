@@ -6,7 +6,7 @@ import { Reservation } from "./reservation";
 
 export interface ReservationRequest {
     type: ReservationType | null,
-    reason: string | null,
+    description: string | null,
     title: string | null,
     date: Date | string | null,
     startTime: string | null,
@@ -20,7 +20,7 @@ export function convertToReservationRequest(reservation: Reservation | null): Re
     // Time formatting is handled in the component, just pass through the values
     return {
         type: reservation?.type ?? null,
-        reason: reservation?.reason ?? null,
+        description: reservation?.description ?? null,
         title: reservation?.title ?? null,
         date: reservation?.date ?? null,
         startTime: (reservation as any)?.startTime ?? null,

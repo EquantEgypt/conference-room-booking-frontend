@@ -7,7 +7,7 @@ export interface ReservationResponse {
     reservationId: number | null,
     type: ReservationType | null,
     title: string | null,
-    reason: string | null,
+    description: string | null,
     date: Date | string | null,
     startTime: string | null,
     endTime: string | null,
@@ -24,7 +24,7 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             reservationId: null,
             type: null,
             title: null,
-            reason: null,
+            description: null,
             date:null,
             startTime: null,
             endTime: null,
@@ -49,8 +49,8 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             ? raw.title
             : null,
 
-        reason: typeof raw.reason === "string"
-            ? raw.reason
+        description: typeof raw.description === "string"
+            ? raw.description
             : null,
 
         date: raw.date ?? null,

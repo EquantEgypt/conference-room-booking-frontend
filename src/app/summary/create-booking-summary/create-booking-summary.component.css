@@ -1,6 +1,37 @@
+/* Reason Section: Title and Description side by side */
+.reason-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: right;
+  gap: 16px;
+  margin: 8px 0;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+.reason-title {
+  min-width: 100px;
+  font-weight: 600;
+  color: #222;
+  flex-shrink: 0;
+}
+.reason-description {
+  flex: 1;
+  color: #555;
+  text-align: left;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.reason-description ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: disc;
+  list-style-position: inside;
+}
 /* Container styling */
 .container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 30px auto;
   padding: 25px;
   background: #ffffff;
@@ -8,6 +39,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   transition: all 0.3s ease;
+ 
 }
 
 .container:hover {
@@ -36,6 +68,36 @@ h2 {
   border-bottom: 1px solid #f1f1f1;
   color: #555;
   font-size: 15px;
+}
+.contact{
+  color: #555;
+  font-size: 15px;
+  word-break: break-word;
+  justify-content: flex-start;
+  gap: 6px;
+  display: flex;
+}
+
+.contact ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  margin: 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.strong-contact{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 6px;
+  margin: 8px 0;
 }
 
 .reservation-details strong {

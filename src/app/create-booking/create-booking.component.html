@@ -74,17 +74,23 @@
   </div>
 </div>
 
-<!-- Quill editor version -->
-<div class="drop-down">
-  <label for="reason">Reason (optional)</label>
-  <quill-editor
-    formControlName="reason"
-    placeholder="Write the reason for the booking...">
-  </quill-editor>
-</div>
+    <!-- Title -->
+        <div class="drop-down">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter the title of meeting" formControlName="title"
+            required [ngClass]="{
+            'is-invalid': title?.touched && title?.invalid,
+            'is-valid': title?.touched && title?.valid
+            }">
+        </div>
+
+        <div *ngIf="title?.invalid && title?.touched" class="validation-message">
+          <span *ngIf="title?.errors?.['required']">Title is required.</span>
+          <span *ngIf="title?.errors?.['maxLength']">Title cannot exceed 50 characters.</span>
+        </div>
+
 
         <!-- start Date input -->
-
         <div class="filter-date">
           <label for="startDate">Select Start Date</label>
           <input type="date" id="startDate" name="startDate" formControlName="startDate" required [ngClass]="{
@@ -143,10 +149,6 @@
           End time must be after start time
         </div>
 
-        <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
-          <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
-        </div>
-
         <div *ngIf="selectedOption !== options[0]" class="recurring-options">
           <div class="drop-down">
             <label for="numberOfRecurrence">Number of Occurrences</label>
@@ -187,12 +189,14 @@
         </div>
 
         <!-- Reason -->
-        <label for="reason">Reason</label>
-        <quill-editor formControlName="reason" [modules]="quillModules" placeholder="Describe your meeting's purpose..."
-          style="height: 200px;">
-        </quill-editor>
-        <div *ngIf="reason?.invalid && reason?.touched" class="text-danger">
-          Reason is required.
+        <div class="reason">
+          <label for="description">Reason</label>
+          <quill-editor  formControlName="description" [modules]="quillModules" placeholder="Describe your meeting's purpose..."
+            style="height: 200px; width:100%; ">
+          </quill-editor>
+          <div *ngIf="description?.invalid && description?.touched" class="text-danger">
+            Reason is required.
+          </div>
         </div>
         <!-- button -->
         <div class="button">

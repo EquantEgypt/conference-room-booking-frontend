@@ -8,11 +8,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReservationRequest } from '../../core/models/reservation-request';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PopUpComponent } from '../../ui/pop-up/pop-up.component';
+import { QuillEditorComponent } from "ngx-quill";
 
 @Component({
   selector: 'app-create-booking-summary',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule, QuillEditorComponent],
   templateUrl: './create-booking-summary.component.html',
   styleUrl: './create-booking-summary.component.css'
 })
@@ -37,7 +38,7 @@ export class CreateBookingSummaryComponent {
     this.reservation = history.state.bookingRequest as ReservationRequest | null;
     console.log('History state:', history.state);
     console.log('Reservation from state:', this.reservation);
-    
+
   }
 
   onBack() {
@@ -69,8 +70,8 @@ export class CreateBookingSummaryComponent {
         }
       });
     }
-    
-  
+
+
       onConfirm() {
         const dialogRef = this.dialog.open(PopUpComponent, {
           width: '400px',
@@ -83,7 +84,7 @@ export class CreateBookingSummaryComponent {
             restoreFocus: true
           }
         });
-    
+
         dialogRef.afterClosed().subscribe((confirmed) => {
           if (confirmed) {
             this.onCreateReservation();

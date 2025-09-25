@@ -5,6 +5,7 @@ import { Reservation } from "./reservation";
 
 
 export interface ReservationRequest {
+    roomName: string;
     type: ReservationType | null,
     description: string | null,
     title: string | null,
@@ -19,7 +20,7 @@ export interface ReservationRequest {
 export function convertToReservationRequest(reservation: Reservation | null): ReservationRequest {
     // Time formatting is handled in the component, just pass through the values
     return {
-        type: reservation?.type ?? null,
+        type: reservation?.type ?? null, 
         description: reservation?.description ?? null,
         title: reservation?.title ?? null,
         date: reservation?.date ?? null,
@@ -28,5 +29,7 @@ export function convertToReservationRequest(reservation: Reservation | null): Re
         recurrenceOption: reservation?.recurrenceOption ?? null,
         roomId: (reservation as any)?.roomId ?? reservation?.meetingRoom?.roomId ?? null,
         numberOfOccurrences: (reservation as any)?.numberOfRecurrence ?? null,
+        roomName: (reservation as any)?.roomName ?? reservation?.meetingRoom?.name ?? ''
     };
+
 }

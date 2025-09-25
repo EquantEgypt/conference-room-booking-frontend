@@ -5,15 +5,27 @@
   </div>
 
   <div class="booking-container" *ngIf="!isLoading">
+
+
+
+    <!-- Current Room Preview -->
     <div class="room-preview">
 
       <div class="room-image">
         <img [src]="'/assets/rooms/room' + roomId  + '.png'" alt="{{ room?.name }}">
       </div>
 
-      <div class="room-details">
-        <h2>{{ room?.name }}</h2>
+      <!-- Room Selector (Dropdown as Room Name) -->
+      <div class="room-name-dropdown">
+        
+        <select id="room" [(ngModel)]="roomId" (ngModelChange)="onRoomChange($event)">
+          <option *ngFor="let r of roomsList" [value]="r.roomId">
+            {{ r.name }}
+          </option>
+        </select>
+      </div>
 
+      <div class="room-details">
         <div class="detail"><strong>Building:</strong> {{ room?.building }}</div>
         <div class="detail"><strong>Floor:</strong> {{ room?.floor }}</div>
         <div class="detail"><strong>Capacity:</strong> {{ room?.capacity }}</div>
@@ -122,6 +134,8 @@
             <span *ngIf="numberOfRecurrence?.errors?.['min']">Number of recurrences must be at least 2.</span>
           </div>
         </div>
+
+        <!-- meeting type -->
 
         <div class="drop-down">
           <label for="type">Meeting Type</label>

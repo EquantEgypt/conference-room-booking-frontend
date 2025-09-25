@@ -1,6 +1,7 @@
 <div class="container" *ngIf="!isLoading; else loading">
     <h2>Modify Booking Summary</h2>
     <div class="reservation-details" *ngIf="reservation">
+        <p><strong>Room:</strong> {{ reservation.roomName }}</p>
         <p><strong>Title:</strong> {{ reservation.title }}</p>
         <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
        

@@ -2,6 +2,7 @@ import { QuillModule } from 'ngx-quill';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../core/services/api/api.service';
@@ -45,6 +46,7 @@ export class CreateBookingComponent {
   reservationResponse: ReservationResponse | null = null;
   reservationId: number | null = null;
   rooms: Room[] = [];
+  roomsList: MeetingRoom[] = []; //newwwww
   room: MeetingRoom | null = null;
   options: string[] = options;
   resTypes: string[] = resTypes;
@@ -117,11 +119,26 @@ quillModules = {
     this.generateHours();
 
 
+    //fetch all rooms for dropdown
+    this.api.getRooms(null).subscribe({
+      next: (response) => {
+        this.roomsList = response.body as MeetingRoom[]; // cast هنا //new
+      },
+      error: (err) => {
+        console.error("Error loading rooms list", err);
+      }
+    });
+
+
+
+
+
     // fetch room details
     if (this.roomId && !this.reservationId) {
       this.loadRoom(this.roomId);
       this.modeTypeMsg = 'Reserve';
     }
+
 
     this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
@@ -168,9 +185,17 @@ quillModules = {
           console.error('Error loading rooms', err);
           this.isLoading = false;
         }
+
       },
     )
   }
+  //method for changing the room when choosing new room
+  onRoomChange(newRoomId: string | number) { 
+    this.roomId = Number(newRoomId); 
+    this.loadRoom(this.roomId); 
+}
+
+
 
   formatDateForInput(date: Date): string {
     return date.toISOString().split('T')[0]; // "2025-09-23"
@@ -309,7 +334,8 @@ quillModules = {
         endTime: endTime,
         recurrenceOption: this.selectedOption,
         roomId: roomId,
-        description: this.bookingForm.value.description || "",
+        roomName: this.room?.name ?? '' ,
+        description: this.bookingForm.value.description || "", // Ensure description is never null
         // Only include numberOfRecurrence for recurring meetings
         ...(this.selectedOption !== this.options[0] ? { numberOfRecurrence: this.bookingForm.value.numberOfRecurrence } : {})
       };

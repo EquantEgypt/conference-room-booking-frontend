@@ -1,196 +1,206 @@
-/* === Date Picker === */
-.filter-date input[type="date"] {
-    width: 100%;
-    padding: 0.5rem 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 0.6rem;
+/*
+ * Orange Business Standard Theme
+ *
+ * This stylesheet is updated to align with the Orange brand design standards,
+ * featuring the signature orange for interactive elements, a clean sans-serif
+ * font, and a modern, professional aesthetic.
+ */
+
+/* === Brand Variables === */
+:host {
+  --orange-primary: #FF7900;
+  --orange-focus-shadow: rgba(255, 121, 0, 0.4);
+  --brand-black: #000000;
+  --brand-text-color: #333333;
+  --brand-grey-light: #f2f2f2;
+  --brand-grey-medium: #cccccc;
+  --brand-grey-dark: #5b5b5b;
+  --brand-white: #ffffff;
+  --font-family-brand: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --border-radius-standard: 6px; /* Slightly smaller radius for a more corporate feel */
+  --validation-error: #D93737;
+  --validation-error-bg: #FEEEEE;
+  --validation-success: #28a745;
+  --validation-success-bg: #e6ffed;
 }
 
-.filter-date input[type="date"]:focus {
-    border: 1px solid #25324D;
-    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
+.filter-container {
+    font-family: var(--font-family-brand);
 }
 
-/* === Time Picker (Start + End) === */
-.time-font {
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-    font-size: 1.2rem;
-}
-
-/* === capacity === */
-
-.drop-down input{
-    width: 100%;
-    padding: 0.5rem 0.4rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background: #fff;
-    outline: none;
-    appearance: none;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-}
-
-.drop-down input:focus {
-    border: 1px solid #25324D;
-    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
-}
-
-
-
-/* === Dropdown === */
-.drop-down select {
-    width: 100%;
-    padding: 0.5rem 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background: #fff;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-}
-
-.drop-down select:focus {
-    border: 1px solid #25324D;
-    box-shadow: 0 0 5px rgba(37, 50, 77, 0.4);
-}
-
-/* === Add custom dropdown arrow === */
-.drop-down {
-    position: relative;
-    margin-bottom: 0.4rem;
-}
-
-/* labels */
-
+/* === Labels & Headers === */
 label {
     display: block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #25324D;
+    color: var(--brand-text-color);
     margin: 0 0.4rem 0.4rem;
 }
-
-/*equipment*/
-
 
 .header {
     text-align: center;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #25324D;
-    margin-bottom: 0.8rem;
+    color: var(--brand-black);
+    margin-bottom: 1rem; /* Increased margin */
     padding: 0.5rem 1rem;
-    text-transform: capitalize;
-    letter-spacing: 0.5px;
+    text-transform: none; /* Professional sentence case */
+    letter-spacing: 0.2px;
 }
 
+/* === Form Inputs (Date, Capacity) & Dropdowns === */
+.filter-date input[type="date"],
+.drop-down input,
+.drop-down select {
+    width: 100%;
+    padding: 0.6rem 0.75rem; /* Increased padding for better touch targets */
+    border: 1px solid var(--brand-grey-medium);
+    border-radius: var(--border-radius-standard);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 0.6rem;
+    background-color: var(--brand-white);
+    appearance: none; /* Harmonize appearance */
+    position: relative;
+}
+
+.filter-date input[type="date"]:focus,
+.drop-down input:focus,
+.drop-down select:focus {
+    border: 1px solid var(--orange-primary);
+    box-shadow: 0 0 5px var(--orange-focus-shadow);
+}
+
+/* === Time Picker Font Style === */
+/* Remove monospace font for brand consistency */
+.time-font {
+    font-weight: normal; /* Normal weight is often cleaner in dropdowns */
+    font-family: var(--font-family-brand);
+    font-size: 1rem;
+}
+
+/* === Custom Dropdown Arrow === */
+.drop-down {
+    position: relative;
+    margin-bottom: 0.4rem;
+}
+
+/* Add an arrow using a pseudo-element for a consistent look */
+.drop-down > select::after {
+    content: '▼';
+    font-size: 0.8rem;
+    color: var(--brand-grey-dark);
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* So it doesn't interfere with the select click */
+}
+
+/* === Equipment Toggles === */
 .equipment {
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    background: #ccc;
-    color: #000;
+    background: var(--brand-grey-light);
+    color: var(--brand-text-color);
     padding: 0.6rem 1rem;
     margin: 0.3rem;
-    border-radius: 8px;
+    border-radius: var(--border-radius-standard);
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease,
-        padding 0.3s ease, width 0.3s ease,
-        box-shadow 0.2s ease, transform 0.15s ease;
+    border: 1px solid var(--brand-grey-medium);
+    transition: all 0.2s ease-in-out;
 }
 
 /* Hover (only when not selected) */
 .equipment:hover:not(.selected) {
-    background: #b5b5b5;
+    background: #e0e0e0; /* A slightly darker hover grey */
+    border-color: var(--brand-grey-dark);
 }
 
 /* Selected */
 .equipment.selected {
-    background: #25324D;
-    color: #fff;
+    background: var(--orange-primary);
+    color: var(--brand-white);
+    border-color: var(--orange-primary);
     position: relative;
     animation: bounceSelect 0.25s ease;
-}
-
-/* validation */
-
-.is-invalid {
-    border: 1px solid #aa0b20 !important;
-    background-color: #ffeff1 !important;
-}
-
-.is-valid {
-    border: 1px solid #28a745 !important;
-    background-color: #e6ffed !important;
-}
-
-.validation-message {
-    color: #ca3e51;
-    margin: 0 0 0.8rem 0.4rem;
-}
-
-
-/*  buttons */
-.buttons {
-    text-align: right;
-}
-
-.btn-apply {
-    margin-left: .5rem;
-}
-
-.btn-close {
-    margin-top: 1rem;
-    border: none;
-    color: #fff;
-    background: #25324D;
-    font-weight: 500;
-    cursor: pointer;
-    height: 40px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    padding: 0 1.5rem;
-    font-size: 1rem;
-    transform: 0.2s ease;
-}
-
-.btn-close:hover {
-    background: #18283B;
-}
-
-@keyframes bounceSelect {
-    0% {
-        transform: scale(1);
-    }
-
-    40% {
-        transform: scale(1.05);
-    }
-
-    70% {
-        transform: scale(0.97);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .equipment i {
-    margin-left: 0.4rem;
-    color: #fff;
+    margin-left: 0.5rem;
+    color: var(--brand-white);
     font-size: 1.2rem;
+}
+
+/* === Validation Styling === */
+.is-invalid {
+    border: 1px solid var(--validation-error) !important;
+    background-color: var(--validation-error-bg) !important;
+}
+
+.is-valid {
+    border: 1px solid var(--validation-success) !important;
+    background-color: var(--validation-success-bg) !important;
+}
+
+.validation-message {
+    color: var(--validation-error);
+    margin: -0.4rem 0 0.8rem 0.4rem; /* Adjusted margin to be closer to the field */
+    font-size: 0.85rem;
+}
+
+/* === Buttons === */
+.buttons {
+    text-align: right;
+    margin-top: 1.5rem; /* Add space above buttons */
+}
+
+/* Base button style */
+.btn {
+    border: none;
+    font-weight: 600; /* Bold text for buttons */
+    cursor: pointer;
+    height: 44px; /* Slightly taller for better clickability */
+    border-radius: var(--border-radius-standard);
+    transition: all 0.3s ease;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase; /* Common in corporate design */
+}
+
+.btn:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Primary Action Button (Apply) */
+.btn-primary {
+    background: var(--orange-primary);
+    color: var(--brand-white);
+    margin-left: .5rem;
+}
+
+/* Secondary Action Button (Close) */
+.btn-secondary {
+    background: var(--brand-grey-dark);
+    color: var(--brand-white);
+}
+
+.btn-secondary:hover {
+    background: var(--brand-black);
+}
+
+/* === Animations === */
+@keyframes bounceSelect {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.05); }
+    70% { transform: scale(0.97); }
+    100% { transform: scale(1); }
 }
 
 .animate-check {
@@ -198,18 +208,7 @@ label {
 }
 
 @keyframes popIn {
-    0% {
-        transform: scale(0) rotate(-180deg);
-        opacity: 0;
-    }
-
-    70% {
-        transform: scale(1.2) rotate(10deg);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1) rotate(0);
-        opacity: 1;
-    }
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    70% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
 }

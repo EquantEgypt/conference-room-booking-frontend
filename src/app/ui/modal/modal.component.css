@@ -14,12 +14,23 @@
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  background-color: #dfdfdf;;
-  padding: 1rem;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 2rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 700px;
+  background: #f7f7f7;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 @media (min-width: 768px) {

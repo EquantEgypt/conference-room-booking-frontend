@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
 import { MeetingRoom } from '../core/models/meeting-room';
-import { NgIf } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { Filter } from '../core/models/filter';
 import { FilterService } from '../core/services/shared/filters/filter.service';
@@ -13,19 +13,21 @@ import { CdkDialogContainer } from "@angular/cdk/dialog";
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, ModalComponent, CdkDialogContainer],
+  imports: [NgIf, CommonModule, ModalComponent, CdkDialogContainer],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 
 export class DashboardComponent {
+  trackRoomId(index: number, room: MeetingRoom): number {
+    return room.roomId;
+  }
 
   rooms: MeetingRoom[] = [];
   isModalOpen = false;
   maxRoomCapacity = 1;
   isLoading = false;
-  reservation : ReservationResponse | null = null;
-  upcomingReservationRoom : MeetingRoom | null = null;
+  reservations: ReservationResponse[] = [];
   notificationMessage: string | null = null;
   isUpcomingReservationFound = false;
   filteredData: Filter | null = null;
@@ -114,28 +116,16 @@ export class DashboardComponent {
   }
 
   fetchUpcomingReservations() {
-    this.api.getUpcomingReservations().subscribe({
-      next: (response) => {
+    this.api.getUpcomingReservations().subscribe(
+      (response: any) => {
         console.log(response.body);
-        this.reservation = (response.body as ReservationResponse) || null;
-        this.isUpcomingReservationFound = true;
-        if (this.reservation && this.reservation.roomId) {
-          this.api.getRoom(this.reservation.roomId).subscribe({
-            next: (roomResponse) => {
-              this.upcomingReservationRoom = (roomResponse.body as MeetingRoom) || null;
-              console.log('Upcoming reservation room:', this.upcomingReservationRoom);
-            },
-            error: (err) => {
-              console.error('Error loading room for upcoming reservation', err);
-              this.notificationMessage = 'Error loading room details for upcoming reservation';
-            }
-          });
-        }
+        this.reservations = (response.body as ReservationResponse[]) || [];
+        this.isUpcomingReservationFound = this.reservations.length > 0;
       },
-      error: (err) => {
+      (err) => {
         this.isUpcomingReservationFound = false;
         this.notificationMessage = err.error.errorMessage || 'Error loading upcoming reservation';
       }
-    });
+    );
   }
 }

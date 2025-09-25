@@ -19,116 +19,82 @@
         <div class="detail"><strong>Capacity:</strong> {{ room?.capacity }}</div>
         <div class="detail"><strong>Room type:</strong> {{ room?.roomType }}</div>
         <div class="detail"><strong>Status:</strong> {{ room?.status }}</div>
-      </div>
 
-
-      <div class="detail equip">
-        <strong>Equipments</strong>
-        <div class="equipment">
-          @for (equipment of room?.equipmentTypes; track $index) {
-          <span class="equip-item">{{ equipment }}</span>
-          }
+        <div class="detail">
+          <strong>Equipments</strong>
+          <div class="equipment">
+            @for (equipment of room?.equipmentTypes; track $index) {
+            <span class="equip-item">{{ equipment }}</span>
+            }
+          </div>
         </div>
       </div>
-
     </div>
 
-
-
     <div class="booking-form-container">
-
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
+
         <div class="btn-style">
-            <button type="button" class="btn-norecurrance"  [class.active]="selectedOption === options[0]"
-              (click)="selectOption(options[0]) ; showNoRecurrenceOption = !showNoRecurrenceOption; showRecurrenceOptions = false">
-              No Recurring
-            </button>
-            <button type="button" class="btn-recurrance" (click)="showRecurrenceOptions = !showRecurrenceOptions">
-              Recurring
-            </button>
-          </div>
-
-<div *ngIf="showRecurrenceOptions" class="recurrence-options">
-  <div class="option-Labels">
-    <label>
-      <input class="daily-input"
-        type="radio"
-        name="recurrence"
-        value="DAILY"
-        (change)="selectOption('DAILY')"
-        [checked]="recurrenceSelected === 'DAILY'"
-      />
-      Daily
-    </label>
-
-    <label>
-      <input class="weekly-input"
-        type="radio"
-        name="recurrence"
-        value="WEEKLY"
-        (change)="selectOption('WEEKLY')"
-        [checked]="recurrenceSelected === 'WEEKLY'"
-      />
-      Weekly
-    </label>
-  </div>
-</div>
-
-    <!-- Title -->
-        <div class="drop-down">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" placeholder="Enter the title of meeting" formControlName="title"
-            required [ngClass]="{
-            'is-invalid': title?.touched && title?.invalid,
-            'is-valid': title?.touched && title?.valid
-            }">
+          <button type="button" class="toggle-btn" [class.active]="selectedOption === options[0]"
+            (click)="selectOption(options[0]); showRecurrenceOptions = false">
+            One-Time
+          </button>
+          <button type="button" class="toggle-btn" [class.active]="showRecurrenceOptions && selectedOption !== options[0]"
+            (click)="showRecurrenceOptions = true">
+            Recurring
+          </button>
         </div>
 
+        <div *ngIf="showRecurrenceOptions" class="recurrence-options">
+          <div class="option-Labels">
+            <label>
+              <input type="radio" name="recurrence" value="DAILY" (change)="selectOption('DAILY')" [checked]="recurrenceSelected === 'DAILY'" />
+              Daily
+            </label>
+            <label>
+              <input type="radio" name="recurrence" value="WEEKLY" (change)="selectOption('WEEKLY')" [checked]="recurrenceSelected === 'WEEKLY'" />
+              Weekly
+            </label>
+          </div>
+        </div>
+
+        <div class="drop-down">
+          <label for="title">Title</label>
+          <input type="text" id="title" placeholder="Enter the title of the meeting" formControlName="title" required
+            [ngClass]="{ 'is-invalid': title?.touched && title?.invalid, 'is-valid': title?.touched && title?.valid }">
+        </div>
         <div *ngIf="title?.invalid && title?.touched" class="validation-message">
           <span *ngIf="title?.errors?.['required']">Title is required.</span>
           <span *ngIf="title?.errors?.['maxLength']">Title cannot exceed 50 characters.</span>
         </div>
 
-
-        <!-- start Date input -->
         <div class="filter-date">
-          <label for="startDate">Select Start Date</label>
-          <input type="date" id="startDate" name="startDate" formControlName="startDate" required [ngClass]="{
-            'is-invalid': startDate?.touched && startDate?.invalid,
-            'is-valid': startDate?.touched && startDate?.valid
-            }">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" formControlName="startDate" required
+            [ngClass]="{ 'is-invalid': startDate?.touched && startDate?.invalid, 'is-valid': startDate?.touched && startDate?.valid }">
         </div>
-
         <div *ngIf="startDate?.invalid && startDate?.touched" class="validation-message">
           <span *ngIf="startDate?.errors?.['required']">Date is required.</span>
           <span *ngIf="startDate?.errors?.['pastDate']">Date must be today or in the future.</span>
-          <span *ngIf="startDate?.errors?.['tooFarInFuture']">Date cannot be more than 1 year ahead.</span>
         </div>
-
-        <!-- start time input -->
 
         <div class="drop-down">
           <label for="start-time">Start Time</label>
-          <select id="start-time" name="start-time" formControlName="startTime" required [ngClass]="{
-            'is-invalid': startTime?.touched && startTime?.invalid,
-            'is-valid': startTime?.touched && startTime?.valid
-            }">
+          <select id="start-time" formControlName="startTime" required
+            [ngClass]="{ 'is-invalid': startTime?.touched && startTime?.invalid, 'is-valid': startTime?.touched && startTime?.valid }">
             <option class="time-font" value="" disabled selected>Select Time</option>
             @for (hour of startTimes; track hour) {
             <option [value]="hour" class="time-font">{{formatTime(hour)}}</option>
             }
           </select>
         </div>
-
         <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
           <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
         </div>
 
-        <!-- end time input -->
-
         <div class="drop-down">
           <label for="end-time">End Time</label>
-          <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
+          <select id="end-time" formControlName="endTime" required [ngClass]="{
             'is-invalid': endTime?.touched && (endTime?.hasError('required') || bookingForm.errors?.['endBeforeStart']),
             'is-valid': endTime?.touched && endTime?.valid && !bookingForm.errors?.['endBeforeStart']
             }">
@@ -138,79 +104,55 @@
             }
           </select>
         </div>
-
-
-        <div *ngIf="endTime?.invalid && endTime?.touched" class="validation-message">
-          <span *ngIf="endTime?.errors?.['required']">End time is required.</span>
+        <div *ngIf="endTime?.invalid && endTime?.touched && endTime?.errors?.['required']" class="validation-message">
+          End time is required.
         </div>
-
-        <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched"
-          class="validation-message">
-          End time must be after start time
+        <div *ngIf="!endTime?.errors?.['required'] && bookingForm.errors?.['endBeforeStart'] && endTime?.touched" class="validation-message">
+          End time must be after start time.
         </div>
 
         <div *ngIf="selectedOption !== options[0]" class="recurring-options">
           <div class="drop-down">
             <label for="numberOfRecurrence">Number of Occurrences</label>
-            <input type="number" id="numberOfRecurrence" name="numberOfRecurrence" formControlName="numberOfRecurrence"
-              placeholder="Enter Number of Occurrences" [ngClass]="{
-              'is-invalid': numberOfRecurrence?.touched && numberOfRecurrence?.invalid,
-              'is-valid': numberOfRecurrence?.touched && numberOfRecurrence?.valid
-              }">
+            <input type="number" id="numberOfRecurrence" formControlName="numberOfRecurrence" placeholder="Enter number of occurrences"
+              [ngClass]="{ 'is-invalid': numberOfRecurrence?.touched && numberOfRecurrence?.invalid, 'is-valid': numberOfRecurrence?.touched && numberOfRecurrence?.valid }">
           </div>
-
           <div *ngIf="numberOfRecurrence?.invalid && numberOfRecurrence?.touched" class="validation-message">
-            <span *ngIf="numberOfRecurrence?.errors?.['pattern']">
-              Enter a valid number
-            </span>
-
-            <span *ngIf="!numberOfRecurrence?.errors?.['pattern'] && numberOfRecurrence?.errors?.['min']">
-              Number of recurrence must be more than 1
-            </span>
+            <span *ngIf="numberOfRecurrence?.errors?.['pattern']">Enter a valid number.</span>
+            <span *ngIf="numberOfRecurrence?.errors?.['min']">Number of recurrences must be at least 2.</span>
           </div>
         </div>
 
-        <!-- meeting type -->
-
         <div class="drop-down">
-          <label for="type">Meeting type</label>
-          <select id="type" name="type" formControlName="type" required [ngClass]="{
-            'is-invalid': type?.touched && type?.invalid,
-            'is-valid': type?.touched && type?.valid
-            }">
-            <option value="">Select meeting type</option>
+          <label for="type">Meeting Type</label>
+          <select id="type" formControlName="type" required
+            [ngClass]="{ 'is-invalid': type?.touched && type?.invalid, 'is-valid': type?.touched && type?.valid }">
+            <option value="" disabled selected>Select meeting type</option>
             <option [value]="resTypes[0]">{{formatedResType(resTypes[0])}}</option>
             <option *ngIf="room?.roomType === 'VIP'" [value]="resTypes[1]">{{formatedResType(resTypes[1])}}</option>
           </select>
         </div>
-
         <div *ngIf="type?.invalid && type?.touched" class="validation-message">
-          <span *ngIf="type?.errors?.['required']">Meeting type is required.</span>
+          Meeting type is required.
         </div>
 
-        <!-- Reason -->
         <div class="reason">
           <label for="description">Reason</label>
-          <quill-editor  formControlName="description" [modules]="quillModules" placeholder="Describe your meeting's purpose..."
-            style="height: 200px; width:100%; ">
-          </quill-editor>
+          <quill-editor formControlName="description" [modules]="quillModules" placeholder="Describe your meeting's purpose..."></quill-editor>
           <div *ngIf="description?.invalid && description?.touched" class="text-danger">
             Reason is required.
           </div>
         </div>
-        <!-- button -->
-        <div class="button">
-          <button type="button" class="btn-cancel" (click)="navigateToDashboard()">Cancel</button>
 
-          <button type="submit" class="btn-reserve" [disabled]="isLoadingBtn">
+        <div class="button">
+          <button type="button" class="btn btn-secondary" (click)="navigateToDashboard()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
             <span *ngIf="!isLoadingBtn">{{modeTypeMsg}}</span>
             <span *ngIf="isLoadingBtn" class="spinner"></span>
           </button>
-
         </div>
 
       </form>
-
     </div>
   </div>
 </div>

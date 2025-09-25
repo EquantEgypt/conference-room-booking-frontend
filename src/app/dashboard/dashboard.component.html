@@ -4,29 +4,21 @@
         <div *ngIf="notificationMessage" class="notification">
             <span>{{ notificationMessage }}</span>
         </div>
-        <div *ngIf="reservation && isUpcomingReservationFound" class="upcoming-reservation-container">
-            <div class="upcoming-reservation-header">Upcoming Reservation</div>
-            <div class="reservation-table">
-                <div class="reservation-row">
-                    <div class="reservation-col title-col">
-                        <div class="col-label">TITLE</div>
-                        <div class="col-value">{{ reservation.title || 'Meeting' }}</div>
+        <div *ngIf="isUpcomingReservationFound" class="upcoming-reservation-container">
+            <div class="upcoming-reservation-header">Upcoming Reservations</div>
+            <div class="upcoming-events-list">
+                <div *ngFor="let reservation of reservations" class="event-card">
+                    <div class="event-date-block">
+                        <div class="event-day">{{ reservation.date | date:'dd' }}</div>
+                        <div class="event-month">{{ reservation.date | date:'MMMM' }}</div>
                     </div>
-                    <div class="reservation-col type-col">
-                        <div class="col-label">TYPE</div>
-                        <div class="col-value">{{reservation.type}}</div>
-                    </div>
-                    <div class="reservation-col time-col">
-                        <div class="col-label">STARTS IN</div>
-                        <div class="col-value">{{ formatTime(reservation.startTime) }} - {{ formatTime(reservation.endTime) }}</div>
-                    </div>
-                    <div class="reservation-col room-col">
-                        <div class="col-label">ROOM</div>
-                        <div class="col-value" *ngIf="upcomingReservationRoom">{{ upcomingReservationRoom.name }}</div>
-                    </div>
-                    <div class="reservation-col status-col">
-                        <div class="col-label">DATE</div>
-                        <div class="col-value">{{ reservation.date }}</div>
+                    <div class="event-details-block">
+                        <div class="event-title">{{ reservation.title || 'Meeting' }}</div>
+                        <div class="event-meta">
+                            <span class="event-time">{{ formatTime(reservation.startTime) }} — {{ formatTime(reservation.endTime) }}</span>
+                            <span class="event-room">{{ reservation.roomName || 'N/A' }}</span>
+                        </div>
+                        <div class="event-type">{{ reservation.type }}</div>
                     </div>
                 </div>
             </div>
@@ -113,8 +105,7 @@
     </div>
 
     <div *ngIf="!isLoading && rooms.length !== 0" class="rooms-grid">
-        @for (room of rooms; track room.roomId) {
-        <div class="room-card" (click)="onClickOnRoom(room.roomId)">
+        <div *ngFor="let room of rooms; trackBy: trackRoomId" class="room-card" (click)="onClickOnRoom(room.roomId)">
             <div class="room-image">
                 <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="{{ room.name }}">
                 <span *ngIf="room.roomType === 'VIP'" class="vip-badge">
@@ -135,6 +126,5 @@
                 </div>
             </div>
         </div>
-        }
     </div>
 </div>

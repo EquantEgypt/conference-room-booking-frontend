@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 import { TOKEN } from '../core/services/authentication/authentication.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { FilterService } from '../core/services/shared/filters/filter.service';
 import { ApiService } from '../core/services/api/api.service';
+import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
@@ -16,9 +18,18 @@ export class NavBarComponent implements OnInit {
   isMenuOpen = false;
   username = '';
   logoColor = '#FFF';
+  currentRoute = '';
 
   constructor(private alert:SweetAlertService,private route: Router,private filterService: FilterService, private api: ApiService){}
+  
   ngOnInit(): void {
+    // Track current route for active states
+    this.route.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.currentRoute = event.urlAfterRedirects;
+    });
+
     this.api.getUserInfo().subscribe({
       next: (response: { body: { username: string } }) => {
         this.username = response.body.username;
@@ -27,6 +38,10 @@ export class NavBarComponent implements OnInit {
         console.error('Error fetching user info:', err);
       }
     });
+  }
+
+  isActiveRoute(route: string): boolean {
+    return this.currentRoute === route || this.currentRoute.startsWith(route);
   }
 
   onClickHome(){

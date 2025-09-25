@@ -85,8 +85,13 @@
     left: 16px;
     transform: translateY(-50%);
     color: #666666;
-    font-size: 1rem;
+    width: 16px;
+    height: 16px;
     z-index: 2;
+}
+
+.icon path {
+    fill: #666666;
 }
 
 .toggle-icon {
@@ -96,12 +101,22 @@
     transform: translateY(-50%);
     cursor: pointer;
     color: #666666;
-    font-size: 1rem;
+    width: 16px;
+    height: 16px;
     transition: color 0.2s ease;
+}
+
+.toggle-icon path {
+    fill: #666666;
+    transition: fill 0.2s ease;
 }
 
 .toggle-icon:hover {
     color: #FF7900;
+}
+
+.toggle-icon:hover path {
+    fill: #FF7900;
 }
 
 .btn-submit {

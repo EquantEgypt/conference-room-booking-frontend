@@ -12,6 +12,21 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* Global SVG icon fix */
+svg.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+svg.icon path[fill="currentColor"] {
+  fill: currentColor !important;
+}
+
+/* Ensure SVG icons inherit color from parent */
+.icon {
+  color: inherit;
+}
+
 body {
   min-height: 100vh;
   background: #dfdfdf;

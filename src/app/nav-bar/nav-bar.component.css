@@ -1,3 +1,4 @@
+/* Orange Boosted Navigation - Following official guidelines */
 nav {
     display: flex;
     justify-content: space-between;
@@ -36,29 +37,6 @@ nav {
     font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-ul li {
-    display: inline-block;
-}
-
-ul li a {
-    cursor: pointer;
-    color: #FFFFFF;
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 1.5;
-    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
 .welcome-message {
     color: #CCCCCC;
     font-size: 14px;
@@ -67,20 +45,60 @@ ul li a {
     font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-/* Enhanced hover states for Orange Design System */
-ul li a:hover {
-    background: #FF7900;
-    color: #000000;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 121, 0, 0.3);
+/* Boosted Nav Tabs Light Implementation */
+.nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #333333;
+    position: relative;
 }
 
-.logout-link:hover {
-    background: #FF4D4D !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.3) !important;
+.nav-item {
+    margin-bottom: 0;
 }
 
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 3px solid transparent;
+}
+
+/* Orange Boosted Nav Tabs Light Hover Effects */
+.nav-tabs-light .nav-link:hover,
+.nav-tabs-light .nav-link:focus {
+    color: #FF7900;
+    isolation: isolate;
+}
+
+.nav-tabs-light .nav-link.active,
+.nav-tabs-light .nav-link:active {
+    color: #FF7900;
+    background-color: transparent;
+    border-bottom: 3px solid #FF7900;
+    margin-bottom: -1px;
+    position: relative;
+}
+
+/* Special styling for logout link */
+.logout-link:hover,
+.logout-link:focus {
+    color: #FF4D4D !important;
+}
+
+/* Logo container hover effects */
 .logo-container:hover {
     transform: translateY(-1px);
 }
@@ -89,13 +107,20 @@ ul li a:hover {
     color: #FFB366;
 }
 
-/* Active states */
-ul li a:active {
-    transform: translateY(0);
+/* Focus states for accessibility */
+.nav-link:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
 }
 
-/* Focus states for accessibility */
-ul li a:focus {
-    outline: 2px solid #FF7900;
-    outline-offset: 2px;
+/* Disabled state */
+.nav-link.disabled {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default;
+}
+
+.nav-link.disabled:hover {
+    color: #6c757d;
+    border-bottom-color: transparent;
 }

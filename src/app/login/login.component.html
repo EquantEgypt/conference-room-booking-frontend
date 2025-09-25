@@ -7,7 +7,10 @@
     <div class='my-alert my-alert-warning' *ngIf="this.errorMessage!=''">{{this.errorMessage}}</div>
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="form-group">
-            <i class="fa fa-user icon"></i>
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                <path d="M8 10C3.58172 10 0 13.5817 0 18H16C16 13.5817 12.4183 10 8 10Z" fill="currentColor"/>
+            </svg>
             <input type="text" name="username" class="form-input" placeholder="example@orange.com" formControlName="username"
                 required [ngClass]="{
             'is-invalid': username?.touched && username?.invalid,
@@ -22,15 +25,21 @@
         </div>
 
         <div class="form-group">
-            <i class="fa fa-lock icon"></i>
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 7V5C4 2.79086 5.79086 1 8 1C10.2091 1 12 2.79086 12 5V7H13C13.5523 7 14 7.44772 14 8V14C14 14.5523 13.5523 15 13 15H3C2.44772 15 2 14.5523 2 14V8C2 7.44772 2.44772 7 3 7H4ZM6 7H10V5C10 3.89543 9.10457 3 8 3C6.89543 3 6 3.89543 6 5V7Z" fill="currentColor"/>
+            </svg>
             <input  [type]="showPassword ? 'text' : 'password'" name="password" class="form-input" placeholder="Password"
                 formControlName="password" required [ngClass]="{
             'is-invalid': password?.touched && password?.invalid,
             'is-valid': password?.touched && password?.valid
             }"
             >
-            <i class="fa toggle-icon" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-                (click)="showPassword = !showPassword"></i>
+            <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!showPassword" (click)="showPassword = !showPassword">
+                <path d="M8 3C4.5 3 1.73 5.61 1 9C1.73 12.39 4.5 15 8 15C11.5 15 14.27 12.39 15 9C14.27 5.61 11.5 3 8 3ZM8 13C6.34 13 5 11.66 5 10C5 8.34 6.34 7 8 7C9.66 7 11 8.34 11 10C11 11.66 9.66 13 8 13ZM8 8.5C7.17 8.5 6.5 9.17 6.5 10C6.5 10.83 7.17 11.5 8 11.5C8.83 11.5 9.5 10.83 9.5 10C9.5 9.17 8.83 8.5 8 8.5Z" fill="currentColor"/>
+            </svg>
+            <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="showPassword" (click)="showPassword = !showPassword">
+                <path d="M1.5 1L14.5 14L13.5 15L11.5 13C10.5 13.6 9.3 14 8 14C4.5 14 1.73 11.39 1 8C1.3 6.8 1.9 5.7 2.7 4.8L1 3L1.5 1ZM3.7 5.8C3.2 6.4 2.8 7.2 2.5 8C3.23 10.84 5.5 13 8 13C8.9 13 9.7 12.8 10.4 12.4L9.1 11.1C8.7 11.3 8.4 11.5 8 11.5C6.6 11.5 5.5 10.4 5.5 9C5.5 8.6 5.7 8.3 5.9 7.9L3.7 5.8ZM8 3C11.5 3 14.27 5.61 15 9C14.7 10.2 14.1 11.3 13.3 12.2L12.1 11C12.6 10.4 13 9.7 13.5 9C12.77 6.16 10.5 4 8 4C7.1 4 6.3 4.2 5.6 4.6L4.4 3.4C5.5 3.1 6.7 3 8 3Z" fill="currentColor"/>
+            </svg>
         </div>
 
         <div *ngIf="password?.invalid && password?.touched" class="validation-message">

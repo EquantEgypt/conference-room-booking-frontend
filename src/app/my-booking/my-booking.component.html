@@ -1,51 +1,149 @@
-<div class="booking-page">
-
-  <div class="filter-bar">
-    <div class="filter-left">
-      <button mat-button [class.active]="currentDateFilter==='TODAY'" (click)="applyFilters('TODAY', typeFilter, selectedRecurrence)">Today</button>
-      <button mat-button [class.active]="currentDateFilter==='NEXT_DAY'" (click)="applyFilters('NEXT_DAY', typeFilter, selectedRecurrence)">Next Day</button>
-      <button mat-button [class.active]="currentDateFilter==='THIS_WEEK'" (click)="applyFilters('THIS_WEEK', typeFilter, selectedRecurrence)">This Week</button>
-      <button mat-button [class.active]="currentDateFilter==='ALL'" (click)="applyFilters('ALL', typeFilter, selectedRecurrence)">All</button>
-    </div>
-
-    <div class="filter-right">
-
-      <select [(ngModel)]="typeFilter" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
-        <option value="ALL">All Types</option>
-        <option value="INTERNAL">Internal</option>
-        <option value="EXTERNAL">External</option>
-      </select>
-
-
-      <select [(ngModel)]="selectedRecurrence" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
-        <option value="ALL">All Recurrence</option>
-        <option value="ONE_TIME">One Time</option>
-        <option value="DAILY">Daily</option>
-        <option value="WEEKLY">Weekly</option>
-      </select>
+<div class="container-fluid px-0">
+  <!-- Header Section -->
+  <div class="filter-section bg-light border-bottom p-3 mb-4">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-8 col-md-6">
+          <div class="d-flex align-items-center gap-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="dateFilter" id="today" [checked]="currentDateFilter==='TODAY'" (click)="applyFilters('TODAY', typeFilter, selectedRecurrence)">
+              <label class="form-check-label text-orange fw-medium" for="today">Today</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="dateFilter" id="nextDay" [checked]="currentDateFilter==='NEXT_DAY'" (click)="applyFilters('NEXT_DAY', typeFilter, selectedRecurrence)">
+              <label class="form-check-label text-orange fw-medium" for="nextDay">Next Day</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="dateFilter" id="thisWeek" [checked]="currentDateFilter==='THIS_WEEK'" (click)="applyFilters('THIS_WEEK', typeFilter, selectedRecurrence)">
+              <label class="form-check-label text-orange fw-medium" for="thisWeek">This Week</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input orange-radio" type="radio" name="dateFilter" id="all" [checked]="currentDateFilter==='ALL'" (click)="applyFilters('ALL', typeFilter, selectedRecurrence)">
+              <label class="form-check-label text-dark fw-medium" for="all">All</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex gap-2">
+            <select class="form-select" [(ngModel)]="typeFilter" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
+              <option value="ALL">All Types</option>
+              <option value="INTERNAL">Internal</option>
+              <option value="EXTERNAL">External</option>
+            </select>
+            
+            <select class="form-select" [(ngModel)]="selectedRecurrence" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
+              <option value="ALL">All Recurrence</option>
+              <option value="ONE_TIME">One Time</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loader"></div>
-
-  <div *ngIf="!isLoading && filteredReservations.length > 0" class="booking-list">
-    <div *ngFor="let reservation of filteredReservations" class="booking-card">
-      <div class="card-left">
-        <h3>{{ reservation.title || 'Untitled Booking' }}</h3>
-        <p class="room">Room Name: {{ reservation.roomName || 'N/A' }}</p>
-        <p class="date">Date: {{ formatDate(reservation.date) }}</p>
-        <p class="time">From {{ formatTime(reservation.startTime) }} To {{ formatTime(reservation.endTime) }}</p>
-        <p class="type">Meeting Type: {{ formatReservationType(reservation.type) }}</p>
-        <p class="recurrence">Recurring: {{ formatRecurrenceOption(reservation.recurrenceOption) }}</p>
-      </div>
-      <div class="card-actions">
-        <button class="edit" (click)="onEdit(reservation)">Reschedule</button>
-        <button class="delete" (click)="onDelete(reservation)">Cancel</button>
-      </div>
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 
-  <div *ngIf="!isLoading && filteredReservations.length === 0" class="no-data">
-    No upcoming reservations found
+  <!-- Booking Table -->
+  <div *ngIf="!isLoading && filteredReservations.length > 0" class="px-4">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" class="border-0">Room</th>
+            <th scope="col" class="border-0">Title</th>
+            <th scope="col" class="border-0">Booking Type</th>
+            <th scope="col" class="border-0">Start Time</th>
+            <th scope="col" class="border-0">End Time</th>
+            <th scope="col" class="border-0">Recurrence</th>
+            <th scope="col" class="border-0">Date</th>
+            <th scope="col" class="border-0 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of filteredReservations; let i = index" class="booking-row">
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="room-indicator me-3"></div>
+                <div class="room-info">
+                  <div class="fw-bold text-dark room-name">{{ reservation.roomName || 'N/A' }}</div>
+                  <small class="text-muted room-subtitle">Meeting Room</small>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="fw-medium">{{ reservation.title || 'Untitled Booking' }}</div>
+            </td>
+            <td>
+              <span class="badge rounded-pill" 
+                    [ngClass]="{
+                      'bg-primary': reservation.type === 'INTERNAL',
+                      'bg-success': reservation.type === 'EXTERNAL'
+                    }">
+                {{ formatReservationType(reservation.type) }}
+              </span>
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <i class="fas fa-clock text-muted me-2"></i>
+                {{ formatTime(reservation.startTime) }}
+              </div>
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <i class="fas fa-clock text-muted me-2"></i>
+                {{ formatTime(reservation.endTime) }}
+              </div>
+            </td>
+            <td>
+              <span class="badge rounded-pill"
+                    [ngClass]="{
+                      'bg-info': reservation.recurrenceOption === 'ONE_TIME',
+                      'bg-warning': reservation.recurrenceOption === 'DAILY',
+                      'bg-secondary': reservation.recurrenceOption === 'WEEKLY'
+                    }">
+                {{ formatRecurrenceOption(reservation.recurrenceOption) }}
+              </span>
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <i class="fas fa-calendar text-muted me-2"></i>
+                {{ formatDate(reservation.date) }}
+              </div>
+            </td>
+            <td class="text-center">
+              <div class="action-buttons">
+                <button class="btn btn-outline-primary btn-sm me-1" (click)="onEdit(reservation)" title="Reschedule">
+                  <i class="fas fa-edit me-1"></i>Reschedule
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="onDelete(reservation)" title="Cancel">
+                  <i class="fas fa-trash me-1"></i>Cancel
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="!isLoading && filteredReservations.length === 0" class="text-center py-5">
+    <div class="px-4">
+      <div class="card">
+        <div class="card-body py-5">
+          <i class="fas fa-calendar-times text-muted display-1 mb-3"></i>
+          <h4 class="text-muted">No upcoming reservations found</h4>
+          <p class="text-muted">Try adjusting your filters or create a new booking.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -182,11 +182,19 @@
   flex-shrink: 0;
 }
 
+.detail-item .icon path {
+  fill: #FF7900;
+}
+
 .small-info .icon {
   color: #FF7900;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+}
+
+.small-info .icon path {
+  fill: #FF7900;
 }
 
 .btn-filter .icon,
@@ -197,11 +205,20 @@
   flex-shrink: 0;
 }
 
+.btn-filter .icon path,
+.btn-clear .icon path {
+  fill: currentColor;
+}
+
 .room-capacity .icon {
   color: #FF7900;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+}
+
+.room-capacity .icon path {
+  fill: #FF7900;
 }
 
 .room-info h4 {
@@ -297,6 +314,10 @@
   height: 12px;
   color: #FFFFFF;
   flex-shrink: 0;
+}
+
+.vip-icon path {
+  fill: #FFFFFF;
 }
 
 .room-details {

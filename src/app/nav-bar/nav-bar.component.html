@@ -1,4 +1,4 @@
-<nav>
+<nav role="navigation">
   <div class="nav-left">
     <div class="logo-container" (click)="onClickHome()">
       <img src="assets/orange-logo.svg" alt="Orange Logo" class="logo-image">
@@ -6,9 +6,36 @@
     </div>
     <div class="welcome-message">Welcome, {{ username }}</div>
   </div>
-  <ul>
-    <li><a (click)="onClickMyBooking()" class="home-link">My Booking</a></li>
-    <li><a (click)="onClickcalendarView()" class="home-link">Calendar View</a></li>
-    <li><a (click)="logout()" class="logout-link">Logout</a></li>
+  <ul class="nav nav-tabs nav-tabs-light" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" 
+         [class.active]="isActiveRoute('/dashboard')" 
+         [attr.aria-current]="isActiveRoute('/dashboard') ? 'page' : null"
+         (click)="onClickHome()" 
+         role="tab" 
+         tabindex="0">Home</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" 
+         [class.active]="isActiveRoute('/my-booking')" 
+         [attr.aria-current]="isActiveRoute('/my-booking') ? 'page' : null"
+         (click)="onClickMyBooking()" 
+         role="tab" 
+         tabindex="0">My Booking</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" 
+         [class.active]="isActiveRoute('/calendar-view')" 
+         [attr.aria-current]="isActiveRoute('/calendar-view') ? 'page' : null"
+         (click)="onClickcalendarView()" 
+         role="tab" 
+         tabindex="0">Calendar View</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link logout-link" 
+         (click)="logout()" 
+         role="tab" 
+         tabindex="0">Logout</a>
+    </li>
   </ul>
 </nav>

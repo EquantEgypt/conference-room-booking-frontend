@@ -27,12 +27,15 @@
               }
             ],
             "styles": [
-  "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-  "node_modules/quill/dist/quill.snow.css",
-  "src/styles.css"
-],
+              "node_modules/boosted/dist/css/boosted.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/styles.css"
+            ],
 
-            "scripts": []
+            "scripts": [
+              "node_modules/boosted/dist/js/boosted.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {

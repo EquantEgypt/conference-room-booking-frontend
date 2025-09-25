@@ -153,12 +153,62 @@ h2 {
   transform: translateY(-1px);
 }
 
+/* Reservation Details Section */
+.reservation-details {
+  margin-top: 10px;
+}
 
+.reservation-details p {
+  margin: 8px 0;
+  padding: 6px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  color: #555;
+  font-size: 15px;
+}
 
+.reservation-details strong {
+  color: #222;
+  min-width: 150px;
+  font-weight: 600;
+}
 
+/* Reason Section: Title and Description side by side */
+.reason-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 8px 0;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
 
+.reason-title {
+  min-width: 100px;
+  font-weight: 600;
+  color: #222;
+  flex-shrink: 0;
+}
 
+.reason-description {
+  flex: 1;
+  color: #555;
+  text-align: left;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  word-wrap: break-word;
+}
 
+.reason-description ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: disc;
+  list-style-position: inside;
+}
 
 
 

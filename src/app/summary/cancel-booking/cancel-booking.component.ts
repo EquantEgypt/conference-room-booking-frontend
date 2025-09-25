@@ -7,12 +7,12 @@ import { PopUpComponent } from '../../ui/pop-up/pop-up.component';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SweetAlertService } from '../../core/services/alert/sweet-alert.service';
-
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-cancel-booking',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule ],
+  imports: [CommonModule, MatProgressSpinnerModule,QuillModule ],
   templateUrl: './cancel-booking.component.html',
   styleUrls: ['./cancel-booking.component.css']
 })

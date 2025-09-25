@@ -8,11 +8,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReservationRequest } from '../../core/models/reservation-request';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PopUpComponent } from '../../ui/pop-up/pop-up.component';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-modify-booking-summary',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule,QuillModule],
   templateUrl: './modify-booking-summary.component.html',
   styleUrl: './modify-booking-summary.component.css'
 })
@@ -20,6 +21,17 @@ export class ModifyBookingSummaryComponent {
   reservationId!: number;
   reservation: ReservationRequest | null = null;
   isLoading = false;
+
+  quillModules = {
+  toolbar: [
+    ['bold', 'italic', 'underline'],
+    [{ 'header': 1 }, { 'header': 2 }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link'],
+    ['clean']
+  ]
+};
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +55,7 @@ export class ModifyBookingSummaryComponent {
   }
 
   onBack() {
-    this.router.navigate(['/my-booking']);
+    this.router.navigate(['/modify-booking', this.reservationId]);
   }
 
   onUpdateReservation() {
@@ -56,7 +68,7 @@ export class ModifyBookingSummaryComponent {
               title: "Reservation Updated successfully."
             });
             this.isLoading = false;
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['my-booking']);
           },
           error: (err: HttpErrorResponse) => {
             console.error("Full error:", err);

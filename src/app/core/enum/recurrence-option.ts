@@ -1,7 +1,8 @@
-export enum RecurrenceOption{
-    ONE_TIME = "ONE_TIME",
-    DAILY = "DAILY",
-    WEEKLY = "WEEKLY"
+export enum RecurrenceOption {
+  ALL = "ALL",
+  ONE_TIME = "ONE_TIME",
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY"
 }
 
 export const options: string[] = [

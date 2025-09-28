@@ -1,99 +1,15 @@
-// import { Component, OnInit } from '@angular/core';
-// import { ApiService } from '../core/services/api/api.service';
-// import { convertToReservationList, ReservationResponse } from '../core/models/reservation-response';
-// import { Router } from '@angular/router'; 
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-my-booking',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './my-booking.component.html',
-//   styleUrl: './my-booking.component.css'
-// })
-
-// export class MyBookingComponent implements OnInit {
-
-//   reservations: ReservationResponse[] = [];
-//   isLoading = false;
-
-//   constructor(private api: ApiService) { }
-
-//   ngOnInit(): void {
-//     this.fetchReservations();
-//   }
-
-
-
-
-//   fetchReservations() {
-//     this.isLoading = true;
-//     this.api.getAllReservations().subscribe({
-//       next: (response) => {
-//         console.log('Raw response:', response.body);
-//         this.reservations = convertToReservationList(response.body);
-//         console.log('Converted reservations:', this.reservations);
-//         this.isLoading = false;
-//       },
-//       error: (err) => {
-//         console.error('Error fetching reservations:', err);
-//         this.isLoading = false;
-//       }
-//     });
-//   }
-
-
-//    onDelete(reservation: ReservationResponse) {
-
-//     this.router.navigate(['/cancel-booking', reservation.reservationId]);
-//   }
-
-
-//   formatTime(time: string | null): string {
-//     if (!time) return '';
-//     // Expecting time in 'HH:mm:ss' or 'HH:mm' format
-//     const [hourStr, minuteStr] = time.split(':');
-//     const hour = parseInt(hourStr, 10);
-//     const suffix = hour >= 12 ? 'PM' : 'AM';
-//     const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-//     return `${displayHour}:${minuteStr} ${suffix}`;
-//   }
-
-//   formatDate(date: Date | string | null): string {
-//     if (!date) return '';
-//     const dateObj = typeof date === 'string' ? new Date(date) : date;
-//     return dateObj.toLocaleDateString();
-//   }
-
-//   formatRecurrenceOption(option: string | null): string {
-//     if (!option) return '';
-//     switch (option) {
-//       case 'ONE_TIME': return 'One Time';
-//       case 'DAILY': return 'Daily';
-//       case 'WEEKLY': return 'Weekly';
-//       default: return option;
-//     }
-//   }
-
-//   formatReservationType(type: string | null): string {
-//     if (!type) return '';
-//     switch (type) {
-//       case 'INTERNAL': return 'Internal';
-//       case 'EXTERNAL': return 'External';
-//       default: return type;
-//     }
-//   }
-
-// }
-
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../core/services/api/api.service';
 import { convertToReservationList, ReservationResponse } from '../core/models/reservation-response';
 import { MatDialog } from '@angular/material/dialog';
-import { CancelBookingComponent } from '../summary/cancel-booking/cancel-booking.component';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MyBookingFilter } from '../core/models/my-booking-filter';
+import { DateScope } from '../core/enum/date-scope';
+import { RecurrenceOption } from '../core/enum/recurrence-option';
+import { ReservationType } from '../core/enum/reservation-type';
+import { ReservationResponseList } from '../core/models/reservation-response-list';
 
 @Component({
   selector: 'app-my-booking',
@@ -102,43 +18,59 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './my-booking.component.html',
   styleUrls: ['./my-booking.component.css']
 })
+
 export class MyBookingComponent implements OnInit {
-  reservations: ReservationResponse[] = [];
+  DateScope = DateScope;
   isLoading = false;
-  filteredReservations: ReservationResponse[] = [];
-  currentDateFilter: string = 'ALL';
-  typeFilter: string = 'ALL';
- selectedRecurrence: string = 'ALL';
+  filteredReservations: ReservationResponseList[] = [];
+  dateScopeFilter: DateScope = DateScope.ALL;
+  recurrenceOptionFilter: RecurrenceOption = RecurrenceOption.ALL;
+  reservationTypeFilter: ReservationType = ReservationType.ALL;
 
   constructor(private api: ApiService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
-    this.fetchReservations();
+    console.log(this.dateScopeFilter);
+    console.log(this.recurrenceOptionFilter);
+    console.log(this.reservationTypeFilter);
+
+    this.fetchReservations(this.dateScopeFilter, this.recurrenceOptionFilter, this.reservationTypeFilter);
   }
-  fetchReservations() {
+
+  fetchReservations(dateScope: DateScope,
+    recurrenceOption: RecurrenceOption,
+    reservationType: ReservationType) {
+
     this.isLoading = true;
-    this.api.getAllReservations().subscribe({
+
+    const params: MyBookingFilter = {
+      dateScope: dateScope,
+      recurrenceOption: recurrenceOption,
+      reservationType: reservationType
+    }
+
+    this.api.getReservationByFilters(params).subscribe({
       next: (response) => {
-        const allReservations = convertToReservationList(response.body);
+        console.log(response.body);
+        // this.filteredReservations = response.body as ReservationResponseList[];
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const body = response.body as any[][];
 
-        const upcoming = allReservations.filter(r => {
-          if (!r.date) return false;
-          const reservationDate = new Date(r.date as string | Date);
-          reservationDate.setHours(0, 0, 0, 0);
-          return reservationDate >= today;
+        body.map(item => {
+          console.log(item);
+        })
+
+        this.filteredReservations = body.map(innerArray => {
+          const reservationResponseList = convertToReservationList(innerArray);
+
+          return {
+            reservationResponseList,
+            isExpand: false,
+            showExpandButton: reservationResponseList.length > 1
+          } as ReservationResponseList;
         });
 
-        upcoming.sort((a, b) => {
-          const aDate = a.date ? new Date(a.date as string | Date) : new Date(0);
-          const bDate = b.date ? new Date(b.date as string | Date) : new Date(0);
-          return aDate.getTime() - bDate.getTime();
-        });
-
-        this.reservations = upcoming;
-        this.filteredReservations = upcoming;
+        console.log(this.filteredReservations);
         this.isLoading = false;
       },
       error: (err) => {
@@ -147,43 +79,17 @@ export class MyBookingComponent implements OnInit {
       }
     });
   }
-  applyFilters(dateFilter: string, typeFilter: string, recurrenceFilter?: string) {
-  this.currentDateFilter = dateFilter;
-  this.typeFilter = typeFilter;
-  if (recurrenceFilter) this.selectedRecurrence = recurrenceFilter;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  applyFilters(dateScopeFilter: DateScope,
+    recurrenceOptionFilter: RecurrenceOption,
+    reservationTypeFilter: ReservationType) {
 
-  let result = this.reservations.filter(r => {
-    if (!r.date) return false;
-    const d = new Date(r.date as string | Date);
-    d.setHours(0, 0, 0, 0);
+    this.dateScopeFilter = dateScopeFilter;
+    this.recurrenceOptionFilter = recurrenceOptionFilter;
+    this.reservationTypeFilter = reservationTypeFilter;
 
-    if (dateFilter === 'TODAY' && d.getTime() !== today.getTime()) return false;
-    if (dateFilter === 'NEXT_DAY') {
-      const nextDay = new Date(today);
-      nextDay.setDate(today.getDate() + 1);
-      if (d.getTime() !== nextDay.getTime()) return false;
-    }
-    if (dateFilter === 'THIS_WEEK') {
-      const weekEnd = new Date(today);
-      weekEnd.setDate(today.getDate() + 7);
-      if (d < today || d > weekEnd) return false;
-    }
-
-   
-    if (typeFilter !== 'ALL' && r.type !== typeFilter) return false;
-
-    
-    if (this.selectedRecurrence && this.selectedRecurrence !== 'ALL' &&
-        r.recurrenceOption?.toUpperCase() !== this.selectedRecurrence.toUpperCase()) return false;
-
-    return true;
-  });
-
-  this.filteredReservations = result;
-}
+    this.fetchReservations(this.dateScopeFilter, this.recurrenceOptionFilter, this.reservationTypeFilter);
+  }
 
   onDelete(reservation: ReservationResponse) {
     this.router.navigate(['/cancel-booking', reservation.reservationId]);
@@ -225,6 +131,12 @@ export class MyBookingComponent implements OnInit {
       case 'EXTERNAL': return 'External';
       default: return type;
     }
+  }
+
+  onClickAllReservation(index:number){
+    console.log('Clicked');
+    this.filteredReservations[index].isExpand = !this.filteredReservations[index].isExpand;
+    console.log(this.filteredReservations[index].isExpand);
   }
 }
 

@@ -4,6 +4,7 @@ import { UserCredentials } from '../../models/user-credentials';
 import { EMPTY, Observable } from 'rxjs';
 import { FilterRequest } from '../../models/filter-request';
 import { ReservationRequest } from '../../models/reservation-request';
+import { MyBookingFilter } from '../../models/my-booking-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,30 @@ export class ApiService {
       observe: 'response',
       params: httpParams
     });
+  }
+
+  getReservationByFilters(params : MyBookingFilter | null){
+    console.log(params);
+
+    let httpParams = new HttpParams();
+
+    if (params) {
+      if (params.dateScope && params.dateScope != 'ALL') {
+        httpParams = httpParams.set('dateScope', params.dateScope.toString());
+      }
+      if (params.recurrenceOption && params.recurrenceOption != 'ALL') {
+        httpParams = httpParams.set('recurrenceOption', params.recurrenceOption);
+      }
+      if (params.reservationType && params.reservationType != 'ALL') {
+        httpParams = httpParams.set('reservationType', params.reservationType);
+      }
+    }
+
+    return this.http.get(`${this.apiUrl}/reserve/filter`, {
+      observe: 'response',
+      params: httpParams
+    });
+    
   }
 
   getRoom(roomId: number): Observable<any> {

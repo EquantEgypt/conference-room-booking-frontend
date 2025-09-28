@@ -51,7 +51,7 @@ export class ModifyBookingSummaryComponent {
     this.reservation = history.state.bookingRequest as ReservationRequest | null;
     console.log('History state:', history.state);
     console.log('Reservation from state:', this.reservation);
-    
+
   }
 
   onBack() {
@@ -83,8 +83,8 @@ export class ModifyBookingSummaryComponent {
           }
         });
       }
-    }     
-  
+    }
+
       onConfirm() {
         const dialogRef = this.dialog.open(PopUpComponent, {
           width: '400px',
@@ -97,11 +97,19 @@ export class ModifyBookingSummaryComponent {
             restoreFocus: true
           }
         });
-    
+
         dialogRef.afterClosed().subscribe((confirmed) => {
           if (confirmed) {
             this.onUpdateReservation();
           }
         });
       }
+        formatTime(time: string): string {
+    if (!time) return '';
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour;
+    return `${displayHour}:${minuteStr} ${suffix}`;
+  }
 }

@@ -9,18 +9,17 @@
         <p><strong>Room:</strong> {{ reservation.roomName }}</p>
         <p><strong>Title:</strong> {{ reservation.title }}</p>
         <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
-       
-        <p><strong>Date:</strong> {{ reservation.date | date:'mediumDate' }}</p>
-        <p><strong>Start Time:</strong> {{ reservation.startTime }}</p>
-        <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
+        <p><strong>Date:</strong> {{ reservation.date | date : "EEEE, MMM d, y" }}</p>
+      <p><strong>Start Time:</strong>{{ reservation.startTime ? formatTime(reservation.startTime) : '' }}</p>
+    <p><strong>End Time:</strong>{{ reservation.endTime ? formatTime(reservation.endTime) : '' }}</p>
         <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
         <p><strong>Number of occurrences:</strong> {{ reservation.numberOfOccurrences}}</p>
-        
+
     <div class="reason-row">
             <div class="reason-title">Reason:</div>
             <div class="reason-description" [innerHTML]="reservation.description"></div>
         </div>
-        
+
         <div class="button">
             <button class="btn btn-secondary" (click)="onBack()">
                 Go Back

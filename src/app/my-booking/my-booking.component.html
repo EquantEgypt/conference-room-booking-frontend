@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="col-lg-4 col-md-6">
           <div class="d-flex gap-2">
             <select class="form-select" [(ngModel)]="typeFilter" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
@@ -31,7 +31,7 @@
               <option value="INTERNAL">Internal</option>
               <option value="EXTERNAL">External</option>
             </select>
-            
+
             <select class="form-select" [(ngModel)]="selectedRecurrence" (change)="applyFilters(currentDateFilter, typeFilter, selectedRecurrence)">
               <option value="ALL">All Recurrence</option>
               <option value="ONE_TIME">One Time</option>
@@ -82,7 +82,7 @@
               <div class="fw-medium">{{ reservation.title || 'Untitled Booking' }}</div>
             </td>
             <td>
-              <span class="badge rounded-pill" 
+              <span class="badge rounded-pill"
                     [ngClass]="{
                       'bg-primary': reservation.type === 'INTERNAL',
                       'bg-success': reservation.type === 'EXTERNAL'
@@ -115,7 +115,7 @@
             <td>
               <div class="text-nowrap">
                 <i class="fas fa-calendar text-muted me-2"></i>
-                {{ formatDate(reservation.date) }}
+                {{ formatDate(reservation.date) | date : "EEEE, M /d/ y" }}
               </div>
             </td>
             <td class="text-center">

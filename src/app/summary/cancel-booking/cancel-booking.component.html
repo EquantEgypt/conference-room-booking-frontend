@@ -17,6 +17,7 @@
     <p><strong>Start Time:</strong>{{ reservation.startTime ? formatTime(reservation.startTime) : '' }}</p>
     <p><strong>End Time:</strong>{{ reservation.endTime ? formatTime(reservation.endTime) : '' }}</p>
     <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
+    <p><strong>Number of occurrences:</strong> {{ reservation.numberOfOccurrences}}</p>
     <div class="reason-row">
             <div class="reason-title">Reason:</div>
             <div class="reason-description" [innerHTML]="reservation.description"></div>

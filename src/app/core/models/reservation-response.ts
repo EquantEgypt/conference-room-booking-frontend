@@ -1,7 +1,5 @@
-import { Timestamp } from "rxjs";
 import { RecurrenceOption } from "../enum/recurrence-option";
 import { ReservationType } from "../enum/reservation-type";
-import { MeetingRoom } from "./meeting-room";
 
 export interface ReservationResponse {
     reservationId: number | null,

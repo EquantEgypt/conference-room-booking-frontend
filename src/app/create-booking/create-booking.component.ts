@@ -63,7 +63,7 @@ export class CreateBookingComponent {
   dateComingFromCalenderView: string | null = null;
   recurrenceSelected: string = this.options[0];  // default to 'One time' option
   showRecurrenceOptions: boolean = false;
-  showNoRecurrenceOption: boolean = false;
+  showNoRecurrenceOption: boolean = true;
 
 quillModules = {
   toolbar: [
@@ -122,7 +122,7 @@ quillModules = {
     //fetch all rooms for dropdown
     this.api.getRooms(null).subscribe({
       next: (response) => {
-        this.roomsList = response.body as MeetingRoom[]; // cast هنا //new
+        this.roomsList = response.body as MeetingRoom[];
       },
       error: (err) => {
         console.error("Error loading rooms list", err);
@@ -139,8 +139,7 @@ quillModules = {
       this.modeTypeMsg = 'Reserve';
     }
 
-
-    this.bookingForm = this.fb.group({
+this.bookingForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: [''], // Set empty string instead of null
       startDate: [
@@ -164,11 +163,12 @@ quillModules = {
     }, {
       validators: [endTimeAfterStartTimeValidator()]
     });
-
+    
     if (this.reservationId) {
       this.loadReservation(this.reservationId);
       this.modeTypeMsg = 'Update';
       this.isUpdate = true;
+
     }
   }
 
@@ -219,7 +219,6 @@ quillModules = {
   this.recurrenceSelected = option;
   this.selectedOption = option;  // keep for backwards compatibility if used elsewhere
   this.showRecurrenceOptions = true;
-  this.showNoRecurrenceOption = option == this.options[0];
 
   // Update validation for numberOfRecurrence based on recurrence option
   const numberOfRecurrenceControl = this.bookingForm.get('numberOfRecurrence');
@@ -374,6 +373,9 @@ quillModules = {
           this.loadRoom(this.roomId!);
           this.selectedOption = this.reservationResponse.recurrenceOption || this.options[0];
           this.selectOption(this.selectedOption);
+          if(this.reservationResponse?.recurrenceOption === RecurrenceOption.ONE_TIME) {
+            this.showRecurrenceOptions = false;
+          }
         }
         this.isLoading = false;
       },

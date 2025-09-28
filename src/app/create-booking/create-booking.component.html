@@ -46,29 +46,35 @@
     <div class="booking-form-container">
       <form *ngIf="bookingForm" [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onReserve()">
 
-        <div class="btn-style">
-          <button type="button" class="toggle-btn" [class.active]="selectedOption === options[0]"
-            (click)="selectOption(options[0]); showRecurrenceOptions = false">
-            One-Time
-          </button>
-          <button type="button" class="toggle-btn" [class.active]="showRecurrenceOptions && selectedOption !== options[0]"
-            (click)="showRecurrenceOptions = true">
-            Recurring
-          </button>
-        </div>
+    
+        <div *ngIf="showNoRecurrenceOption">
+          <div class="btn-style">
+            <button type="button" class="toggle-btn" [class.active]="selectedOption === options[0]"
+              (click)="selectOption(options[0]); showRecurrenceOptions = false">
+              One-Time
+            </button>
+            <button type="button" class="toggle-btn" [class.active]="showRecurrenceOptions && selectedOption !== options[0]"
+              (click)="showRecurrenceOptions = true">
+              Recurring
+            </button>
+          </div>
 
-        <div *ngIf="showRecurrenceOptions" class="recurrence-options">
-          <div class="option-Labels">
-            <label>
-              <input type="radio" name="recurrence" value="DAILY" (change)="selectOption('DAILY')" [checked]="recurrenceSelected === 'DAILY'" />
-              Daily
-            </label>
-            <label>
-              <input type="radio" name="recurrence" value="WEEKLY" (change)="selectOption('WEEKLY')" [checked]="recurrenceSelected === 'WEEKLY'" />
-              Weekly
-            </label>
+          <div *ngIf="showRecurrenceOptions" class="recurrence-options">
+            <div class="option-Labels">
+              <label>
+                <input type="radio" name="recurrence" value="DAILY"
+                  (change)="selectOption('DAILY')" [checked]="recurrenceSelected === 'DAILY'" />
+                Daily
+              </label>
+              <label>
+                <input type="radio" name="recurrence" value="WEEKLY"
+                  (change)="selectOption('WEEKLY')" [checked]="recurrenceSelected === 'WEEKLY'" />
+                Weekly
+              </label>
+            </div>
           </div>
         </div>
+
 
         <div class="drop-down">
           <label for="title">Title</label>

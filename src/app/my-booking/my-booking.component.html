@@ -64,6 +64,7 @@
             <th scope="col" class="border-0">End Time</th>
             <th scope="col" class="border-0">Recurrence</th>
             <th scope="col" class="border-0">Date</th>
+            <th scope="col" class="border-0">Recurrence End Date</th>
             <th scope="col" class="border-0 text-center">Actions</th>
           </tr>
         </thead>
@@ -116,6 +117,12 @@
               <div class="text-nowrap">
                 <i class="fas fa-calendar text-muted me-2"></i>
                 {{ formatDate(reservation.date) | date : "EEEE, M /d/ y" }}
+              </div>
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <i class="fas fa-calendar text-muted me-2"></i>
+                {{ formatDate(reservation.recurrenceEndDate) | date : "EEEE, M /d/ y" }}
               </div>
             </td>
             <td class="text-center">

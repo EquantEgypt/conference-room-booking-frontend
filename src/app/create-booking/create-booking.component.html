@@ -16,8 +16,7 @@
       </div>
 
       <!-- Room Selector (Dropdown as Room Name) -->
-      <div class="room-name-dropdown">
-        
+      <div class="drop-down">
         <select id="room" [(ngModel)]="roomId" (ngModelChange)="onRoomChange($event)">
           <option *ngFor="let r of roomsList" [value]="r.roomId">
             {{ r.name }}
@@ -134,8 +133,6 @@
             <span *ngIf="numberOfRecurrence?.errors?.['min']">Number of recurrences must be at least 2.</span>
           </div>
         </div>
-
-        <!-- meeting type -->
 
         <div class="drop-down">
           <label for="type">Meeting Type</label>

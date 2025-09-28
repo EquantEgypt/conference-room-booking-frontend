@@ -21,19 +21,15 @@
             <div class="reason-title">Reason:</div>
             <div class="reason-description" [innerHTML]="reservation.description"></div>
         </div>
-    <div class="confirm-actions">
+    <div class="button">
       <button
-        mat-raised-button
-        color="primary"
-        class="btn-back"
+        class="btn btn-secondary"
         (click)="onBack()"
       >
         Go Back
       </button>
       <button
-        mat-raised-button
-        color="warn"
-        class="btn-cancel"
+        class="btn btn-primary"
         (click)="onCancelReservation()"
       >
         Cancel Reservation

@@ -27,7 +27,7 @@ interface Room {
 @Component({
   selector: 'app-create-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, QuillModule],
+  imports: [ReactiveFormsModule, CommonModule, QuillModule, FormsModule],
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.css']
 })

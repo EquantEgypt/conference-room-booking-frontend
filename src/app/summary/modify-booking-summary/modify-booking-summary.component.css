@@ -1,3 +1,53 @@
+/* === Brand Variables === */
+:host {
+  --orange-primary: #FF7900;
+  --orange-focus-shadow: rgba(255, 121, 0, 0.4);
+  --brand-black: #000000;
+  --brand-text-color: #333333;
+  --brand-grey-light: #f5f5f5;
+  --brand-grey-medium: #cccccc;
+  --brand-grey-dark: #5b5b5b;
+  --brand-white: #ffffff;
+  --brand-background: #f8f9fa;
+  --font-family-brand: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --border-radius-standard: 6px;
+  --validation-error: #D93737;
+  --validation-error-bg: #FEEEEE;
+  --validation-success: #28a745;
+  --validation-success-bg: #e6ffed;
+}
+
+/* Reason Section: Title and Description side by side */
+.reason-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: right;
+  gap: 16px;
+  margin: 8px 0;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+.reason-title {
+  min-width: 100px;
+  font-weight: 600;
+  color: #222;
+  flex-shrink: 0;
+}
+.reason-description {
+  flex: 1;
+  color: #555;
+  text-align: left;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.reason-description ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: disc;
+  list-style-position: inside;
+}
 /* Container styling */
 .container {
   max-width: 600px;
@@ -8,6 +58,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   transition: all 0.3s ease;
+ 
 }
 
 .container:hover {
@@ -36,6 +87,36 @@ h2 {
   border-bottom: 1px solid #f1f1f1;
   color: #555;
   font-size: 15px;
+}
+.contact{
+  color: #555;
+  font-size: 15px;
+  word-break: break-word;
+  justify-content: flex-start;
+  gap: 6px;
+  display: flex;
+}
+
+.contact ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  margin: 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.strong-contact{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 6px;
+  margin: 8px 0;
 }
 
 .reservation-details strong {
@@ -153,62 +234,67 @@ h2 {
   transform: translateY(-1px);
 }
 
-/* Reservation Details Section */
-.reservation-details {
-  margin-top: 10px;
+/* Room Image */
+.room-image{
+  display: block;
+  margin: 0 auto 15px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.reservation-details p {
-  margin: 8px 0;
-  padding: 6px 0;
+
+/* === Action Buttons === */
+.button {
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #f1f1f1;
-  color: #555;
-  font-size: 15px;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-.reservation-details strong {
-  color: #222;
-  min-width: 150px;
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-standard);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
-/* Reason Section: Title and Description side by side */
-.reason-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 8px 0;
-  padding: 6px 0;
-  border-bottom: 1px solid #f1f1f1;
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.reason-title {
-  min-width: 100px;
-  font-weight: 600;
-  color: #222;
-  flex-shrink: 0;
+.btn-primary {
+  background: var(--orange-primary);
+  color: var(--brand-white);
 }
 
-.reason-description {
-  flex: 1;
-  color: #555;
-  text-align: left;
-  font-size: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  word-wrap: break-word;
+.btn-secondary {
+  background: var(--brand-grey-dark);
+  color: var(--brand-white);
 }
 
-.reason-description ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: disc;
-  list-style-position: inside;
+.btn-secondary:hover {
+  background: var(--brand-black);
 }
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+
+
+
 
 
 

@@ -1,3 +1,22 @@
+/* === Brand Variables === */
+:host {
+  --orange-primary: #FF7900;
+  --orange-focus-shadow: rgba(255, 121, 0, 0.4);
+  --brand-black: #000000;
+  --brand-text-color: #333333;
+  --brand-grey-light: #f5f5f5;
+  --brand-grey-medium: #cccccc;
+  --brand-grey-dark: #5b5b5b;
+  --brand-white: #ffffff;
+  --brand-background: #f8f9fa;
+  --font-family-brand: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --border-radius-standard: 6px;
+  --validation-error: #D93737;
+  --validation-error-bg: #FEEEEE;
+  --validation-success: #28a745;
+  --validation-success-bg: #e6ffed;
+}
+
 /* Reason Section: Title and Description side by side */
 .reason-row {
   display: flex;
@@ -31,7 +50,7 @@
 }
 /* Container styling */
 .container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 30px auto;
   padding: 25px;
   background: #ffffff;
@@ -215,7 +234,62 @@ h2 {
   transform: translateY(-1px);
 }
 
+/* Room Image */
+.room-image{
+  display: block;
+  margin: 0 auto 15px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
+
+/* === Action Buttons === */
+.button {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-standard);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: var(--orange-primary);
+  color: var(--brand-white);
+}
+
+.btn-secondary {
+  background: var(--brand-grey-dark);
+  color: var(--brand-white);
+}
+
+.btn-secondary:hover {
+  background: var(--brand-black);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
 
 

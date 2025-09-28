@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SweetAlertService } from '../../core/services/alert/sweet-alert.service';
 import { ApiService } from '../../core/services/api/api.service';
@@ -18,17 +18,16 @@ import { QuillEditorComponent } from "ngx-quill";
   styleUrl: './create-booking-summary.component.css'
 })
 export class CreateBookingSummaryComponent {
-  reservationId!: number;
   reservation: ReservationRequest | null = null;
   isLoading = false;
 
   constructor(
-    private route: ActivatedRoute,
     private api: ApiService,
     private router: Router,
     private dialog: MatDialog,
     private alert: SweetAlertService
   ) { }
+
   ngOnInit(): void {
     this.fetchReservationDetails();
   }
@@ -36,60 +35,72 @@ export class CreateBookingSummaryComponent {
   fetchReservationDetails() {
     this.isLoading = false;
     this.reservation = history.state.bookingRequest as ReservationRequest | null;
-    console.log('History state:', history.state);
-    console.log('Reservation from state:', this.reservation);
-
+    if (!this.reservation) {
+      // Handle case where state is empty (e.g., page refresh)
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   onBack() {
-    this.router.navigate(['/my-booking']);
+    // Go back to the previous page (the booking form)
+    history.back();
   }
 
   onCreateReservation() {
-    if(this.reservation)
-    this.api.sendReservation(this.reservation).subscribe({
-        next: (response) => {
-          console.log(response.body);
+    if (this.reservation) {
+      this.isLoading = true; // Start loading when action is confirmed
+      this.api.sendReservation(this.reservation).subscribe({
+        next: () => {
           this.alert.Toast.fire({
             icon: "success",
-            title: "Reservation Created successfully."
+            title: "Reservation created successfully."
           });
           this.isLoading = false;
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err: HttpErrorResponse) => {
-          console.error("Full error:", err);
-
-          const backendMsg = err.error.errorMessage;
-
+          const backendMsg = err.error?.errorMessage || "An unknown error occurred.";
           this.alert.Toast.fire({
             icon: "error",
-            title: backendMsg || "Failed to create reservation."
+            title: "Failed to create reservation",
+            text: backendMsg
           });
           this.isLoading = false;
         }
       });
     }
-
-
-      onConfirm() {
-        const dialogRef = this.dialog.open(PopUpComponent, {
-          width: '400px',
-          data: {
-            title: 'Confirm Reservation',
-            message: 'Are you sure you want to confirm this reservation?',
-            confirmMessage:'Yes,confirm',
-            cancelMessage: 'Cancel',
-            autoFocus: true,
-            restoreFocus: true
-          }
-        });
-
-        dialogRef.afterClosed().subscribe((confirmed) => {
-          if (confirmed) {
-            this.onCreateReservation();
-          }
-        });
-      }
   }
 
+  onConfirm() {
+    const dialogRef = this.dialog.open(PopUpComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirm Reservation',
+        message: 'Are you sure you want to confirm this reservation?',
+        confirmMessage: 'Yes, Confirm',
+        cancelMessage: 'Cancel',
+        autoFocus: true,
+        restoreFocus: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.onCreateReservation();
+      }
+    });
+  }
+
+  // Added missing formatTime function
+  formatTime(time: string): string {
+    if (!time) return '';
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    let displayHour = hour % 12;
+    if (displayHour === 0) {
+      displayHour = 12; // Handle midnight and noon
+    }
+    return `${displayHour}:${minuteStr} ${suffix}`;
+  }
+}

@@ -1,3 +1,8 @@
+:host {
+  --brand-grey-dark: #5b5b5b;
+  --brand-white: #ffffff;
+}
+
 /* Dialog container */
 .confirm-card {
   width: 400px;
@@ -13,25 +18,6 @@
   gap: 1px;
   transition: transform 0.2s ease-in-out;
 }
-
-
-/* Top icon wrapper */
-/* .card-top-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(244, 67, 54, 0.1);
-  margin-top: -8px;
-} */
-
-/* Delete icon
-.delete-icon {
-  font-size: 36px;
-  color: #f44336;
-} */
 
 /* Title */
 .confirm-title {
@@ -59,30 +45,35 @@
 
 /* Cancel button style */
 .btn-cancel {
-  border-radius: 24px;
+  border-radius: 6px;
   min-width: 100px;
   height: 40px;
-  color: #374151;
-  background: #f9fafb;
-  box-shadow: black 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--brand-grey-dark);
+  color: var(--brand-white);
   transition: all 0.2s ease-in-out;
 }
 
 .btn-cancel:hover {
-  background: #f3f4f6;
+  background: black;
 }
+
 
 /* Delete button style */
 .btn-delete {
-  border-radius: 24px;
-  min-width:100px;
+  border-radius: 6px;
+  min-width: 100px;
   height: 40px;
-  box-shadow: black  0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #FF7900;
+  color: #fff;
+  font-weight: 600;
+  border: none;
   transition: all 0.2s ease-in-out;
 }
 
 .btn-delete:hover {
-  background: red !important;
+  background: #e86c00 !important;
 }
 
 /* Responsive */

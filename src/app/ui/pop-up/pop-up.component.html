@@ -9,13 +9,13 @@
   </p>
 
   <div class="confirm-actions">
-    <button mat-raised-button color (click)="onCancel()">
-  {{data.cancelMessage}}
-</button>
+    <button class="btn-cancel" (click)="onCancel()">
+      {{data.cancelMessage}}
+    </button>
 
-<button mat-raised-button color="warn" (click)="onConfirm()">
-  {{ data.confirmMessage }}
-</button>
+    <button class="btn-delete" (click)="onConfirm()">
+      {{ data.confirmMessage }}
+    </button>
   </div>
 </div>
 

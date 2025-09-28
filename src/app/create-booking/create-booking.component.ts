@@ -368,7 +368,7 @@ quillModules = {
             startTime: this.extractHour(this.reservationResponse.startTime ?? ''),
             endTime: this.extractHour(this.reservationResponse.endTime ?? ''),
             type: this.reservationResponse.type || '',
-            numberOfRecurrence: this.reservationResponse.numberOfReccurrences || 1, // Default to 1 if null
+            numberOfRecurrence: this.reservationResponse.numberOfOccurrences || 1, // Default to 1 if null
           });
           this.roomId = this.reservationResponse.roomId || null;
           this.loadRoom(this.roomId!);

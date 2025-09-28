@@ -15,7 +15,7 @@ export interface ReservationResponse {
     recurrenceEndDate: Date | string | null,
     roomName: string | null,
     roomId?: number | null,
-    numberOfReccurrences?: number | null
+    numberOfOccurrences?: number | null
 }
 
 export function converToReservationResponse(raw: any): ReservationResponse {
@@ -32,7 +32,7 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             recurrenceEndDate: null,
             roomName: null,
             roomId: null,
-            numberOfReccurrences: null,
+            numberOfOccurrences: null,
         };
     }
 

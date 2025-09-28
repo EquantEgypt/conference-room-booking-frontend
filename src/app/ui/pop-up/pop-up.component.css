@@ -45,6 +45,7 @@
 
 /* Cancel button style */
 .btn-cancel {
+  padding: 0.25rem ;
   border-radius: 6px;
   min-width: 100px;
   height: 40px;
@@ -62,6 +63,7 @@
 
 /* Delete button style */
 .btn-delete {
+  padding: 0.5rem 1.5rem;
   border-radius: 6px;
   min-width: 100px;
   height: 40px;

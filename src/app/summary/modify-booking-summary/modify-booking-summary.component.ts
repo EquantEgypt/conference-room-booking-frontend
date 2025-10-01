@@ -43,7 +43,7 @@ export class ModifyBookingSummaryComponent {
   }
 
   onBack() {
-    this.router.navigate(['/my-booking']);
+    this.router.navigate(['/create-booking']);
   }
 
   onUpdateReservation() {

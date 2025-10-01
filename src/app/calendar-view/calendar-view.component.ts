@@ -1,159 +1,114 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { dateValidator } from '../core/services/shared/validators/custom-validators';
-import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
+import { CalendarEvent, CalendarView, CalendarModule } from 'angular-calendar';
 import { ApiService } from '../core/services/api/api.service';
-import { calendarViewResponse } from '../core/models/calendar-view-response';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar-view',
   standalone: true,
-  imports: [NgClass, ReactiveFormsModule, NgFor, NgStyle,NgIf],
+  imports: [
+    CommonModule,
+    NgIf,
+    CalendarModule,
+  ],
   templateUrl: './calendar-view.component.html',
-  styleUrl: './calendar-view.component.css'
+  styleUrls: ['./calendar-view.component.css'],
 })
-export class calendarViewComponent {
+export class CalendarViewComponent implements OnInit {
 
-  todayDefault = new Date();
-  formattedToday = this.todayDefault.toISOString().split('T')[0]; // "2025-09-09"
-  dateForm!: FormGroup;
-  START_HOUR = 9;
-  END_HOUR = 17;
-  SLOT_HEIGHT = 60;
-  timeLabels: number[] = [];
-  ROOMS_PAGE_SIZE: number = 5;
-  leftPointer = 0;
-  rightPointer = this.ROOMS_PAGE_SIZE;
-  calendarViewData: calendarViewResponse[] | null = null;
-  roomsInPage: calendarViewResponse[] | null = null;
-  isLoading = false;
+  view: CalendarView = CalendarView.Month;
+  viewDate: Date = new Date();
+
+  readonly CalendarView = CalendarView;
+
+  events: CalendarEvent[] = [];
+
+  constructor(private api: ApiService) { }
+
+  ngOnInit(): void {
+    this.loadEvents();
+  }
+
+  setView(view: CalendarView) {
+    this.view = view;
+    this.loadEvents();
+  }
+
+  closeOpenMonthViewDay() {
+    this.loadEvents();
+  }
+
+  loadEvents() {
+    let startDate: string;
+    let endDate: string;
+
+    if (this.view === CalendarView.Day) {
+      startDate = this.formatDate(this.viewDate);
+      endDate = this.formatDate(this.viewDate);
+    } else if (this.view === CalendarView.Week) {
+      const start = this.getStartOfWeek(this.viewDate);
+      const end = this.getEndOfWeek(this.viewDate);
 
 
+      end.setHours(12);
 
-  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) { }
 
-  ngOnInit() {
+      startDate = this.formatDate(start);
+      endDate = this.formatDate(end);
+    } else { // Month
+      const start = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
+      const end = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
 
-    // fill time label
-    for (let h = this.START_HOUR; h <= this.END_HOUR; h++) {
-      this.timeLabels.push(h);
+      end.setHours(12);
+
+      startDate = this.formatDate(start);
+      endDate = this.formatDate(end);
     }
 
+    this.api.getReservationsByDate(startDate, endDate).subscribe(response => {
+      const reservations = response.body || [];
 
+      this.events = reservations.flatMap((room: any) =>
+        room.reservations.map((r: any) => {
+          const start = new Date(r.date + 'T' + r.startTime);
+          const end = new Date(r.date + 'T' + r.endTime);
 
-    this.dateForm = this.fb.group({
-      date: [this.formattedToday, [
-        Validators.required, dateValidator()
-      ]],
+          end.setHours(end.getHours() + 1);
+
+          return {
+            start,
+            end,
+            title: r.myReservation
+              ? `${room.roomName}\n${r.title}\n${r.type}`
+              : `BUSY`,
+            color: {
+              primary: r.myReservation ? '#f42c58ff' : '#888888',
+              secondary: '#D1E8FF'
+            }
+          };
+        })
+      );
+
+      this.events = [...this.events];
     });
-
-    this.fetchcalendarViewData();
-
   }
 
-  convertTimeToHour(time: string): number {
-    return Number(time.split(":")[0]); // "09:30:00" -> 9
+  formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 
-  fetchcalendarViewData() {
-    this.isLoading = true;
-    this.api.getcalendarViewDate(this.dateForm.get('date')?.value).subscribe({
-      next: (response) => {
-        console.log(response.body);
+  getStartOfWeek(date: Date): Date {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day;
 
-        this.calendarViewData = response.body.map((room: any) => ({
-          ...room,
-          reservations: room.reservations.map((reservation: any) => ({
-            ...reservation,
-            date: new Date(reservation.date),
-            startTime: Number(reservation.startTime.split(":")[0]),
-            endTime: Number(reservation.endTime.split(":")[0])
-          }))
-        }));
-
-        this.roomsInPage = this.calendarViewData!.slice(
-          this.leftPointer,
-          Math.min(this.rightPointer, this.calendarViewData!.length)
-        );
-
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.log(err.body);
-        this.isLoading = false;
-      }
-    });
+    return new Date(d.setDate(diff));
   }
 
-
-  get date(): AbstractControl | null {
-    return this.dateForm.get('date');
+  getEndOfWeek(date: Date): Date {
+    const start = this.getStartOfWeek(date);
+    return new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
   }
 
-  onClickPrev() {
-    this.yesterdayOrTommorrow(-1)
-    this.fetchcalendarViewData();
-  }
-
-  onClickNext() {
-    this.yesterdayOrTommorrow(1);
-    this.fetchcalendarViewData();
-  }
-
-  yesterdayOrTommorrow(num: number): string | null {
-    const currentDate = this.dateForm.get('date')?.value;
-
-    if (currentDate) {
-
-      const newDate = new Date(currentDate);
-      newDate.setDate(newDate.getDate() + num);
-      const formattedDate = newDate.toISOString().split('T')[0];
-      this.dateForm.get('date')?.setValue(formattedDate);
-
-      return formattedDate;
-    } else {
-      return null;
-    }
-  }
-
-
-  onApplyDate() {
-    console.log("date is applied");
-  }
-
-  OnClickRightRooms() {
-    if (this.rightPointer < this.calendarViewData!.length) {
-      this.leftPointer = this.rightPointer;
-      this.rightPointer = Math.min(this.rightPointer + this.ROOMS_PAGE_SIZE, this.calendarViewData!.length);
-      this.roomsInPage = this.calendarViewData!.slice(this.leftPointer, this.rightPointer);
-    }
-  }
-
-  OnClickLeftRooms() {
-    if (this.leftPointer > 0) {
-      this.rightPointer = this.leftPointer;
-      this.leftPointer = Math.max(this.leftPointer - this.ROOMS_PAGE_SIZE, 0);
-      this.roomsInPage = this.calendarViewData!.slice(this.leftPointer, this.rightPointer);
-    }
-  }
-
-  formatTime(time: number): string {
-    if (time == null) return '';
-
-    const suffix = time >= 12 ? 'PM' : 'AM';
-    const displayHour = time === 0 ? 12 : (time > 12 ? time - 12 : time);
-
-    return `${displayHour}:00 ${suffix}`;
-  }
-
-  onClickOnRoom(roomId: number) {
-    console.log(this.dateForm.get('date')?.value);
-    this.router.navigate(['create-booking', roomId],
-      {state: { date :  this.dateForm.get('date')?.value}});
-  }
-
-  onDateSelected() {
-    this.fetchcalendarViewData();
-  }
 }

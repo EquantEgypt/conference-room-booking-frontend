@@ -28,7 +28,7 @@
     "date-fns": "^4.1.0",
     "@types/lodash": "^4.17.20",
     "@types/uuid": "^10.0.0",
-    "boosted": "^5.3.3",
+    "boosted": "^5.3.7",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

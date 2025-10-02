@@ -1,0 +1,115 @@
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
+export function presentOrFutureDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!control.value) return null;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const inputDate = new Date(control.value);
+        inputDate.setHours(0, 0, 0, 0);
+
+        // Reject past dates
+        if (inputDate < today) return { pastDate: true };
+
+        // Reject "too far in future dates" future dates (e.g. more than 1 year ahead)
+        const maxDate = new Date();
+        maxDate.setFullYear(today.getFullYear() + 1);
+        if (inputDate > maxDate) return { tooFarInFuture: true };
+
+        return null;
+    }
+}
+
+
+export function dateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!control.value) return null;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const inputDate = new Date(control.value);
+        inputDate.setHours(0, 0, 0, 0);
+
+        // Reject "too far in future dates" future dates (e.g. more than 1 year ahead)
+        const maxDate = new Date();
+        maxDate.setFullYear(today.getFullYear() + 1);
+        if (inputDate > maxDate) return { tooFarInFuture: true };
+
+        return null;
+    }
+}
+
+
+export function endTimeAfterStartTimeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const startValue = control.get('startTime')?.value;
+        const endValue = control.get('endTime')?.value;
+        
+        if (!startValue || !endValue) return null;
+        
+        let startMinutes: number;
+        let endMinutes: number;
+        
+        // Handle both number and string formats
+        if (typeof startValue === 'number') {
+            startMinutes = startValue * 60; // Convert hour to minutes
+        } else if (typeof startValue === 'string') {
+            if (startValue.includes(':')) {
+                // Parse 'HH:mm' format
+                const [startHour, startMinute] = startValue.split(':').map(Number);
+                startMinutes = startHour * 60 + startMinute;
+            } else {
+                // Single hour number as string
+                startMinutes = parseInt(startValue) * 60;
+            }
+        } else {
+            return null;
+        }
+        
+        if (typeof endValue === 'number') {
+            endMinutes = endValue * 60; // Convert hour to minutes
+        } else if (typeof endValue === 'string') {
+            if (endValue.includes(':')) {
+                // Parse 'HH:mm' format
+                const [endHour, endMinute] = endValue.split(':').map(Number);
+                endMinutes = endHour * 60 + endMinute;
+            } else {
+                // Single hour number as string
+                endMinutes = parseInt(endValue) * 60;
+            }
+        } else {
+            return null;
+        }
+        
+        return endMinutes <= startMinutes ? { endBeforeStart: true } : null;
+    };
+}
+
+export function capacityValidator(min: number, max: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+
+        const valueStr = control?.value?.toString();
+
+        //  if not valid
+        if (!/^([1-9]\d*|0)$/.test(valueStr) || valueStr == null) { // Digits only, no leading zeros unless single "0"
+            return { pattern: true };
+        }
+
+        console.log(valueStr + ' ' + typeof valueStr);
+
+        const value = Number(valueStr);
+
+        if (isNaN(value)) {
+            return { pattern: true };
+        }
+
+        if (value < min || value > max) {
+            return { range: true };
+        }
+
+        return null;
+    };
+}

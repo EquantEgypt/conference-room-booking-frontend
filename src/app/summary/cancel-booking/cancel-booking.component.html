@@ -1,0 +1,46 @@
+<div class="container" *ngIf="!isLoading; else loading">
+  <h2>Cancellation Booking Summary</h2>
+  <div class="reservation-details" *ngIf="reservation">
+    <img
+      [src]="'/assets/rooms/room' + reservation.roomId + '.png'"
+      alt="{{ reservation.roomName }}"
+      class="room-image"
+    />
+    <p><strong>Title:</strong> {{ reservation.title }}</p>
+    <p><strong>Room:</strong> {{ reservation.roomName }}</p>
+    <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
+    <p><strong>Date:</strong> {{ reservation.date |  date : "EEEE, MMM d, y"}}</p>
+    <p>
+      <strong>Recurring End Date:</strong>
+    {{ reservation.recurrenceEndDate | date : "EEEE, MMM d, y" }}
+    </p>
+    <p><strong>Start Time:</strong>{{ reservation.startTime ? formatTime(reservation.startTime) : '' }}</p>
+    <p><strong>End Time:</strong>{{ reservation.endTime ? formatTime(reservation.endTime) : '' }}</p>
+    <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
+    <p><strong>Description:</strong> {{ reservation.description }}</p>
+    <div class="confirm-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn-back"
+        (click)="onBack()"
+      >
+        Go Back
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        class="btn-cancel"
+        (click)="onCancelReservation()"
+      >
+        Cancel Reservation
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <p>Loading reservation details...</p>
+  </div>
+</ng-template>

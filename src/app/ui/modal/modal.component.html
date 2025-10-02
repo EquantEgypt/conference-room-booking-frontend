@@ -1,0 +1,9 @@
+<!-- Backdrop -->
+<div *ngIf="show" class="backdrop" (click)="onClose('close')"></div>
+
+<!-- Modal -->
+<div *ngIf="show" class="modal">
+    <div class="content">
+        <app-filter (action)="onClose($event)" [maxRoomCapacity]="maxRoomCapacity"></app-filter>
+    </div>
+</div>

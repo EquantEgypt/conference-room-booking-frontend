@@ -1,0 +1,28 @@
+<div class="container" *ngIf="!isLoading; else loading">
+    <h2>Booking Summary</h2>
+    <div class="reservation-details" *ngIf="reservation">
+        <p><strong>Title:</strong> {{ reservation.title }}</p>
+        <p><strong>Reservation Type:</strong> {{ reservation.type }}</p>
+        <p><strong>Description:</strong> {{ reservation.description }}</p>
+        <p><strong>Date:</strong> {{ reservation.date | date:'mediumDate' }}</p>
+        <p><strong>Start Time:</strong> {{ reservation.startTime }}</p>
+        <p><strong>End Time:</strong> {{ reservation.endTime }}</p>
+        <p><strong>Recurring Option:</strong> {{ reservation.recurrenceOption }}</p>
+        <p><strong>Number of occurrences:</strong> {{ reservation.numberOfOccurrences}}</p>
+        <div class="confirm-actions">
+            <button mat-raised-button color="primary" class="btn-back" (click)="onBack()">
+                Go Back
+            </button>
+            <button mat-raised-button color="warn" class="btn-create" (click)="onConfirm()">
+                Confirm
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #loading>
+    <div class="loading-container">
+        <p>Loading reservation details...</p>
+    </div>
+</ng-template>

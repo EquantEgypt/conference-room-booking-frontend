@@ -1,0 +1,164 @@
+/* Container styling */
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Title */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Reservation Details Section */
+.reservation-details {
+  margin-top: 10px;
+}
+
+.reservation-details p {
+  margin: 8px 0;
+  padding: 6px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  color: #555;
+  font-size: 15px;
+}
+
+.reservation-details strong {
+  color: #222;
+  min-width: 150px;
+  font-weight: 600;
+}
+.confirm-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 6px;
+}
+/* Create Button */
+.btn-create {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: #3F4BA4!important;
+  color: #fff !important;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(230, 57, 70, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-create:hover {
+  background: #D81212 !important;
+  transform: translateY(-2px);
+}
+/* Back Button */
+.btn-back{
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: #3F4BA4;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(115, 57, 230, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-back:hover {
+  background: #4C22BD;
+  transform: translateY(-2px);
+}
+
+/* Loading Section */
+.loading-container {
+  text-align: center;
+  margin-top: 50px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Confirmation Dialog */
+.confirm-card {
+  padding: 20px;
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #222;
+}
+
+.confirm-message {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+/* Buttons in Dialog */
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-actions .btn-cancel {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.confirm-actions .btn-cancel:hover {
+  background: #d6d6d6;
+}
+
+.confirm-actions .btn-delete {
+  background: #144c5e;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(230, 57, 70, 0.4);
+}
+
+.confirm-actions .btn-delete:hover {
+  background: #103288;
+  transform: translateY(-1px);
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+<div class="container">
+
+    <div *ngIf="isLoading" class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <table *ngIf="!isLoading" class="booking-table booking-table-bordered booking-table-hover booking-table-striped">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Room</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Type</th>
+                <th>Recurring option</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let reservation of reservations; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ reservation.title || '---' }}</td>
+                <td>{{ reservation.roomName || 'N/A' }}</td>
+                <td>{{ formatDate(reservation.date) }}</td>
+                <td>{{ formatTime(reservation.startTime) }}</td>
+                <td>{{ formatTime(reservation.endTime) }}</td>
+                <td>{{ formatReservationType(reservation.type) }}</td>
+                <td>{{ formatRecurrenceOption(reservation.recurrenceOption) }}</td>
+                <td><button class="edit-btn" (click)="onEdit(reservation)"><i class="fas fa-edit"></i></button></td>
+                <td><button class="delete-btn" (click)="onDelete(reservation)"><i class="fa-solid fa-trash"></i></button></td>
+            </tr>
+
+            <tr *ngIf="reservations.length === 0">
+                <td colspan="11" class="no-data">No reservations found</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>

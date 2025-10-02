@@ -1,0 +1,26 @@
+<div class="calendar-controls">
+  <button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">&lt;</button>
+  <button mwlCalendarToday [(viewDate)]="viewDate" class="today-button" >Today</button>
+  <button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">&gt;</button>
+</div>
+
+<h3>{{ viewDate | calendarDate: view + 'ViewTitle' : 'en' }}</h3>
+
+<div class="calendar-view-buttons">
+  <button (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">Month</button>
+  <button (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">Week</button>
+  <button (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">Day</button>
+</div>
+
+<div class="calendar-container">
+  <mwl-calendar-month-view *ngIf="view === CalendarView.Month" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-month-view>
+
+  <mwl-calendar-week-view *ngIf="view === CalendarView.Week" [viewDate]="viewDate" [events]="events"  [dayStartHour]="9" [dayEndHour]="22"  [hourSegments]="1" [hourSegmentHeight]="60" >
+  </mwl-calendar-week-view>
+
+  <mwl-calendar-day-view *ngIf="view === CalendarView.Day" [viewDate]="viewDate" [events]="events"  [dayStartHour]="9" [dayEndHour]="22"  [hourSegments]="1" [hourSegmentHeight]="60">  
+    </mwl-calendar-day-view>
+ </div>
+
+  

@@ -1,0 +1,98 @@
+<div class="filter-container">
+    <form [formGroup]="filterForm" (ngSubmit)="onApplyFilter()" class="filter-form">
+        <div class="header">Select Date & Time & Capacity</div>
+
+        <div class="filter-date">
+            <label for="date">Select Date</label>
+            <input type="date" id="date" name="date" formControlName="date" required [ngClass]="{
+            'is-invalid': date?.touched && date?.invalid,
+            'is-valid': date?.touched && date?.valid
+            }">
+        </div>
+
+        <div *ngIf="date?.invalid && date?.touched" class="validation-message">
+            <span *ngIf="date?.errors?.['required']">Date is required.</span>
+            <span *ngIf="date?.errors?.['pastDate']">Date must be today or in the future.</span>
+            <span *ngIf="date?.errors?.['tooFarInFuture']">Date cannot be more than 1 year ahead.</span>
+        </div>
+
+        <div class="drop-down">
+            <label for="start-time">Start Time</label>
+            <select id="start-time" name="start-time" formControlName="startTime" required [ngClass]="{
+            'is-invalid': startTime?.touched && startTime?.invalid,
+            'is-valid': startTime?.touched && startTime?.valid
+            }">
+                <option value="">Select Time</option>
+                @for (time of startTimes; track time) {
+                <option [value]="time" class="time-font">{{formatTime(time)}}</option>
+                }
+            </select>
+        </div>
+
+        <div *ngIf="startTime?.invalid && startTime?.touched" class="validation-message">
+            <span *ngIf="startTime?.errors?.['required']">Start time is required.</span>
+        </div>
+
+        <div class="drop-down">
+            <label for="end-time">End Time</label>
+            <select id="end-time" name="end-time" formControlName="endTime" required [ngClass]="{
+             'is-invalid': endTime?.touched && (endTime?.hasError('required') || filterForm.errors?.['endBeforeStart']),
+             'is-valid': endTime?.touched && endTime?.valid && !filterForm.errors?.['endBeforeStart']
+            }">
+                <option value="">Select Time</option>
+                @for (time of endTimes; track time) {
+                <option [value]="time" class="time-font">{{formatTime(time)}}</option>
+                }
+            </select>
+        </div>
+
+
+        <div *ngIf="endTime?.invalid && endTime?.touched" class="validation-message">
+            <span *ngIf="endTime?.errors?.['required']">End time is required.</span>
+        </div>
+
+        <div *ngIf="!endTime?.errors?.['required'] && filterForm.errors?.['endBeforeStart'] && endTime?.touched"
+            class="validation-message">
+            End time must be after start time
+        </div>
+
+        <div class="drop-down">
+            <label for="capacity">Capacity</label>
+            <input type="number" id="capacity" name="capacity" formControlName="capacity"
+            placeholder="Enter Capacity"  [ngClass]="{
+            'is-invalid': capacity?.touched && capacity?.invalid,
+            'is-valid': capacity?.touched && capacity?.valid
+            }">
+        </div>
+
+
+        <div *ngIf="capacity?.invalid && capacity?.touched" class="validation-message">
+            <span *ngIf="capacity?.errors?.['pattern']">
+                Enter a valid number
+            </span>
+
+            <span *ngIf="!capacity?.errors?.['pattern'] && capacity?.errors?.['range']">
+                Capacity must be between 1 and {{ maxRoomCapacity }}
+            </span>
+        </div>
+
+
+        <div class="filter-equip">
+            <div class="header">choose Equipments</div>
+            <div>
+                @for(equipment of equipments; track equipment.equipment_id; let i = $index){
+                <span class="equipment" [class.selected]="equipment.isChecked" (click)="toggleEquip(i)">
+                    <span>{{ equipment.type }}</span>
+                    <i *ngIf="equipment.isChecked" class="fa-solid fa-circle-check animate-check"></i>
+                </span>
+                }
+            </div>
+        </div>
+
+
+        <div class="buttons">
+            <button type="button" class="btn-close" (click)="onCloseFilter()">Close</button>
+            <button type="submit" class="btn-close btn-apply">Apply</button>
+        </div>
+    </form>
+</div>

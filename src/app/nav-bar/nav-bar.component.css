@@ -1,0 +1,49 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 5%;
+    align-items: center;
+    background: #18283B;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+    transition: all .3s ease;
+    color:#2979FF;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    display: inline-block;
+}
+
+ul li a {
+    cursor: pointer;
+    color: #FFF;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 7px;
+    transition: all .3s ease;
+    font-weight: 500;
+    font-weight: bold;
+
+}
+
+.welcome-message {
+    color: #E6F0FF;
+    font-size: 15px;
+    opacity: 0.9;
+}

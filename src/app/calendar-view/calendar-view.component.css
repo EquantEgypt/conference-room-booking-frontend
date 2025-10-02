@@ -1,106 +1,128 @@
+/* Header section styling to match filter sections */
 .calendar-header {
-  display: flex;
-  flex-direction: column; 
-  align-items: flex-start; 
-  padding: 12px 20px;
-  background-color: #f5f5f5;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  gap: 8px; 
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #dee2e6 !important;
 }
-
-
 
 h3 {
-  margin: 0 0 6px 20px; 
-  font-size: 1.4rem;
-  color: #333;
+  margin: 0;
+  font-size: 1.25rem;
+  color: #495057;
   font-weight: 600;
+  line-height: 1.5;
 }
 
-
+/* Calendar controls styling */
 .calendar-controls {
   display: flex;
-  justify-content: flex-start; 
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 0.75rem;
   align-items: center;
-  padding: 0 20px; 
 }
 
-
-
 .calendar-controls button {
-  padding: 6px 10px; 
-  border: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ff7900;
+  background-color: #ff7900;
   color: white;
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar-controls button:hover {
-  background-color: #1565c0;
-  transform: scale(1.05);
+  background-color: #e66d00;
+  border-color: #e66d00;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(255, 121, 0, 0.2);
 }
 
+.calendar-controls button:active {
+  transform: translateY(0);
+}
 
+.calendar-controls button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(255, 121, 0, 0.25);
+}
+
+/* Today button styling */
 .today-button {
-  padding: 0 12px;
-  height: 32px;
-  
-  color: white;
-  border-radius: 16px; 
-  font-size: 0.85rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: all 0.2s ease;
+  padding: 0.5rem 1.25rem !important;
+  background-color: #ff7900 !important;
+  border-color: #ff7900 !important;
+  color: white !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  min-width: 80px !important;
 }
 
 .today-button:hover {
-  
-  transform: scale(1.1);
+  background-color: #e66d00 !important;
+  border-color: #e66d00 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(255, 121, 0, 0.2) !important;
 }
 
+.today-button:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 121, 0, 0.25) !important;
+}
 
+/* Calendar view buttons */
 .calendar-view-buttons {
-  display: flex;
-  justify-content: flex-end; 
-  gap: 8px; 
-  margin: 0;
-  padding-top: 4px; 
+  display: inline-flex;
+  gap: 0.5rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 0.25rem;
 }
 
 .calendar-view-buttons button {
-  padding: 4px 10px;
-  border: 1px solid #1976d2;
-  background-color: white;
-  color: #1976d2;
-  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: #495057;
+  border-radius: 0.25rem;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.85rem; 
+  font-weight: 500;
+  font-size: 0.875rem;
   transition: all 0.2s ease;
+  min-width: 70px;
 }
 
-.calendar-view-buttons button.active,
 .calendar-view-buttons button:hover {
-  background-color: #1976d2;
-  color: white;
-  transform: scale(1.05);
+  background-color: #f8f9fa;
+  color: #ff7900;
 }
 
+.calendar-view-buttons button.active {
+  background-color: #ff7900;
+  color: white;
+  font-weight: 600;
+}
 
+.calendar-view-buttons button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.15rem rgba(255, 121, 0, 0.15);
+}
+
+/* Calendar container */
 .calendar-container {
-  width: 100vw;
-  height: calc(100vh - 160px);
-  padding: 10px;
+  width: 100%;
+  height: calc(100vh - 180px);
+  padding: 1.5rem;
   box-sizing: border-box;
 }
-
 
 mwl-calendar-month-view,
 mwl-calendar-week-view,
@@ -109,41 +131,124 @@ mwl-calendar-day-view {
   height: 100%;
 }
 
-
+/* Calendar event styling */
 .mwl-calendar-event {
-  
   color: white !important;
-  border-radius: 4px !important;
-  padding: 3px 6px !important;
-  font-size: 0.9rem !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem !important;
   font-weight: 500 !important;
 }
-.busy-event {
-  opacity: 0.6 !important;
-  border-style: dashed !important;
-  cursor: not-allowed;
-}
 
-
+/* My event styling - using orange theme */
 .my-event {
-  background-color: #4CAF50 !important; 
+  background-color: #ff7900 !important;
   color: white !important;
-  border-radius: 4px;
-  padding: 2px;
-  white-space: pre-line; 
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  white-space: pre-line;
+  box-shadow: 0 1px 3px rgba(255, 121, 0, 0.3);
 }
 
-
+/* Busy event styling */
 .busy-event {
-  background-color: #9E9E9E !important;
+  background-color: #6c757d !important;
   color: white !important;
-  border-radius: 4px;
-  padding: 2px;
-  opacity: 0.6 !important;
-  border-style: dashed !important;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  opacity: 0.7 !important;
+  border: 1px dashed rgba(255, 255, 255, 0.5) !important;
   cursor: not-allowed;
 }
 
-:host ::ng-deep .cal-current-time-marker {  /* Don't remove this part, it’s importantttttttt"*/
+/* Hide current time marker */
+:host ::ng-deep .cal-current-time-marker {
   display: none !important;
+}
+
+/* Calendar cell styling */
+:host ::ng-deep .cal-cell-top {
+  min-height: 78px;
+}
+
+:host ::ng-deep .cal-day-cell {
+  border-color: #dee2e6 !important;
+}
+
+:host ::ng-deep .cal-day-cell:hover {
+  background-color: #fff8f0 !important;
+}
+
+:host ::ng-deep .cal-day-badge {
+  background-color: #ff7900 !important;
+  color: white !important;
+}
+
+:host ::ng-deep .cal-header {
+  background-color: #f8f9fa !important;
+  border-color: #dee2e6 !important;
+}
+
+:host ::ng-deep .cal-header .cal-cell {
+  font-weight: 600 !important;
+  color: #495057 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Today's date highlighting */
+:host ::ng-deep .cal-today {
+  background-color: #fff8f0 !important;
+}
+
+:host ::ng-deep .cal-day-number {
+  color: #495057 !important;
+  font-weight: 500 !important;
+}
+
+:host ::ng-deep .cal-today .cal-day-number {
+  color: #ff7900 !important;
+  font-weight: 700 !important;
+}
+
+/* Week and day view styling */
+:host ::ng-deep .cal-hour-segment {
+  border-color: #dee2e6 !important;
+}
+
+:host ::ng-deep .cal-hour-segment:hover {
+  background-color: #fff8f0 !important;
+}
+
+:host ::ng-deep .cal-time {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Event title styling in week/day view */
+:host ::ng-deep .cal-event-title {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 1rem;
+    height: calc(100vh - 200px);
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  .calendar-controls button,
+  .calendar-view-buttons button {
+    font-size: 0.8125rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  :host ::ng-deep .cal-header .cal-cell {
+    font-size: 0.8125rem !important;
+  }
 }

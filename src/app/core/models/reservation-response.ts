@@ -2,28 +2,30 @@ import { RecurrenceOption } from "../enum/recurrence-option";
 import { ReservationType } from "../enum/reservation-type";
 
 export interface ReservationResponse {
-    reservationId: number | null,
-    type: ReservationType | null,
-    title: string | null,
-    description: string | null,
-    date: Date | string | null,
-    startTime: string | null,
-    endTime: string | null,
-    recurrenceOption: RecurrenceOption | null,
-    recurrenceEndDate: Date | string | null,
-    roomName: string | null,
-    roomId?: number | null,
-    numberOfOccurrences?: number | null
+    reservationId: number | null;
+    type: ReservationType | null;
+    title: string | null;
+    description: string | null;
+    date: Date | string | null;
+    startTime: string | null;
+    endTime: string | null;
+    recurrenceOption: RecurrenceOption | null;
+    recurrenceEndDate: Date | string | null;
+    roomName: string | null;
+    roomId?: number | null;
+    numberOfOccurrences?: number | null;
+    bookedBy?: string | null;
+    isOwner?: boolean;
 }
 
-export function converToReservationResponse(raw: any): ReservationResponse {
+export function convertToReservationResponse(raw: any, currentUser?: string, includeAll: boolean = false): ReservationResponse {
     if (!raw) {
         return {
             reservationId: null,
             type: null,
             title: null,
             description: null,
-            date:null,
+            date: null,
             startTime: null,
             endTime: null,
             recurrenceOption: null,
@@ -31,25 +33,24 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             roomName: null,
             roomId: null,
             numberOfOccurrences: null,
+            bookedBy: null,
+            isOwner: false,
         };
     }
+
+    const bookedBy = typeof raw.bookedBy === "string" ? raw.bookedBy : null;
 
     return {
         reservationId: typeof raw.reservationId === "number"
             ? raw.reservationId
-            : Number(raw.reservationId) || null,
+            : (raw.reservationId ? Number(raw.reservationId) : null),
 
         type: Object.values(ReservationType).includes(raw.type)
             ? raw.type
             : null,
 
-        title: typeof raw.title === "string"
-            ? raw.title
-            : null,
-
-        description: typeof raw.description === "string"
-            ? raw.description
-            : null,
+        title: typeof raw.title === "string" ? raw.title : null,
+        description: typeof raw.description === "string" ? raw.description : null,
 
         date: raw.date ?? null,
         startTime: raw.startTime ?? null,
@@ -63,13 +64,25 @@ export function converToReservationResponse(raw: any): ReservationResponse {
             ? new Date(raw.recurrenceEndDate)
             : null,
 
-        roomName: raw.roomName ?? null
+        roomName: raw.roomName ?? null,
+        roomId: raw.roomId ? Number(raw.roomId) : null,
+
+        numberOfOccurrences: raw.numberOfOccurrences
+            ? Number(raw.numberOfOccurrences)
+            : null,
+
+        bookedBy: bookedBy,
+
+
+        isOwner: includeAll ? (bookedBy === currentUser) : (currentUser ? bookedBy === currentUser : false),
     };
 }
 
-export function convertToReservationList(rawList: any[]): ReservationResponse[] {
-    if (!Array.isArray(rawList)) {
-        return [];
-    }
-    return rawList.map(item => converToReservationResponse(item));
+
+export function convertToReservationList(innerArray: any[], currentUsername: string): ReservationResponse[] {
+  return innerArray.map(item => ({
+    ...item,
+    isOwner: item.bookedBy === currentUsername || item.owner === true
+  }));
 }
+

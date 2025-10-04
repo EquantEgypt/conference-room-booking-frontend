@@ -5,5 +5,8 @@ import { ReservationType } from "../enum/reservation-type";
 export interface MyBookingFilter {
     dateScope: DateScope,
     recurrenceOption: RecurrenceOption,
-    reservationType: ReservationType
+    reservationType: ReservationType,
+
+  isManager?: boolean;
+  managerView?: string;
 }

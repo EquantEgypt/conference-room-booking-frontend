@@ -42,39 +42,49 @@ export class LoginComponent {
       ]]
     })
   }
+onLogin(): void {
+  if (this.loginForm.valid) {
+    this.isLoading = true;
+    const user: UserCredentials = this.loginForm.value;
 
-  onLogin(): void {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      let user: UserCredentials = this.loginForm.value;
-      this.auth.authenticate(user).subscribe(
-        {
-          next: (response) => {
-            localStorage.setItem(TOKEN, response.body.token);
-            this.route.navigate(['dashboard'])
+    this.auth.authenticate(user).subscribe({
+      next: (response) => {
+        
+        localStorage.setItem(TOKEN, response.body.token);
+
+
+        this.api.getUserInfo().subscribe({
+          next: (userResponse) => {
+            localStorage.setItem('currentUser', JSON.stringify(userResponse.body));
+
             this.isLoading = false;
             this.alert.Toast.fire({
               icon: "success",
               title: "You logged in successfully."
             });
-            console.log(response);
+
+            this.route.navigate(['dashboard']);
           },
           error: (err) => {
-            if (err.status === 401) {
-              this.errorMessage = 'Invalid Credentials';
-            } else {
-              this.errorMessage = 'Something went wrong. Please try again.';
-            }
+            console.error('Error fetching user info:', err);
             this.isLoading = false;
-            console.log(this.errorMessage);
           }
+        });
+      },
+      error: (err) => {
+        if (err.status === 401) {
+          this.errorMessage = 'Invalid Credentials';
+        } else {
+          this.errorMessage = 'Something went wrong. Please try again.';
         }
-      )
-    }
-    else {
-      this.loginForm.markAllAsTouched();
-    }
+        this.isLoading = false;
+      }
+    });
+  } else {
+    this.loginForm.markAllAsTouched();
   }
+}
+
 
   get username(): AbstractControl | null {
     return this.loginForm.get('username');

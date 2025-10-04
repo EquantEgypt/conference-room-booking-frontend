@@ -50,29 +50,39 @@ export class ApiService {
     });
   }
 
-  getReservationByFilters(params : MyBookingFilter | null){
-    console.log(params);
+getReservationByFilters(params: MyBookingFilter | null) {
+  console.log(params);
 
-    let httpParams = new HttpParams();
+  let httpParams = new HttpParams();
 
-    if (params) {
-      if (params.dateScope && params.dateScope != 'ALL') {
-        httpParams = httpParams.set('dateScope', params.dateScope.toString());
-      }
-      if (params.recurrenceOption && params.recurrenceOption != 'ALL') {
-        httpParams = httpParams.set('recurrenceOption', params.recurrenceOption);
-      }
-      if (params.reservationType && params.reservationType != 'ALL') {
-        httpParams = httpParams.set('reservationType', params.reservationType);
-      }
+  if (params) {
+    if (params.dateScope && params.dateScope !== 'ALL') {
+      httpParams = httpParams.set('dateScope', params.dateScope.toString());
     }
 
-    return this.http.get(`${this.apiUrl}/reserve/filter`, {
-      observe: 'response',
-      params: httpParams
-    });
-    
+    if (params.recurrenceOption && params.recurrenceOption !== 'ALL') {
+      httpParams = httpParams.set('recurrenceOption', params.recurrenceOption);
+    }
+
+    if (params.reservationType && params.reservationType !== 'ALL') {
+      httpParams = httpParams.set('reservationType', params.reservationType);
+    }
+
+    // ✅ Send the correct backend parameters
+    httpParams = httpParams.set('isManager', params.isManager ? 'true' : 'false');
+
+    if (params.managerView) {
+      httpParams = httpParams.set('managerView', params.managerView);
+    }
   }
+
+  return this.http.get(`${this.apiUrl}/reserve/filter`, {
+    observe: 'response',
+    params: httpParams
+  });
+}
+
+
 
   getRoom(roomId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/rooms/${roomId}`, { observe: 'response' });

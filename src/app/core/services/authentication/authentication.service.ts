@@ -10,8 +10,7 @@ export const TOKEN = 'token';
   providedIn: 'root'
 })
 
-export class AuthenticationService { // TODO: This service may be removed later if it remains unused or redundant.
-
+export class AuthenticationService { 
   constructor(private api: ApiService) { }
 
   authenticate(userCredentials: UserCredentials) {
@@ -23,4 +22,10 @@ export class AuthenticationService { // TODO: This service may be removed later 
         return throwError(() => error);
       }))
   }
+
+  getCurrentUser() {
+  const user = localStorage.getItem('currentUser');
+  return user ? JSON.parse(user) : null;
+}
+
 }

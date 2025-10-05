@@ -92,6 +92,13 @@ getReservationByFilters(params: MyBookingFilter | null) {
     return this.http.get(`${this.apiUrl}/reserve`, { observe: 'response' });
   }
 
+  getAllReservationsForAdmin(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/reserve/all`, { observe: 'response' });  
+  }
+
+
+
+
   getEquipments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/equipment`, { observe: 'response' });
   }
@@ -122,6 +129,16 @@ getReservationByFilters(params: MyBookingFilter | null) {
   getUserInfo(): Observable<any> {
     return this.http.get(`${this.apiUrl}/username`, { observe: 'response' });
   }
+
+  getReservationsByDate(startDate: string, endDate: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}/reserve/calendar`, {
+    params: { startDate, endDate },
+    observe: 'response'
+  });
+
+
+}
+
 
   getUpcomingReservations(): Observable<any> {
     return this.http.get(`${this.apiUrl}/reserve/up-coming`, { observe: 'response' });

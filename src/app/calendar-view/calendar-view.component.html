@@ -1,93 +1,46 @@
-<div class="container">
-    <form [formGroup]="dateForm" (ngSubmit)="onApplyDate()" class="date-form">
-
-        <button type="button" (click)="onClickPrev()" class="date-nav-btn" [disabled]="isLoading">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <input type="date" id="date" name="date" formControlName="date" required class="date-input"
-            (change)="onDateSelected()">
-
-        <button type="button" (click)="onClickNext()" class="date-nav-btn" [disabled]="isLoading">
-            <i class="fa-solid fa-arrow-right"></i>
-        </button>
-
-    </form>
-
-    <div class="calendar-view-container">
-
-        <div class="nav-btns">
-            <button type="button" (click)="OnClickLeftRooms()" class="date-nav-btn" [disabled]="leftPointer === 0">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-
-            <button type="button" (click)="OnClickRightRooms()" class="date-nav-btn"
-                [disabled]="calendarViewData !== null && rightPointer >= calendarViewData.length">
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
+<div class="container-fluid px-0">
+  <!-- Header Section -->
+  <div class="calendar-header bg-light border-bottom p-3 mb-4">
+    <div class="container-fluid">
+      <div class="row align-items-center mb-3">
+        <div class="col-md-6">
+          <h3 class="mb-0">{{ viewDate | calendarDate: view + 'ViewTitle' : 'en' }}</h3>
         </div>
-
-        <!-- timeline grid -->
-
-
-        <div class="calendar">
-
-            <div class="timeline">
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-
-                @for(t of timeLabels; track t){
-                <div class="time-marker">{{formatTime(t)}}</div>
-                }
+        <div class="col-md-6">
+          <div class="d-flex justify-content-md-end justify-content-start mt-3 mt-md-0">
+            <div class="calendar-view-buttons">
+              <button (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">Month</button>
+              <button (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">Week</button>
+              <button (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">Day</button>
             </div>
-
-            <div *ngIf="isLoading" class="loader-container">
-                <div class="loader"></div>
-            </div>
-
-            <div class="days" *ngIf="!isLoading">
-
-                @for(room of roomsInPage; track room.roomId){
-
-                <div class="day">
-
-                    <div class="room-card" (click)="onClickOnRoom(room.roomId)">
-                        <div class="room-image">
-                            <img [src]="'/assets/rooms/room' + room.roomId  + '.png'" alt="room.roomName">
-
-                        </div>
-                        <div class="room-details">
-                            <h2>{{room.roomName}}</h2>
-                            <div class="room-capacity">
-                                <i class="fa fa-user icon"></i>
-                                <div>{{room.roomCapacity}}</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="events">
-                        @for (res of room.reservations; track res.reservationId) {
-                        <div class="event securities" [class.available]="res.myReservation"
-                            [class.unavailable]="!res.myReservation"
-                            [ngClass]="['start-' + res.startTime, 'end-' + res.endTime]">
-                            <p class="room-name">{{room.roomName }}</p>
-                            <p class="title">{{res.myReservation? res.title :"BUSY"}}</p>
-                            <p class="type">{{res.type}}</p>
-                            <p class="time">{{ formatTime( res.startTime) }} - {{ formatTime(res.endTime) }}</p>
-                        </div>
-                        }
-                    </div>
-                </div>
-
-                }
-
-            </div>
-
-
+          </div>
         </div>
-
-
-
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="calendar-controls">
+            <button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button mwlCalendarToday [(viewDate)]="viewDate" class="today-button">Today</button>
+            <button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Calendar Container -->
+  <div class="calendar-container">
+    <mwl-calendar-month-view *ngIf="view === CalendarView.Month" [viewDate]="viewDate" [events]="events">
+    </mwl-calendar-month-view>
+
+    <mwl-calendar-week-view *ngIf="view === CalendarView.Week" [viewDate]="viewDate" [events]="events" [dayStartHour]="9" [dayEndHour]="22" [hourSegments]="1" [hourSegmentHeight]="60">
+    </mwl-calendar-week-view>
+
+    <mwl-calendar-day-view *ngIf="view === CalendarView.Day" [viewDate]="viewDate" [events]="events" [dayStartHour]="9" [dayEndHour]="22" [hourSegments]="1" [hourSegmentHeight]="60">
+    </mwl-calendar-day-view>
+  </div>
 </div>

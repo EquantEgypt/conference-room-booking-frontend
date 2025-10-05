@@ -10,6 +10,8 @@ import { DateScope } from '../core/enum/date-scope';
 import { RecurrenceOption } from '../core/enum/recurrence-option';
 import { ReservationType } from '../core/enum/reservation-type';
 import { ReservationResponseList } from '../core/models/reservation-response-list';
+import { UserRole } from '../core/enum/user-role';
+import { ManagerViewOption } from '../core/enum/manager-view-option';
 
 @Component({
   selector: 'app-my-booking',
@@ -21,56 +23,65 @@ import { ReservationResponseList } from '../core/models/reservation-response-lis
 
 export class MyBookingComponent implements OnInit {
   DateScope = DateScope;
+  ManagerViewOption = ManagerViewOption;
+
   isLoading = false;
+  isManager = false;
+
   filteredReservations: ReservationResponseList[] = [];
+
   dateScopeFilter: DateScope = DateScope.ALL;
   recurrenceOptionFilter: RecurrenceOption = RecurrenceOption.ALL;
   reservationTypeFilter: ReservationType = ReservationType.ALL;
+  managerViewFilter: ManagerViewOption = ManagerViewOption.MY_RESERVATIONS;
 
-  constructor(private api: ApiService, private dialog: MatDialog, private router: Router) { }
+  private currentUser: any;
+
+  constructor(private api: ApiService, private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
-    console.log(this.dateScopeFilter);
-    console.log(this.recurrenceOptionFilter);
-    console.log(this.reservationTypeFilter);
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser);
+      this.isManager = this.currentUser.role === UserRole.MANAGER;
+    }
 
-    this.fetchReservations(this.dateScopeFilter, this.recurrenceOptionFilter, this.reservationTypeFilter);
+    this.fetchReservations();
   }
 
-  fetchReservations(dateScope: DateScope,
-    recurrenceOption: RecurrenceOption,
-    reservationType: ReservationType) {
-
+  fetchReservations() {
     this.isLoading = true;
+    const username = this.currentUser?.username || null;
 
     const params: MyBookingFilter = {
-      dateScope: dateScope,
-      recurrenceOption: recurrenceOption,
-      reservationType: reservationType
-    }
+      dateScope: this.dateScopeFilter,
+      recurrenceOption: this.recurrenceOptionFilter,
+      reservationType: this.reservationTypeFilter,
+      isManager: this.isManager,
+      managerView: this.isManager ? this.managerViewFilter.toString() : undefined
+    };
 
     this.api.getReservationByFilters(params).subscribe({
       next: (response) => {
-        console.log(response.body);
-        // this.filteredReservations = response.body as ReservationResponseList[];
-
         const body = response.body as any[][];
 
-        body.map(item => {
-          console.log(item);
-        })
+        this.filteredReservations = body
+          .map(innerArray => {
+            const reservationResponseList = convertToReservationList(innerArray, username);
 
-        this.filteredReservations = body.map(innerArray => {
-          const reservationResponseList = convertToReservationList(innerArray);
+            const filteredList =
+              this.isManager && this.managerViewFilter === ManagerViewOption.MY_RESERVATIONS
+                ? reservationResponseList.filter(r => r.isOwner)
+                : reservationResponseList;
 
-          return {
-            reservationResponseList,
-            isExpand: false,
-            showExpandButton: reservationResponseList.length > 1
-          } as ReservationResponseList;
-        });
+            return {
+              reservationResponseList: filteredList,
+              isExpand: false,
+              showExpandButton: filteredList.length > 1
+            } as ReservationResponseList;
+          })
+          .filter(group => group.reservationResponseList.length > 0);
 
-        console.log(this.filteredReservations);
         this.isLoading = false;
       },
       error: (err) => {
@@ -80,23 +91,34 @@ export class MyBookingComponent implements OnInit {
     });
   }
 
-  applyFilters(dateScopeFilter: DateScope,
+  applyFilters(
+    dateScopeFilter: DateScope,
     recurrenceOptionFilter: RecurrenceOption,
-    reservationTypeFilter: ReservationType) {
-
+    reservationTypeFilter: ReservationType,
+    managerViewFilter: ManagerViewOption
+  ) {
     this.dateScopeFilter = dateScopeFilter;
     this.recurrenceOptionFilter = recurrenceOptionFilter;
     this.reservationTypeFilter = reservationTypeFilter;
+    this.managerViewFilter = managerViewFilter;
 
-    this.fetchReservations(this.dateScopeFilter, this.recurrenceOptionFilter, this.reservationTypeFilter);
+    this.fetchReservations();
   }
 
   onDelete(reservation: ReservationResponse) {
-    this.router.navigate(['/cancel-booking', reservation.reservationId]);
+    if (this.isManager || reservation.isOwner) {
+      this.router.navigate(['/cancel-booking', reservation.reservationId]);
+    } else {
+      alert("You can only cancel your own reservations.");
+    }
   }
 
   onEdit(reservation: ReservationResponse) {
-    this.router.navigate(['/modify-booking', reservation.reservationId]);
+    if (reservation.isOwner || this.isManager) {
+      this.router.navigate(['/modify-booking', reservation.reservationId]);
+    } else {
+      alert("You can only edit your own reservations.");
+    }
   }
 
   formatTime(time: string | null): string {
@@ -133,10 +155,7 @@ export class MyBookingComponent implements OnInit {
     }
   }
 
-  onClickAllReservation(index:number){
-    console.log('Clicked');
+  onClickAllReservation(index: number) {
     this.filteredReservations[index].isExpand = !this.filteredReservations[index].isExpand;
-    console.log(this.filteredReservations[index].isExpand);
   }
 }
-

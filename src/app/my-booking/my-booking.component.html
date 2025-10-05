@@ -10,25 +10,25 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="dateFilter" id="today"
                 [checked]="dateScopeFilter===DateScope.TODAY"
-                (click)="applyFilters(DateScope.TODAY,recurrenceOptionFilter , reservationTypeFilter)">
+                (click)="applyFilters(DateScope.TODAY,recurrenceOptionFilter , reservationTypeFilter,managerViewFilter)">
               <label class="form-check-label text-orange fw-medium" for="today">Today</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="dateFilter" id="nextDay"
                 [checked]="dateScopeFilter===DateScope.NEXT_DAY"
-                (click)="applyFilters(DateScope.NEXT_DAY, recurrenceOptionFilter, reservationTypeFilter)">
+                (click)="applyFilters(DateScope.NEXT_DAY, recurrenceOptionFilter, reservationTypeFilter,managerViewFilter)">
               <label class="form-check-label text-orange fw-medium" for="nextDay">Next Day</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="dateFilter" id="thisWeek"
                 [checked]="dateScopeFilter===DateScope.THIS_WEEK"
-                (click)="applyFilters(DateScope.THIS_WEEK, recurrenceOptionFilter, reservationTypeFilter)">
+                (click)="applyFilters(DateScope.THIS_WEEK, recurrenceOptionFilter, reservationTypeFilter,managerViewFilter)">
               <label class="form-check-label text-orange fw-medium" for="thisWeek">This Week</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input orange-radio" type="radio" name="dateFilter" id="all"
                 [checked]="dateScopeFilter===DateScope.ALL"
-                (click)="applyFilters(DateScope.ALL, recurrenceOptionFilter, reservationTypeFilter)">
+                (click)="applyFilters(DateScope.ALL, recurrenceOptionFilter, reservationTypeFilter,managerViewFilter)">
               <label class="form-check-label text-dark fw-medium" for="all">All</label>
             </div>
           </div>
@@ -37,19 +37,26 @@
         <div class="col-lg-4 col-md-6">
           <div class="d-flex gap-2">
             <select class="form-select" [(ngModel)]="reservationTypeFilter"
-              (change)="applyFilters(dateScopeFilter, recurrenceOptionFilter, reservationTypeFilter)">
+              (change)="applyFilters(dateScopeFilter, recurrenceOptionFilter, reservationTypeFilter,managerViewFilter)">
               <option value="ALL">All Types</option>
               <option value="INTERNAL">Internal</option>
               <option value="EXTERNAL">External</option>
             </select>
 
             <select class="form-select" [(ngModel)]="recurrenceOptionFilter"
-              (change)="applyFilters(dateScopeFilter, recurrenceOptionFilter, reservationTypeFilter)">
+              (change)="applyFilters(dateScopeFilter, recurrenceOptionFilter, reservationTypeFilter,managerViewFilter)">
               <option value="ALL">All Recurrence</option>
               <option value="ONE_TIME">One Time</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
             </select>
+
+          <select *ngIf="isManager" class="form-select" [(ngModel)]="managerViewFilter"
+            (change)="applyFilters(dateScopeFilter, recurrenceOptionFilter, reservationTypeFilter, managerViewFilter)">
+            <option [ngValue]="ManagerViewOption.MY_RESERVATIONS">My Reservations</option>
+            <option [ngValue]="ManagerViewOption.EMPLOYEE_RESERVATIONS">Employee Reservation</option>
+            <option [ngValue]="ManagerViewOption.ALL_RESERVATIONS">All Reservations</option>
+          </select>
           </div>
         </div>
       </div>
@@ -74,8 +81,10 @@
             <th scope="col" class="border-0">Booking Type</th>
             <th scope="col" class="border-0">Start Time</th>
             <th scope="col" class="border-0">End Time</th>
+            <th scope="col" class="border-0">Recurrence End Date</th>
             <th scope="col" class="border-0">Recurrence</th>
             <th scope="col" class="border-0">Date</th>
+            <th *ngIf="isManager" scope="col" class="border-0">BookedBy</th>
             <th scope="col" class="border-0 text-center">Actions</th>
           </tr>
         </thead>
@@ -84,12 +93,14 @@
           <!-- outer loop (groups of reservations) -->
           <ng-container *ngFor="let reservations of filteredReservations; let i = index">
             <!-- Parent row: only for the first reservation in a group with >1 -->
-            <tr *ngIf="reservations.reservationResponseList && reservations.reservationResponseList.length > 1" [attr.data-id]="reservations.reservationResponseList[0].reservationId" class="booking-row">
+            <tr *ngIf="reservations.reservationResponseList && reservations.reservationResponseList.length > 1"
+              [attr.data-id]="reservations.reservationResponseList[0].reservationId" class="booking-row">
               <td>
                 <div class="d-flex align-items-center">
                   <div class="room-indicator me-3"></div>
                   <div class="room-info">
-                    <div class="fw-bold text-dark room-name">{{ reservations.reservationResponseList[0].roomName || 'N/A' }}</div>
+                    <div class="fw-bold text-dark room-name">{{ reservations.reservationResponseList[0].roomName ||
+                      'N/A' }}</div>
                     <small class="text-muted room-subtitle">Meeting Room</small>
                   </div>
                 </div>
@@ -118,6 +129,12 @@
                 </div>
               </td>
               <td>
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
+                </div>
+              </td>
+              <td>
                 <span class="badge rounded-pill" [ngClass]="{
                 'bg-info': reservations.reservationResponseList[0].recurrenceOption === 'ONE_TIME',
                 'bg-warning': reservations.reservationResponseList[0].recurrenceOption === 'DAILY',
@@ -132,22 +149,35 @@
                   {{ formatDate(reservations.reservationResponseList[0].date || null) | date : "EEEE, M/d/y" }}
                 </div>
               </td>
+
+              <td>
+                <div *ngIf="isManager" class="fw-medium">
+                  {{reservations.reservationResponseList[0].bookedBy || '--'}}
+                </div>
+              </td>
+
               <td class="text-center">
                 <div class="action-buttons align-items-center">
                   <span class="arrow-spacer"></span>
-                  <button class="btn btn-outline-primary btn-sm me-1" (click)="onEdit(reservations.reservationResponseList[0])" title="Reschedule">
+                  <button *ngIf="reservations.reservationResponseList[0].isOwner || isManager"
+                    class="btn btn-outline-primary btn-sm me-1"
+                    (click)="onEdit(reservations.reservationResponseList[0])" title="Reschedule">
                     <i class="fas fa-edit me-1"></i>Reschedule
                   </button>
-                  <button class="btn btn-outline-danger btn-sm" (click)="onDelete(reservations.reservationResponseList[0])" title="Cancel">
+                  <button *ngIf="reservations.reservationResponseList[0].isOwner || isManager" class="btn btn-outline-danger btn-sm"
+                    (click)="onDelete(reservations.reservationResponseList[0])" title="Cancel">
                     <i class="fas fa-trash me-1"></i>Cancel
                   </button>
                   <ng-container *ngIf="reservations.reservationResponseList.length > 1">
-                    <button class="btn btn-link p-0 me-2" (click)="onClickAllReservation(i)" title="Show More/Less" style="display: flex; align-items: center;">
-                      <svg *ngIf="!reservations.isExpand" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ff7900" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5z"/>
+                    <button class="btn btn-link p-0 me-2" (click)="onClickAllReservation(i)" title="Show More/Less"
+                      style="display: flex; align-items: center;">
+                      <svg *ngIf="!reservations.isExpand" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                        fill="#ff7900" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
                       </svg>
-                      <svg *ngIf="reservations.isExpand" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ff7900" viewBox="0 0 24 24">
-                        <path d="M7 14l5-5 5 5z"/>
+                      <svg *ngIf="reservations.isExpand" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                        fill="#ff7900" viewBox="0 0 24 24">
+                        <path d="M7 14l5-5 5 5z" />
                       </svg>
                     </button>
                   </ng-container>
@@ -156,8 +186,10 @@
             </tr>
 
             <!-- Child rows: for the rest of the reservations in the group, if expanded -->
-            <ng-container *ngIf="reservations.isExpand && reservations.reservationResponseList && reservations.reservationResponseList.length > 1">
-              <tr *ngFor="let reservation of reservations.reservationResponseList; let j = index" [attr.data-id]="reservation.reservationId" class="booking-row" >
+            <ng-container
+              *ngIf="reservations.isExpand && reservations.reservationResponseList && reservations.reservationResponseList.length > 1">
+              <tr *ngFor="let reservation of reservations.reservationResponseList; let j = index"
+                [attr.data-id]="reservation.reservationId" class="booking-row">
                 <ng-container *ngIf="j > 0">
                   <td>
                     <div class="d-flex align-items-center">
@@ -176,8 +208,8 @@
                     'bg-primary': reservation.type === 'INTERNAL',
                     'bg-success': reservation.type === 'EXTERNAL'
                   }">
-                    {{ formatReservationType(reservation.type || '') }}
-                  </span>
+                      {{ formatReservationType(reservation.type || '') }}
+                    </span>
                   </td>
                   <td>
                     <div class="text-nowrap">
@@ -192,13 +224,19 @@
                     </div>
                   </td>
                   <td>
+                    <div class="text-nowrap">
+                      <i class="fas fa-calendar text-muted me-2"></i>
+                      {{ formatDate(reservation.recurrenceEndDate) | date : "EEEE, M/d/y" }}
+                    </div>
+                  </td>
+                  <td>
                     <span class="badge rounded-pill" [ngClass]="{
                     'bg-info': reservation.recurrenceOption === 'ONE_TIME',
                     'bg-warning': reservation.recurrenceOption === 'DAILY',
                     'bg-secondary': reservation.recurrenceOption === 'WEEKLY'
                   }">
-                    {{ formatRecurrenceOption(reservation.recurrenceOption || '') }}
-                  </span>
+                      {{ formatRecurrenceOption(reservation.recurrenceOption || '') }}
+                    </span>
                   </td>
                   <td>
                     <div class="text-nowrap">
@@ -206,13 +244,20 @@
                       {{ formatDate(reservation.date || null) | date : "EEEE, M/d/y" }}
                     </div>
                   </td>
+                  <td>
+                    <div *ngIf="isManager" class="fw-medium">
+                      {{reservations.reservationResponseList[0].bookedBy || '--'}}
+                    </div>
+                  </td>
                   <td class="text-center">
                     <div class="action-buttons align-items-center">
                       <span class="arrow-spacer"></span>
-                      <button class="btn btn-outline-primary btn-sm me-1" (click)="onEdit(reservation)" title="Reschedule">
+                      <button *ngIf="reservation.isOwner || isManager" class="btn btn-outline-primary btn-sm me-1"
+                        (click)="onEdit(reservation)" title="Reschedule">
                         <i class="fas fa-edit me-1"></i>Reschedule
                       </button>
-                      <button class="btn btn-outline-danger btn-sm" (click)="onDelete(reservation)" title="Cancel">
+                      <button *ngIf="reservation.isOwner || isManager" class="btn btn-outline-danger btn-sm"
+                        (click)="onDelete(reservation)" title="Cancel">
                         <i class="fas fa-trash me-1"></i>Cancel
                       </button>
                     </div>
@@ -222,12 +267,14 @@
             </ng-container>
 
             <!-- Single reservation group (no arrow) -->
-            <tr *ngIf="reservations.reservationResponseList && reservations.reservationResponseList.length === 1" [attr.data-id]="reservations.reservationResponseList[0].reservationId" class="booking-row">
+            <tr *ngIf="reservations.reservationResponseList && reservations.reservationResponseList.length === 1"
+              [attr.data-id]="reservations.reservationResponseList[0].reservationId" class="booking-row">
               <td>
                 <div class="d-flex align-items-center">
                   <div class="room-indicator me-3"></div>
                   <div class="room-info">
-                    <div class="fw-bold text-dark room-name">{{ reservations.reservationResponseList[0].roomName || 'N/A' }}</div>
+                    <div class="fw-bold text-dark room-name">{{ reservations.reservationResponseList[0].roomName ||
+                      'N/A' }}</div>
                     <small class="text-muted room-subtitle">Meeting Room</small>
                   </div>
                 </div>
@@ -256,6 +303,12 @@
                 </div>
               </td>
               <td>
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
+                </div>
+              </td>
+              <td>
                 <span class="badge rounded-pill" [ngClass]="{
                 'bg-info': reservations.reservationResponseList[0].recurrenceOption === 'ONE_TIME',
                 'bg-warning': reservations.reservationResponseList[0].recurrenceOption === 'DAILY',
@@ -270,13 +323,22 @@
                   {{ formatDate(reservations.reservationResponseList[0].date || null) | date : "EEEE, M/d/y" }}
                 </div>
               </td>
+              <td>
+                <div *ngIf="isManager" class="fw-medium">
+                  {{reservations.reservationResponseList[0].bookedBy || '--'}}
+                </div>
+              </td>
               <td class="text-center">
                 <div class="action-buttons align-items-center">
                   <span class="arrow-spacer"></span>
-                  <button class="btn btn-outline-primary btn-sm me-1" (click)="onEdit(reservations.reservationResponseList[0])" title="Reschedule">
+                  <button *ngIf="reservations.reservationResponseList[0].isOwner||isManager"
+                    class="btn btn-outline-primary btn-sm me-1"
+                    (click)="onEdit(reservations.reservationResponseList[0])" title="Reschedule">
                     <i class="fas fa-edit me-1"></i>Reschedule
                   </button>
-                  <button class="btn btn-outline-danger btn-sm" (click)="onDelete(reservations.reservationResponseList[0])" title="Cancel">
+                  <button *ngIf="reservations.reservationResponseList[0].isOwner||isManager"
+                    class="btn btn-outline-danger btn-sm" (click)="onDelete(reservations.reservationResponseList[0])"
+                    title="Cancel">
                     <i class="fas fa-trash me-1"></i>Cancel
                   </button>
                 </div>

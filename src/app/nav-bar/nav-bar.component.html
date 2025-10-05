@@ -5,7 +5,41 @@
       <div class="logo">Room Booking</div>
     </div>
     <div class="welcome-message">Welcome, {{ username }}</div>
+    <!-- Notification Bell -->
+    <div class="notification-container">
+      <button type="button" 
+              class="btn notification-bell" 
+              (click)="toggleNotifications()">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }}</span>
+      </button>
+      
+      <!-- Custom Notification Dropdown -->
+      <div class="notifications-dropdown" *ngIf="showNotifications">
+        <div class="notifications-header">
+          <span class="notifications-title">Notifications</span>
+          <button class="mark-all-read" (click)="markAllAsRead()">Mark all as read</button>
+        </div>
+        <div class="notifications-list">
+          <div *ngFor="let notification of notifications" 
+               class="notification-item" 
+               [class.unread]="!notification.read"
+               [class.read]="notification.read">
+            <div class="notification-message">{{ notification.message }}</div>
+            <div class="notification-time">{{ notification.time }}</div>
+          </div>
+          <div *ngIf="notifications.length === 0" class="notification-empty">
+            No new notifications
+          </div>
+        </div>
+        <div class="notifications-footer">
+          <a href="#" class="view-all-link" (click)="viewAllNotifications($event)">View all notifications</a>
+        </div>
+      </div>
+    </div>
   </div>
+  
+  
   <ul class="nav nav-tabs nav-tabs-light" role="tablist">
     <li class="nav-item" role="presentation">
       <a class="nav-link" 

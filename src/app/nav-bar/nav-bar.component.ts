@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { SweetAlertService } from '../core/services/alert/sweet-alert.service';
 import { TOKEN } from '../core/services/authentication/authentication.service';
 import { Router, NavigationEnd } from '@angular/router';
@@ -19,6 +19,27 @@ export class NavBarComponent implements OnInit {
   username = '';
   logoColor = '#FFF';
   currentRoute = '';
+  unreadNotifications = 0; 
+  showNotifications = false;
+  
+  notifications = [
+    { id: 1, message: 'Your booking for Room A has been confirmed', time: '5 min ago', read: false },
+    { id: 2, message: 'Room B is now available for booking', time: '1 hour ago', read: false },
+    { id: 3, message: 'Your booking request is pending approval', time: '2 hours ago', read: false },
+    { id: 4, message: 'Reminder: Meeting in Room C starts in 30 minutes', time: '3 hours ago', read: false },
+    { id: 5, message: 'Your booking has been updated', time: '5 hours ago', read: true }
+  ];
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const notificationContainer = document.querySelector('.notification-container');
+    
+    // Close notifications if click is outside the notification container
+    if (notificationContainer && !notificationContainer.contains(target)) {
+      this.showNotifications = false;
+    }
+  }
 
   constructor(private alert:SweetAlertService,private route: Router,private filterService: FilterService, private api: ApiService){}
   
@@ -64,5 +85,21 @@ export class NavBarComponent implements OnInit {
           });
     this.filterService.resetFilter();
     this.route.navigate(['login'])
+  }
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  markAllAsRead(): void {
+    this.notifications.forEach(notification => notification.read = true);
+    this.unreadNotifications = 0;
+  }
+
+  viewAllNotifications(event: Event): void {
+    event.preventDefault();
+    this.showNotifications = false;
+    // Navigate to notifications page or handle as needed
+    console.log('View all notifications clicked');
   }
 }

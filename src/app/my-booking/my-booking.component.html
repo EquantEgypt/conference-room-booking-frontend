@@ -81,6 +81,7 @@
             <th scope="col" class="border-0">Booking Type</th>
             <th scope="col" class="border-0">Start Time</th>
             <th scope="col" class="border-0">End Time</th>
+            <th scope="col" class="border-0">Recurrence End Date</th>
             <th scope="col" class="border-0">Recurrence</th>
             <th scope="col" class="border-0">Date</th>
             <th *ngIf="isManager" scope="col" class="border-0">BookedBy</th>
@@ -125,6 +126,12 @@
                 <div class="text-nowrap">
                   <i class="fas fa-clock text-muted me-2"></i>
                   {{ formatTime(reservations.reservationResponseList[0].endTime || '') }}
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
                 </div>
               </td>
               <td>
@@ -217,6 +224,12 @@
                     </div>
                   </td>
                   <td>
+                    <div class="text-nowrap">
+                      <i class="fas fa-calendar text-muted me-2"></i>
+                      {{ formatDate(reservation.recurrenceEndDate) | date : "EEEE, M/d/y" }}
+                    </div>
+                  </td>
+                  <td>
                     <span class="badge rounded-pill" [ngClass]="{
                     'bg-info': reservation.recurrenceOption === 'ONE_TIME',
                     'bg-warning': reservation.recurrenceOption === 'DAILY',
@@ -287,6 +300,12 @@
                 <div class="text-nowrap">
                   <i class="fas fa-clock text-muted me-2"></i>
                   {{ formatTime(reservations.reservationResponseList[0].endTime || '') }}
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
                 </div>
               </td>
               <td>

@@ -81,9 +81,9 @@
             <th scope="col" class="border-0">Booking Type</th>
             <th scope="col" class="border-0">Start Time</th>
             <th scope="col" class="border-0">End Time</th>
-            <th scope="col" class="border-0">Recurrence End Date</th>
             <th scope="col" class="border-0">Recurrence</th>
             <th scope="col" class="border-0">Date</th>
+            <th scope="col" class="border-0">Recurrence End Date</th>
             <th *ngIf="isManager" scope="col" class="border-0">BookedBy</th>
             <th scope="col" class="border-0 text-center">Actions</th>
           </tr>
@@ -129,12 +129,6 @@
                 </div>
               </td>
               <td>
-                <div class="text-nowrap">
-                  <i class="fas fa-calendar text-muted me-2"></i>
-                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
-                </div>
-              </td>
-              <td>
                 <span class="badge rounded-pill" [ngClass]="{
                 'bg-info': reservations.reservationResponseList[0].recurrenceOption === 'ONE_TIME',
                 'bg-warning': reservations.reservationResponseList[0].recurrenceOption === 'DAILY',
@@ -146,12 +140,18 @@
               <td>
                 <div class="text-nowrap">
                   <i class="fas fa-calendar text-muted me-2"></i>
-                  {{ formatDate(reservations.reservationResponseList[0].date || null) | date : "EEEE, M/d/y" }}
+                  {{ (reservations.reservationResponseList[0].date || null) | date : "EEEE dd/MM/yyyy" }}
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ (reservations.reservationResponseList[0].recurrenceEndDate || null) | date : "EEEE dd/MM/yyyy" }}
                 </div>
               </td>
 
-              <td>
-                <div *ngIf="isManager" class="fw-medium">
+              <td *ngIf="isManager">
+                <div class="fw-medium">
                   {{reservations.reservationResponseList[0].bookedBy || '--'}}
                 </div>
               </td>
@@ -224,12 +224,6 @@
                     </div>
                   </td>
                   <td>
-                    <div class="text-nowrap">
-                      <i class="fas fa-calendar text-muted me-2"></i>
-                      {{ formatDate(reservation.recurrenceEndDate) | date : "EEEE, M/d/y" }}
-                    </div>
-                  </td>
-                  <td>
                     <span class="badge rounded-pill" [ngClass]="{
                     'bg-info': reservation.recurrenceOption === 'ONE_TIME',
                     'bg-warning': reservation.recurrenceOption === 'DAILY',
@@ -241,11 +235,17 @@
                   <td>
                     <div class="text-nowrap">
                       <i class="fas fa-calendar text-muted me-2"></i>
-                      {{ formatDate(reservation.date || null) | date : "EEEE, M/d/y" }}
+                      {{ (reservation.date || null) | date : "EEEE dd/MM/yyyy" }}
                     </div>
                   </td>
                   <td>
-                    <div *ngIf="isManager" class="fw-medium">
+                    <div class="text-nowrap">
+                      <i class="fas fa-calendar text-muted me-2"></i>
+                      {{ (reservation.recurrenceEndDate || null) | date : "EEEE dd/MM/yyyy" }}
+                    </div>
+                  </td>
+                  <td *ngIf="isManager">
+                    <div class="fw-medium">
                       {{reservations.reservationResponseList[0].bookedBy || '--'}}
                     </div>
                   </td>
@@ -303,12 +303,6 @@
                 </div>
               </td>
               <td>
-                <div class="text-nowrap">
-                  <i class="fas fa-calendar text-muted me-2"></i>
-                  {{ formatDate(reservations.reservationResponseList[0].recurrenceEndDate) | date : "EEEE, M/d/y" }}
-                </div>
-              </td>
-              <td>
                 <span class="badge rounded-pill" [ngClass]="{
                 'bg-info': reservations.reservationResponseList[0].recurrenceOption === 'ONE_TIME',
                 'bg-warning': reservations.reservationResponseList[0].recurrenceOption === 'DAILY',
@@ -320,11 +314,17 @@
               <td>
                 <div class="text-nowrap">
                   <i class="fas fa-calendar text-muted me-2"></i>
-                  {{ formatDate(reservations.reservationResponseList[0].date || null) | date : "EEEE, M/d/y" }}
+                  {{ (reservations.reservationResponseList[0].date || null) | date : "EEEE dd/MM/yyyy" }}
                 </div>
               </td>
               <td>
-                <div *ngIf="isManager" class="fw-medium">
+                <div class="text-nowrap">
+                  <i class="fas fa-calendar text-muted me-2"></i>
+                  {{ (reservations.reservationResponseList[0].recurrenceEndDate || null) | date : "EEEE dd/MM/yyyy" }}
+                </div>
+              </td>
+              <td *ngIf="isManager">
+                <div class="fw-medium">
                   {{reservations.reservationResponseList[0].bookedBy || '--'}}
                 </div>
               </td>

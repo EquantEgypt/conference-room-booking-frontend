@@ -8,12 +8,11 @@ import { FilterService } from '../core/services/shared/filters/filter.service';
 import { convertToFilterRequest, FilterRequest } from '../core/models/filter-request';
 import { Router } from '@angular/router';
 import { ReservationResponse } from '../core/models/reservation-response';
-import { CdkDialogContainer } from "@angular/cdk/dialog";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, CommonModule, ModalComponent, CdkDialogContainer],
+  imports: [NgIf, CommonModule, ModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
